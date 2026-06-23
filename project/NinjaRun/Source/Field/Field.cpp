@@ -2,7 +2,7 @@
 
 Field::Field()
 {
-    m_model = MV1LoadModel("Data/Field/TestFieldR-2.x");
+    m_model = MV1LoadModel("Data/Field/TestFieldR.x");
 
     m_pos = VGet(0, 0, 0);
 
