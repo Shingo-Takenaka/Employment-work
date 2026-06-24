@@ -13,6 +13,9 @@
     <Filter Include="Source\Camera">
       <UniqueIdentifier>{7f7578e4-fddc-4247-984b-0cb8bee273a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Input">
+      <UniqueIdentifier>{21365ad9-f2e8-45c6-a554-c9e4c12fa5a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Camera\Camera.cpp">
@@ -24,6 +27,12 @@
     <ClCompile Include="Source\main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ninja\Ninja.cpp">
+      <Filter>Source\Ninja</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Input.cpp">
+      <Filter>Source\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -31,6 +40,12 @@
     </ClInclude>
     <ClInclude Include="Source\Field\Field.h">
       <Filter>Source\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ninja\Ninja.h">
+      <Filter>Source\Ninja</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Input.h">
+      <Filter>Source\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@
 
 #include "Camera/Camera.h"
 #include "Field/Field.h"
+#include "Ninja/Ninja.h"
+#include "Input/Input.h"
 
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 900
@@ -31,18 +33,27 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
     // 環境光（全体を少し明るくする）
     SetGlobalAmbientLight(GetColorF(0.4f, 0.4f, 0.4f, 0.0f));
 
-    Camera camera;
+    //視野角の調整
+    SetCameraDotAspect(1.0f);
+    SetupCamera_Perspective(DX_PI_F / 4.0f); // 45度くらい
 
+    Camera camera;
     Field field;
+    Ninja ninja;
 
     while (ProcessMessage() == 0 &&
         CheckHitKey(KEY_INPUT_ESCAPE) == 0)
     {
+        Input::Update();
+
         ClearDrawScreen();
 
         camera.Update();
+        ninja.Update();
 
         field.Draw();
+
+        ninja.Draw();
 
         camera.Draw();
 

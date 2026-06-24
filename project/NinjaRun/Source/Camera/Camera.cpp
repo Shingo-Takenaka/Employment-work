@@ -3,7 +3,7 @@
 Camera::Camera()
 {
     // 少し上空から斜めに見る(x, y, z)
-    m_eye = VGet(0.0f, 20.0f, 140.0f);
+    m_eye = VGet(0.0f, 40.0f, -100.0f);
 
     // 注視点
     m_target = VGet(0.0f, 0.0f, 0.0f);
@@ -11,7 +11,7 @@ Camera::Camera()
 
 void Camera::Update()
 {
-    const float moveSpeed = 1.0f;
+    /*const float moveSpeed = 1.0f;
 
     // ==========================
     // Z軸（前後）
@@ -43,6 +43,7 @@ void Camera::Update()
         m_eye.y -= moveSpeed;
     }
 
+    */
     // カメラ更新
     SetCameraPositionAndTarget_UpVecY(
         m_eye,
