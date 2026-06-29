@@ -1,15 +1,19 @@
 #include "Camera.h"
 
+const float CAMERA_HEIGHT = 40.0f;
+const float CAMERA_DISTANCE = 100.0f;
+
 Camera::Camera()
 {
     // 少し上空から斜めに見る(x, y, z)
-    m_eye = VGet(0.0f, 40.0f, -100.0f);
+    m_offset = VGet(0.0f, 40.0f, -100.0f);
 
+    m_eye = m_offset;
     // 注視点
     m_target = VGet(0.0f, 0.0f, 0.0f);
 }
 
-void Camera::Update()
+void Camera::Update(VECTOR playerPos)
 {
     /*const float moveSpeed = 1.0f;
 
@@ -44,13 +48,13 @@ void Camera::Update()
     }
 
     */
-    // カメラ更新
-    SetCameraPositionAndTarget_UpVecY(
-        m_eye,
-        m_target
-    );
 
-    
+    // プレイヤーに追従
+    m_eye = VAdd(playerPos, m_offset);
+    m_target = playerPos;
+
+	// カメラの位置と注視点を設定
+    SetCameraPositionAndTarget_UpVecY(m_eye, m_target);
 }
 
 void Camera::Draw()

@@ -27,11 +27,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
     SetDrawScreen(DX_SCREEN_BACK);
 
+    // カメラの描画範囲
+    SetCameraNearFar(0.1f, 5000.0f);
+
     //ライト
-    SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
+    //SetLightDirection(VGet(-1.0f, -1.0f, 1.0f));
 
     // 環境光（全体を少し明るくする）
-    SetGlobalAmbientLight(GetColorF(0.4f, 0.4f, 0.4f, 0.0f));
+    //SetGlobalAmbientLight(GetColorF(0.4f, 0.4f, 0.4f, 0.0f));
 
     //視野角の調整
     SetCameraDotAspect(1.0f);
@@ -41,6 +44,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
     Field field;
     Ninja ninja;
 
+    VECTOR playerPos = VGet(0.0f, 0.0f, 0.0f); // 変数の宣言と初期化
+
     while (ProcessMessage() == 0 &&
         CheckHitKey(KEY_INPUT_ESCAPE) == 0)
     {
@@ -48,8 +53,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
         ClearDrawScreen();
 
-        camera.Update();
         ninja.Update();
+
+        camera.Update(ninja.GetPosition());
 
         field.Draw();
 

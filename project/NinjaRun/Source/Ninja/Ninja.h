@@ -9,10 +9,12 @@ public:
 
     void Update();
     void Draw();
+    VECTOR GetPosition() const; // 位置を取得する関数
 
 private:
     int m_handle;       // 画像ハンドル
     VECTOR m_pos;       // 3D空間上の位置
     float m_size;       // 描画サイズ
     float m_moveSpeed;  // 移動速度
+
 };

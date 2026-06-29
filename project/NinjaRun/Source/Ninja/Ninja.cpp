@@ -33,3 +33,8 @@ void Ninja::Draw()
     // 1.0f ‚É‚·‚é‚±‚Æ‚ÅA‘«Œ³(m_pos)‚ğŠî€‚Éã‚ÉL‚Ñ‚é‚æ‚¤‚É•`‰æ‚³‚ê‚é
     DrawBillboard3D(m_pos, 0.5f, 1.0f, m_size, 0.0f, m_handle, TRUE);
 }
+
+VECTOR Ninja::GetPosition() const
+{
+    return m_pos;
+}

@@ -2,6 +2,10 @@
 
 Field::Field()
 {
+    //デモマップ
+    // m_model = MV1LoadModel("Data/Field/DemoMap.x");
+
+    //描画テスト
     m_model = MV1LoadModel("Data/Field/TestFieldR.x");
 
     m_pos = VGet(0, 0, 0);
@@ -18,6 +22,9 @@ Field::~Field()
 
 void Field::Draw()
 {
+    //デモフィールドの描画テスト用だったもの(家で詳しく調べるため一旦保留)
+    //MV1SetLightEnable(m_model, FALSE);
+
     MV1SetPosition(m_model, m_pos);
 
     MV1SetRotationXYZ(m_model, m_rot);
