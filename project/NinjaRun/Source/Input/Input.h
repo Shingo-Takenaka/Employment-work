@@ -16,7 +16,17 @@ public:
     // 指定したキーが離された瞬間
     static bool IsRelease(int keyCode);
 
+	// 指定したボタンが押し続けられている
+    static bool IsPadPress(int button);
+
+	// 指定したボタンが押された瞬間
+    static bool IsPadTrigger(int button);
 private:
+	// キーボード
     static char m_currentKey[256]; // 今回のフレームのキー状態
     static char m_prevKey[256];    // 1つ前のフレームのキー状態
+
+    //ゲームパッド
+    static DINPUT_JOYSTATE m_currentPad;
+    static DINPUT_JOYSTATE m_prevPad;
 };

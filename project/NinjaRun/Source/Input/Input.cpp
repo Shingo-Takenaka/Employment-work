@@ -4,8 +4,12 @@
 char Input::m_currentKey[256] = { 0 };
 char Input::m_prevKey[256] = { 0 };
 
+DINPUT_JOYSTATE Input::m_currentPad = { 0 };
+DINPUT_JOYSTATE Input::m_prevPad = { 0 };
+
 void Input::Update()
 {
+	// キーボード
     // 前回の状態を保存
     for (int i = 0; i < 256; i++)
     {
@@ -14,6 +18,15 @@ void Input::Update()
 
     // 最新の状態を取得
     GetHitKeyStateAll(m_currentKey);
+
+    // ゲームパッド
+	// 前回の状態を保存
+    m_prevPad = m_currentPad;
+
+	// 最新の状態を取得
+    GetJoypadDirectInputState(
+        DX_INPUT_PAD1,
+        &m_currentPad);
 }
 
 bool Input::IsPress(int keyCode)
@@ -32,4 +45,17 @@ bool Input::IsRelease(int keyCode)
 {
     // 今回押されていなくて、前回押されていたら「今離された瞬間」
     return (m_currentKey[keyCode] == 0) && (m_prevKey[keyCode] != 0);
+}
+
+bool Input::IsPadPress(int button)
+{
+	// 0でなければ押されている
+    return m_currentPad.Buttons[button] != 0;
+}
+
+bool Input::IsPadTrigger(int button)
+{
+	// 今回押されていて、前回押されていなければ「今押された瞬間」
+    return (m_currentPad.Buttons[button] != 0) &&
+        (m_prevPad.Buttons[button] == 0);
 }

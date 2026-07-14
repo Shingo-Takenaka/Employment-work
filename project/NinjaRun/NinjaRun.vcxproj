@@ -25,6 +25,8 @@
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Ninja\Ninja.cpp" />
+    <ClCompile Include="Source\Ninja\NinjaAnimation.cpp" />
+    <ClCompile Include="Source\Ninja\NinjaInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation\Animation.h" />

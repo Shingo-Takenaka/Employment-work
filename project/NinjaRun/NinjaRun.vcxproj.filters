@@ -39,6 +39,12 @@
     <ClCompile Include="Source\Animation\Animation.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Ninja\NinjaAnimation.cpp">
+      <Filter>Source\Ninja</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Ninja\NinjaInput.cpp">
+      <Filter>Source\Ninja</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
