@@ -9,8 +9,25 @@ enum class NinjaAnim
     WALK,       // 歩き
     JUMP,       // ジャンプ
     SLASH,      // 袈裟斬り
+    GUARD,      // ガード
 
     MAX
+};
+
+// 入力情報
+struct NinjaInputState
+{
+    // 移動方向
+    float moveX;
+    float moveZ;
+
+    // 移動しているか
+    bool isMove;
+
+    // 各入力
+    bool jump;
+    bool slash;
+    bool guard;
 };
 
 // アニメーション情報
@@ -44,12 +61,7 @@ public:
 private:
 
     // 入力処理
-    void UpdateInput(
-        bool& isMove,
-        bool& jump,
-        bool& slash,
-        float& moveX,
-        float& moveZ);
+    void UpdateInput();
 
     // アニメーション読み込み
     void LoadAnimations();
@@ -81,7 +93,12 @@ private:
     // 左右反転
     bool m_isReverseX;
 
-    // ジャンプ
+    // 入力情報
+    NinjaInputState m_input;
+
+    // 状態
+
+    // ジャンプ中
     bool m_isJump;
 
     // ジャンプ開始時の高さ
@@ -93,9 +110,11 @@ private:
     // 重力
     float m_gravity;
 
-    // 攻撃
-    // 袈裟斬り中か
+    // 袈裟斬り中
     bool m_isSlash;
+
+    // ガード中
+    bool m_isGuard;
 
     // アニメーション
     SpriteAnimation m_animation[(int)NinjaAnim::MAX];

@@ -37,6 +37,15 @@ void Ninja::LoadAnimations()
         32,
         32,
         6);
+
+    // ガード
+    LoadAnimation(
+        m_animation[(int)NinjaAnim::GUARD],
+        "Data/Ninja/Guard/Guard.png",
+        2,
+        32,
+        32,
+        25);
 }
 
 // 1つのアニメーションを読み込む
@@ -92,7 +101,14 @@ void Ninja::UpdateAnimation(bool isMove)
         if (m_currentAnim != NinjaAnim::SLASH)
         {
             m_currentAnim = NinjaAnim::SLASH;
-
+            m_animation[(int)m_currentAnim].anim.Reset();
+        }
+    }
+    else if (m_isGuard)
+    {
+        if (m_currentAnim != NinjaAnim::GUARD)
+        {
+            m_currentAnim = NinjaAnim::GUARD;
             m_animation[(int)m_currentAnim].anim.Reset();
         }
     }
@@ -101,7 +117,6 @@ void Ninja::UpdateAnimation(bool isMove)
         if (m_currentAnim != NinjaAnim::JUMP)
         {
             m_currentAnim = NinjaAnim::JUMP;
-
             m_animation[(int)m_currentAnim].anim.Reset();
         }
     }
@@ -110,7 +125,6 @@ void Ninja::UpdateAnimation(bool isMove)
         if (m_currentAnim != NinjaAnim::WALK)
         {
             m_currentAnim = NinjaAnim::WALK;
-
             m_animation[(int)m_currentAnim].anim.Reset();
         }
     }
@@ -119,7 +133,6 @@ void Ninja::UpdateAnimation(bool isMove)
         if (m_currentAnim != NinjaAnim::WAIT)
         {
             m_currentAnim = NinjaAnim::WAIT;
-
             m_animation[(int)m_currentAnim].anim.Reset();
         }
     }

@@ -28,6 +28,9 @@ Ninja::Ninja()
 
     // 攻撃
     m_isSlash = false;
+
+    // ガード
+    m_isGuard = false;
 }
 
 Ninja::~Ninja()
@@ -36,31 +39,31 @@ Ninja::~Ninja()
     {
         for (int frame = 0; frame < m_animation[anim].frameNum; frame++)
         {
-            DeleteGraph(
-                m_animation[anim].graph[frame]);
+            DeleteGraph(m_animation[anim].graph[frame]);
         }
     }
 }
 
 void Ninja::Update()
 {
-    bool isMove = false;
-    bool jump = false;
-    bool slash = false;
+    // 入力更新
+    UpdateInput();
 
-    float moveX = 0.0f;
-    float moveZ = 0.0f;
+    // ガード
+    if (m_input.guard && !m_isJump && !m_isSlash)
+    {
+        m_isGuard = true;
+    }
+    else
+    {
+        m_isGuard = false;
+    }
 
-    // 入力
-    UpdateInput(
-        isMove,
-        jump,
-        slash,
-        moveX,
-        moveZ);
-
-    // ジャンプ開始
-    if (jump && !m_isJump && !m_isSlash)
+    // ジャンプ
+    if (m_input.jump &&
+        !m_isJump &&
+        !m_isSlash &&
+        !m_isGuard)
     {
         m_isJump = true;
 
@@ -69,8 +72,10 @@ void Ninja::Update()
         m_jumpSpeed = 1.0f;
     }
 
-    // 攻撃開始
-    if (slash && !m_isSlash)
+    // 攻撃
+    if (m_input.slash &&
+        !m_isSlash &&
+        !m_isGuard)
     {
         m_isSlash = true;
 
@@ -80,14 +85,13 @@ void Ninja::Update()
     }
 
     // 移動
-    if (!m_isSlash)
+    if (!m_isSlash &&
+        !m_isGuard)
     {
-        if (moveX != 0.0f || moveZ != 0.0f)
+        if (m_input.isMove)
         {
-            m_pos.x += moveX * m_moveSpeed;
-            m_pos.z += moveZ * m_moveSpeed;
-
-            isMove = true;
+            m_pos.x += m_input.moveX * m_moveSpeed;
+            m_pos.z += m_input.moveZ * m_moveSpeed;
         }
     }
 
@@ -109,20 +113,21 @@ void Ninja::Update()
     }
 
     // 左右反転
-    if (!m_isSlash)
+    if (!m_isSlash &&
+        !m_isGuard)
     {
-        if (moveX < 0.0f)
+        if (m_input.moveX < 0.0f)
         {
             m_isReverseX = true;
         }
-        else if (moveX > 0.0f)
+        else if (m_input.moveX > 0.0f)
         {
             m_isReverseX = false;
         }
     }
 
     // アニメーション更新
-    UpdateAnimation(isMove);
+    UpdateAnimation(m_input.isMove);
 }
 
 void Ninja::Draw()
