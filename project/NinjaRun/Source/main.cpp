@@ -1,9 +1,7 @@
 #include "DxLib.h"
 
-#include "Camera/Camera.h"
-#include "Field/Field.h"
-#include "Ninja/Ninja.h"
 #include "Input/Input.h"
+#include "Scene/SceneManager.h"
 
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 900
@@ -42,31 +40,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
     SetCameraDotAspect(1.0f);
     SetupCamera_Perspective(DX_PI_F / 4.0f); // 45度くらい
 
-    Camera camera;
-    Field field;
-    Ninja ninja;
-
-    VECTOR playerPos = VGet(0.0f, 0.0f, 0.0f); // 変数の宣言と初期化
+    SceneManager sceneManager;
 
     while (ProcessMessage() == 0 &&
         CheckHitKey(KEY_INPUT_ESCAPE) == 0)
     {
         Input::Update();
 
-        ninja.Update();
-
-        camera.Update(ninja.GetPosition());
+        sceneManager.Update();
 
         ClearDrawScreen();
 
-        // 3D描画
-        field.Draw();
-
-        // ビルボード描画
-        ninja.Draw();
-
-        // デバッグ表示
-        camera.Draw();
+        sceneManager.Draw();
 
         ScreenFlip();
     }

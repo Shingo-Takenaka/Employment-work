@@ -19,6 +19,18 @@
     <Filter Include="Source\Animation">
       <UniqueIdentifier>{99e684db-231b-435a-af79-63dddd21bc64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Enemy">
+      <UniqueIdentifier>{03de24bf-a891-4433-8805-e3eb6ab3c59b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Enemy\NormalEnemy">
+      <UniqueIdentifier>{e805d221-3595-42ac-b9c6-ef295d853901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DrawManager">
+      <UniqueIdentifier>{4959f3fc-48f5-4b70-b33b-1db111783dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{43883a1a-f354-4495-a4c8-3d492eabb69d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Camera\Camera.cpp">
@@ -45,6 +57,18 @@
     <ClCompile Include="Source\Ninja\NinjaInput.cpp">
       <Filter>Source\Ninja</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemy.cpp">
+      <Filter>Source\Enemy\NormalEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DrawManager\DrawManager.cpp">
+      <Filter>Source\DrawManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\PlayScene.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneManager.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -61,6 +85,18 @@
     </ClInclude>
     <ClInclude Include="Source\Animation\Animation.h">
       <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemy.h">
+      <Filter>Source\Enemy\NormalEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DrawManager\DrawManager.h">
+      <Filter>Source\DrawManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\PlayScene.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneManager.h">
+      <Filter>Source\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
