@@ -42,6 +42,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
     SceneManager sceneManager;
 
+    // 60FPS固定用
+    const LONGLONG frameTime = 1000000 / 60; // 1フレーム = 約16666マイクロ秒
+    LONGLONG nextFrameTime = GetNowHiPerformanceCount() + frameTime;
+
     while (ProcessMessage() == 0 &&
         CheckHitKey(KEY_INPUT_ESCAPE) == 0)
     {
@@ -54,6 +58,32 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
         sceneManager.Draw();
 
         ScreenFlip();
+
+        // 次のフレームまで待つ
+        LONGLONG nowTime = GetNowHiPerformanceCount();
+
+        if (nowTime < nextFrameTime)
+        {
+            // マイクロ秒 → ミリ秒
+            int waitTime = (int)((nextFrameTime - nowTime) / 1000);
+
+            if (waitTime > 0)
+            {
+                WaitTimer(waitTime);
+            }
+        }
+
+        // 次のフレームの予定時刻
+        nextFrameTime += frameTime;
+
+        // 処理落ちなどで大幅に遅れた場合の補正
+        nowTime = GetNowHiPerformanceCount();
+
+        if (nextFrameTime < nowTime)
+        {
+            nextFrameTime = nowTime + frameTime;
+        }
+
     }
 
     DxLib_End();

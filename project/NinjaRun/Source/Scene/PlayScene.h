@@ -3,6 +3,7 @@
 #include "../Field/Field.h"
 #include "../Ninja/Ninja.h"
 #include "../Enemy/NormalEnemy/NormalEnemy.h"
+#include "../Collision/TouchEnemy.h"
 
 class PlayScene
 {
@@ -23,6 +24,8 @@ private:
     Ninja m_ninja;
 
     NormalEnemy m_enemy;
+
+    bool m_isTouchEnemy;
 
     // ï`âÊä«óù
     DrawManager m_drawManager;

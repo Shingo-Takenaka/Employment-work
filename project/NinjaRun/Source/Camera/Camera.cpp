@@ -15,46 +15,32 @@ Camera::Camera()
 
 void Camera::Update(VECTOR playerPos)
 {
-    /*const float moveSpeed = 1.0f;
+    // カメラがプレイヤーを追従する速度
+    const float followSpeed = 0.08f;
 
-    // ==========================
-    // Z軸（前後）
-    // ↑キー：前へ
-    // ↓キー：後ろへ
-    // ==========================
-    if (CheckHitKey(KEY_INPUT_UP))
-    {
-        m_eye.z += moveSpeed;
-    }
+    // プレイヤーから見た本来のカメラ位置
+    VECTOR targetEye =
+        VAdd(playerPos, m_offset);
 
-    if (CheckHitKey(KEY_INPUT_DOWN))
-    {
-        m_eye.z -= moveSpeed;
-    }
+    // カメラを徐々にプレイヤーへ近づける
+    m_eye.x += (targetEye.x - m_eye.x) * followSpeed;
+    m_eye.y += (targetEye.y - m_eye.y) * followSpeed;
+    m_eye.z += (targetEye.z - m_eye.z) * followSpeed;
 
-    // ==========================
-    // Y軸（高さ）
-    // →キー：上へ(+)
-    // ←キー：下へ(-)
-    // ==========================
-    if (CheckHitKey(KEY_INPUT_RIGHT))
-    {
-        m_eye.y += moveSpeed;
-    }
+    // 注視点も徐々にプレイヤーへ追従
+    m_target.x +=
+        (playerPos.x - m_target.x) * followSpeed;
 
-    if (CheckHitKey(KEY_INPUT_LEFT))
-    {
-        m_eye.y -= moveSpeed;
-    }
+    m_target.y +=
+        (playerPos.y - m_target.y) * followSpeed;
 
-    */
+    m_target.z +=
+        (playerPos.z - m_target.z) * followSpeed;
 
-    // プレイヤーに追従
-    m_eye = VAdd(playerPos, m_offset);
-    m_target = playerPos;
-
-	// カメラの位置と注視点を設定
-    SetCameraPositionAndTarget_UpVecY(m_eye, m_target);
+    // カメラの位置と注視点を設定
+    SetCameraPositionAndTarget_UpVecY(
+        m_eye,
+        m_target);
 }
 
 void Camera::Draw()
