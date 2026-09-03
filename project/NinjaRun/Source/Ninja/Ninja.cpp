@@ -31,6 +31,16 @@ Ninja::Ninja()
 
     // ガード
     m_isGuard = false;
+
+    // ノックバック
+    m_isKnockback = false;
+
+    m_knockbackDirection =
+        VGet(0.0f, 0.0f, 0.0f);
+
+    m_knockbackStrength = 0.0f;
+
+    m_knockbackTimer = 0.0f;
 }
 
 Ninja::~Ninja()
@@ -46,6 +56,31 @@ Ninja::~Ninja()
 
 void Ninja::Update()
 {
+    // ノックバック中なら通常操作を行わない
+    if (m_isKnockback)
+    {
+        m_pos.x +=
+            m_knockbackDirection.x *
+            m_knockbackStrength;
+
+        m_pos.z +=
+            m_knockbackDirection.z *
+            m_knockbackStrength;
+
+        m_knockbackTimer -= 1.0f / 60.0f;
+
+        if (m_knockbackTimer <= 0.0f)
+        {
+            m_knockbackTimer = 0.0f;
+            m_isKnockback = false;
+            m_knockbackStrength = 0.0f;
+        }
+
+        UpdateAnimation(false);
+
+        return;
+    }
+
     // 入力更新
     UpdateInput();
 
@@ -138,4 +173,23 @@ void Ninja::Draw()
 VECTOR Ninja::GetPosition() const
 {
     return m_pos;
+}
+
+void Ninja::ApplyKnockback(
+    VECTOR direction,
+    float strength,
+    float duration)
+{
+    m_isKnockback = true;
+
+    m_knockbackDirection = direction;
+
+    m_knockbackStrength = strength;
+
+    m_knockbackTimer = duration;
+}
+
+bool Ninja::IsKnockback() const
+{
+    return m_isKnockback;
 }

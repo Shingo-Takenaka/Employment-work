@@ -9,15 +9,21 @@ class TouchEnemy
 {
 public:
 
-    // NinjaとEnemyが接触しているか
+    // 接触判定
     static bool Check(
         const Ninja& ninja,
         const NormalEnemy& enemy
     );
 
-    // X方向の判定範囲を取得
+    // ノックバック
+    static void Apply(
+        Ninja& ninja,
+        const NormalEnemy& enemy
+    );
+
+    // X方向の判定範囲
     static float GetTouchWidth();
 
-    // Z方向の判定範囲を取得
+    // Z方向の判定範囲
     static float GetTouchDepth();
 };

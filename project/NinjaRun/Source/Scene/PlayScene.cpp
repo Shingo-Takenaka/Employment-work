@@ -15,12 +15,21 @@ void PlayScene::Update()
 
     m_enemy.Update();
 
-    m_isTouchEnemy =
-        TouchEnemy::Check(
-            m_ninja,
-            m_enemy);
+    // Enemyとの接触
+    if (TouchEnemy::Check(
+        m_ninja,
+        m_enemy))
+    {
+        if (!m_ninja.IsKnockback())
+        {
+            TouchEnemy::Apply(
+                m_ninja,
+                m_enemy);
+        }
+    }
 
-    m_camera.Update(m_ninja.GetPosition());
+    m_camera.Update(
+        m_ninja.GetPosition());
 }
 
 void PlayScene::Draw()
@@ -58,15 +67,15 @@ void PlayScene::Draw()
 
     // デバッグ
     m_camera.Draw();
-
-    // Enemy接触判定デバッグ
-    DrawFormatString(
-        10,
-        10,
-        GetColor(255, 255, 255),
-        "PlayerとEnemyの接触：%s",
-        m_isTouchEnemy ? "true" : "false"
-    );
+    
+    //// Enemy接触判定デバッグ
+    //DrawFormatString(
+    //    10,
+    //    10,
+    //    GetColor(255, 255, 255),
+    //    "PlayerとEnemyの接触：%s",
+    //    m_isTouchEnemy ? "true" : "false"
+    //);
 
     // 当たり判定デバッグ
     TouchEnemyDebug::Draw(

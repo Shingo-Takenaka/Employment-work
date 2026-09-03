@@ -58,6 +58,12 @@ public:
 
     VECTOR GetPosition() const;
 
+    // 敵からのノックバック
+    void ApplyKnockback(VECTOR direction, float strength, float duration);
+
+    // ノックバック中か
+    bool IsKnockback() const;
+
 private:
 
     // 入力処理
@@ -120,4 +126,16 @@ private:
     SpriteAnimation m_animation[(int)NinjaAnim::MAX];
 
     NinjaAnim m_currentAnim;
+
+    // ノックバック中
+    bool m_isKnockback;
+
+    // ノックバック方向
+    VECTOR m_knockbackDirection;
+
+    // ノックバック強度
+    float m_knockbackStrength;
+
+    // ノックバック残り時間
+    float m_knockbackTimer;
 };
