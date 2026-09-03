@@ -3,7 +3,7 @@
 Field::Field()
 {
     //デモマップ
-    // m_model = MV1LoadModel("Data/Field/DemoMap.x");
+   //  m_model = MV1LoadModel("Data/Field/DemoMap.x");
 
     //描画テスト
     m_model = MV1LoadModel("Data/Field/TestFieldHwite.x");
