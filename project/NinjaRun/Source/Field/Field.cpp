@@ -6,7 +6,7 @@ Field::Field()
     // m_model = MV1LoadModel("Data/Field/DemoMap.x");
 
     //•`‰æƒeƒXƒg
-    m_model = MV1LoadModel("Data/Field/TestFieldR.x");
+    m_model = MV1LoadModel("Data/Field/TestFieldHwite.x");
 
     m_pos = VGet(0, 0, 0);
 
