@@ -63,6 +63,9 @@ private:
 
     float m_size;
 
+    // 左右反転
+    bool m_isReverseX;
+
     // アニメーション
     EnemySpriteAnimation
         m_animation[(int)NormalEnemyAnim::MAX];

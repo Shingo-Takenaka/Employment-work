@@ -10,6 +10,9 @@ NormalEnemy::NormalEnemy()
 
     m_size = 10.0f;
 
+    // 待機時は右向き
+    m_isReverseX = false;
+
     LoadAnimations();
 
     m_currentAnim = NormalEnemyAnim::WAIT;
@@ -103,12 +106,11 @@ void NormalEnemy::Update(const Ninja& ninja)
             dz * dz);
 
     // 射撃判定
-
     const float shootRange = 50.0f;
 
     if (distance <= shootRange)
     {
-        // 射撃アニメーションへ移行
+        // 射撃
         if (m_currentAnim != NormalEnemyAnim::SHOOT)
         {
             m_currentAnim = NormalEnemyAnim::SHOOT;
@@ -116,10 +118,21 @@ void NormalEnemy::Update(const Ninja& ninja)
             m_animation[(int)NormalEnemyAnim::SHOOT]
                 .anim.Reset();
         }
+
+        if (ninjaPos.x < m_pos.x)
+        {
+            // Playerが左 → 左向き
+            m_isReverseX = false;
+        }
+        else if (ninjaPos.x > m_pos.x)
+        {
+            // Playerが右 → 右向き
+            m_isReverseX = true;
+        }
     }
     else
     {
-        // 射撃範囲外なら待機
+        // 待機
         if (m_currentAnim != NormalEnemyAnim::WAIT)
         {
             m_currentAnim = NormalEnemyAnim::WAIT;
@@ -127,6 +140,9 @@ void NormalEnemy::Update(const Ninja& ninja)
             m_animation[(int)NormalEnemyAnim::WAIT]
                 .anim.Reset();
         }
+
+        // 待機時は右向き
+        m_isReverseX = false;
     }
 
     // 現在のアニメーション更新
@@ -140,15 +156,48 @@ void NormalEnemy::Draw()
     EnemySpriteAnimation& anim =
         m_animation[(int)m_currentAnim];
 
-    DrawBillboard3D(
-        m_pos,
-        0.5f,
-        1.0f,
-        m_size,
-        0.0f,
+    int graph =
         anim.graph[
-            anim.anim.GetFrame()],
+            anim.anim.GetFrame()];
+
+    // 通常向き
+    if (!m_isReverseX)
+    {
+        DrawBillboard3D(
+            m_pos,
+            0.5f,
+            1.0f,
+            m_size,
+            0.0f,
+            graph,
             TRUE);
+    }
+    // 左右反転
+    else
+    {
+        const float halfSize =
+            m_size * 0.5f;
+
+        // m_posをそのまま基準にする
+        // X方向の補正は不要
+        DrawModiBillboard3D(
+            m_pos,
+
+            // 左上
+            halfSize, 0.0f,
+
+            // 右上
+            -halfSize, 0.0f,
+
+            // 右下
+            -halfSize, -m_size,
+
+            // 左下
+            halfSize, -m_size,
+
+            graph,
+            TRUE);
+    }
 }
 
 // 座標取得
