@@ -78,6 +78,9 @@
     <ClCompile Include="Source\Collision\TouchEnemyDebug.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.cpp">
+      <Filter>Source\Enemy\NormalEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="Source\Collision\TouchEnemyDebug.h">
       <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.h">
+      <Filter>Source\Enemy\NormalEnemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

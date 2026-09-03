@@ -6,84 +6,19 @@
 
 NormalEnemy::NormalEnemy()
 {
-    m_pos = VGet(50.0f, 0.0f, 80.0f);
+    m_pos = VGet(40.0f, 0.0f, 50.0f);
 
     m_size = 10.0f;
 
     // 待機時は右向き
     m_isReverseX = false;
 
-    LoadAnimations();
-
-    m_currentAnim = NormalEnemyAnim::WAIT;
+    // アニメーション読み込み
+    m_animation.LoadAnimations();
 }
 
 NormalEnemy::~NormalEnemy()
 {
-    for (int anim = 0;
-        anim < (int)NormalEnemyAnim::MAX;
-        anim++)
-    {
-        for (int frame = 0;
-            frame < m_animation[anim].frameNum;
-            frame++)
-        {
-            DeleteGraph(
-                m_animation[anim].graph[frame]);
-        }
-    }
-}
-
-// アニメーション読み込み
-void NormalEnemy::LoadAnimations()
-{
-    // 待機
-    LoadAnimation(
-        m_animation[(int)NormalEnemyAnim::WAIT],
-        "Data/Enemy/NormalEnemy/NormalEnemyWait.png",
-        6,
-        32,
-        32,
-        15);
-
-    // 射撃
-    LoadAnimation(
-        m_animation[(int)NormalEnemyAnim::SHOOT],
-        "Data/Enemy/NormalEnemy/NormalEnemyShoot.png",
-        5,
-        32,
-        32,
-        15);
-}
-
-// アニメーション読み込み
-bool NormalEnemy::LoadAnimation(
-    EnemySpriteAnimation& animation,
-    const char* fileName,
-    int frameNum,
-    int width,
-    int height,
-    int interval)
-{
-    animation.frameNum = frameNum;
-
-    if (LoadDivGraph(
-        fileName,
-        frameNum,
-        frameNum,
-        1,
-        width,
-        height,
-        animation.graph) == -1)
-    {
-        return false;
-    }
-
-    animation.anim.Init(
-        frameNum,
-        interval);
-
-    return true;
 }
 
 // 更新
@@ -111,13 +46,8 @@ void NormalEnemy::Update(const Ninja& ninja)
     if (distance <= shootRange)
     {
         // 射撃
-        if (m_currentAnim != NormalEnemyAnim::SHOOT)
-        {
-            m_currentAnim = NormalEnemyAnim::SHOOT;
-
-            m_animation[(int)NormalEnemyAnim::SHOOT]
-                .anim.Reset();
-        }
+        m_animation.SetAnimation(
+            NormalEnemyAnim::SHOOT);
 
         if (ninjaPos.x < m_pos.x)
         {
@@ -133,71 +63,24 @@ void NormalEnemy::Update(const Ninja& ninja)
     else
     {
         // 待機
-        if (m_currentAnim != NormalEnemyAnim::WAIT)
-        {
-            m_currentAnim = NormalEnemyAnim::WAIT;
-
-            m_animation[(int)NormalEnemyAnim::WAIT]
-                .anim.Reset();
-        }
+        m_animation.SetAnimation(
+            NormalEnemyAnim::WAIT);
 
         // 待機時は右向き
         m_isReverseX = false;
     }
 
-    // 現在のアニメーション更新
-    m_animation[(int)m_currentAnim]
-        .anim.Update();
+    // アニメーション更新
+    m_animation.Update();
 }
 
 // 描画
 void NormalEnemy::Draw()
 {
-    EnemySpriteAnimation& anim =
-        m_animation[(int)m_currentAnim];
-
-    int graph =
-        anim.graph[
-            anim.anim.GetFrame()];
-
-    // 通常向き
-    if (!m_isReverseX)
-    {
-        DrawBillboard3D(
-            m_pos,
-            0.5f,
-            1.0f,
-            m_size,
-            0.0f,
-            graph,
-            TRUE);
-    }
-    // 左右反転
-    else
-    {
-        const float halfSize =
-            m_size * 0.5f;
-
-        // m_posをそのまま基準にする
-        // X方向の補正は不要
-        DrawModiBillboard3D(
-            m_pos,
-
-            // 左上
-            halfSize, 0.0f,
-
-            // 右上
-            -halfSize, 0.0f,
-
-            // 右下
-            -halfSize, -m_size,
-
-            // 左下
-            halfSize, -m_size,
-
-            graph,
-            TRUE);
-    }
+    m_animation.DrawAnimation(
+        m_pos,
+        m_size,
+        m_isReverseX);
 }
 
 // 座標取得

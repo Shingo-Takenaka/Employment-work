@@ -25,6 +25,7 @@
     <ClCompile Include="Source\Collision\TouchEnemyDebug.cpp" />
     <ClCompile Include="Source\DrawManager\DrawManager.cpp" />
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemy.cpp" />
+    <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.cpp" />
     <ClCompile Include="Source\Field\Field.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="Source\Collision\TouchEnemyDebug.h" />
     <ClInclude Include="Source\DrawManager\DrawManager.h" />
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemy.h" />
+    <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.h" />
     <ClInclude Include="Source\Field\Field.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Ninja\Ninja.h" />

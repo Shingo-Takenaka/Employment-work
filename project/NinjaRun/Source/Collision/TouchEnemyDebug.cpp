@@ -14,20 +14,14 @@ void TouchEnemyDebug::Draw(
     VECTOR enemyPos =
         enemy.GetPosition();
 
-    // ========================
     // 当たり判定サイズ
-    // ========================
-
     const float width =
         TouchEnemy::GetTouchWidth();
 
     // キャラクターの中心高さ
     const float height = 5.0f;
 
-    // ========================
     // Ninja
-    // ========================
-
     // デバッグ表示の高さ位置
     const float debugOffsetY = -5.0f;
 
@@ -80,10 +74,7 @@ void TouchEnemyDebug::Draw(
         ninjaBottomRight,
         ninjaColor);
 
-    // ========================
     // Enemy
-    // ========================
-
     VECTOR enemyTopLeft =
         VGet(
             enemyPos.x - width,
