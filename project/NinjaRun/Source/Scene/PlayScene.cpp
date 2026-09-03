@@ -13,7 +13,7 @@ void PlayScene::Update()
 {
     m_ninja.Update();
 
-    m_enemy.Update();
+    m_enemy.Update(m_ninja);
 
     // Enemy�Ƃ̐ڐG
     if (TouchEnemy::Check(

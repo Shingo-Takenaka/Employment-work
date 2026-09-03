@@ -1,8 +1,12 @@
 #include "NormalEnemy.h"
 
+#include "../../Ninja/Ninja.h"
+
+#include <math.h>
+
 NormalEnemy::NormalEnemy()
 {
-    m_pos = VGet(20.0f, 0.0f, 0.0f);
+    m_pos = VGet(50.0f, 0.0f, 80.0f);
 
     m_size = 10.0f;
 
@@ -30,10 +34,20 @@ NormalEnemy::~NormalEnemy()
 // アニメーション読み込み
 void NormalEnemy::LoadAnimations()
 {
+    // 待機
     LoadAnimation(
         m_animation[(int)NormalEnemyAnim::WAIT],
         "Data/Enemy/NormalEnemy/NormalEnemyWait.png",
         6,
+        32,
+        32,
+        15);
+
+    // 射撃
+    LoadAnimation(
+        m_animation[(int)NormalEnemyAnim::SHOOT],
+        "Data/Enemy/NormalEnemy/NormalEnemyShoot.png",
+        5,
         32,
         32,
         15);
@@ -70,8 +84,52 @@ bool NormalEnemy::LoadAnimation(
 }
 
 // 更新
-void NormalEnemy::Update()
+void NormalEnemy::Update(const Ninja& ninja)
 {
+    // Playerの座標
+    VECTOR ninjaPos =
+        ninja.GetPosition();
+
+    // X・Z方向の距離
+    float dx =
+        ninjaPos.x - m_pos.x;
+
+    float dz =
+        ninjaPos.z - m_pos.z;
+
+    float distance =
+        sqrtf(
+            dx * dx +
+            dz * dz);
+
+    // 射撃判定
+
+    const float shootRange = 50.0f;
+
+    if (distance <= shootRange)
+    {
+        // 射撃アニメーションへ移行
+        if (m_currentAnim != NormalEnemyAnim::SHOOT)
+        {
+            m_currentAnim = NormalEnemyAnim::SHOOT;
+
+            m_animation[(int)NormalEnemyAnim::SHOOT]
+                .anim.Reset();
+        }
+    }
+    else
+    {
+        // 射撃範囲外なら待機
+        if (m_currentAnim != NormalEnemyAnim::WAIT)
+        {
+            m_currentAnim = NormalEnemyAnim::WAIT;
+
+            m_animation[(int)NormalEnemyAnim::WAIT]
+                .anim.Reset();
+        }
+    }
+
+    // 現在のアニメーション更新
     m_animation[(int)m_currentAnim]
         .anim.Update();
 }
@@ -99,6 +157,7 @@ VECTOR NormalEnemy::GetPosition() const
     return m_pos;
 }
 
+// 座標設定
 void NormalEnemy::SetPosition(VECTOR pos)
 {
     m_pos = pos;

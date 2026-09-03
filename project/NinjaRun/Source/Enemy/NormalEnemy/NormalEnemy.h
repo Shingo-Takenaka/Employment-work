@@ -3,10 +3,13 @@
 #include "DxLib.h"
 #include "../../Animation/Animation.h"
 
+class Ninja;
+
 // アニメーション種類
 enum class NormalEnemyAnim
 {
     WAIT,
+    SHOOT,
 
     MAX
 };
@@ -30,13 +33,13 @@ public:
     NormalEnemy();
     ~NormalEnemy();
 
-    void Update();
+    void Update(const Ninja& ninja);
     void Draw();
 
     // 座標取得
     VECTOR GetPosition() const;
 
-    // 座標設定（今後スポーンなどで使用）
+    // 座標設定
     void SetPosition(VECTOR pos);
 
 private:
@@ -55,18 +58,12 @@ private:
 
 private:
 
-    //========================
     // 基本情報
-    //========================
-
     VECTOR m_pos;
 
     float m_size;
 
-    //========================
     // アニメーション
-    //========================
-
     EnemySpriteAnimation
         m_animation[(int)NormalEnemyAnim::MAX];
 
