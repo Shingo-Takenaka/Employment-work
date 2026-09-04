@@ -3,6 +3,7 @@
 #include "DxLib.h"
 
 #include "NormalEnemyAnimation.h"
+#include "NormalEnemyAttack.h"
 
 class Ninja;
 
@@ -29,9 +30,15 @@ private:
 
     float m_size;
 
+    // Player座標
+    VECTOR m_playerPos;
+
     // 左右反転
     bool m_isReverseX;
 
     // アニメーション
     NormalEnemyAnimation m_animation;
+
+    // 攻撃
+    NormalEnemyAttack m_attack;
 };

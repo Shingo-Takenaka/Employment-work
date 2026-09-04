@@ -24,6 +24,9 @@ NormalEnemy::~NormalEnemy()
 // 更新
 void NormalEnemy::Update(const Ninja& ninja)
 {
+    // Playerの座標を保存
+    m_playerPos = ninja.GetPosition();
+
     // Playerの座標
     VECTOR ninjaPos =
         ninja.GetPosition();
@@ -45,7 +48,7 @@ void NormalEnemy::Update(const Ninja& ninja)
 
     if (distance <= shootRange)
     {
-        // 射撃
+        // 射撃アニメーション
         m_animation.SetAnimation(
             NormalEnemyAnim::SHOOT);
 
@@ -72,22 +75,36 @@ void NormalEnemy::Update(const Ninja& ninja)
 
     // アニメーション更新
     m_animation.Update();
+
+    // 攻撃更新
+    m_attack.Update(
+        m_pos,
+        ninjaPos);
 }
+
 
 // 描画
 void NormalEnemy::Draw()
 {
+    // 敵本体
     m_animation.DrawAnimation(
         m_pos,
         m_size,
         m_isReverseX);
+
+    // 攻撃エフェクト
+    m_attack.Draw(
+        m_pos,
+        m_playerPos);
 }
+
 
 // 座標取得
 VECTOR NormalEnemy::GetPosition() const
 {
     return m_pos;
 }
+
 
 // 座標設定
 void NormalEnemy::SetPosition(VECTOR pos)
