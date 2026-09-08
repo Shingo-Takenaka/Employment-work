@@ -163,7 +163,7 @@ void NormalEnemyAnimation::DrawAnimation(
         DrawBillboard3D(
             pos,
             0.5f,
-            1.0f,
+            0.0f,
             size,
             0.0f,
             graph,
