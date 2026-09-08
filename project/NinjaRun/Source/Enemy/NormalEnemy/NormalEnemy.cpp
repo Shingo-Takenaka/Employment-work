@@ -13,6 +13,12 @@ NormalEnemy::NormalEnemy()
     // 待機時は右向き
     m_isReverseX = false;
 
+    // HP
+    m_hp = 1;
+
+    // 死亡していない
+    m_isDead = false;
+
     // アニメーション読み込み
     m_animation.LoadAnimations();
 }
@@ -24,6 +30,12 @@ NormalEnemy::~NormalEnemy()
 // 更新
 void NormalEnemy::Update(const Ninja& ninja)
 {
+    // 死亡していたら更新しない
+    if (m_isDead)
+    {
+        return;
+    }
+
     // Playerの座標を保存
     m_playerPos = ninja.GetPosition();
 
@@ -86,6 +98,12 @@ void NormalEnemy::Update(const Ninja& ninja)
 // 描画
 void NormalEnemy::Draw()
 {
+    // 死亡していたら描画しない
+    if (m_isDead)
+    {
+        return;
+    }
+
     // 敵本体
     m_animation.DrawAnimation(
         m_pos,
@@ -93,9 +111,9 @@ void NormalEnemy::Draw()
         m_isReverseX);
 
     // 攻撃エフェクト
-    m_attack.Draw(
+    /*m_attack.Draw(
         m_pos,
-        m_playerPos);
+        m_playerPos);*/
 }
 
 
@@ -110,4 +128,28 @@ VECTOR NormalEnemy::GetPosition() const
 void NormalEnemy::SetPosition(VECTOR pos)
 {
     m_pos = pos;
+}
+
+
+// ダメージを受ける
+void NormalEnemy::TakeDamage(int damage)
+{
+
+    if (m_isDead)
+    {
+        return;
+    }
+
+    m_hp -= damage;
+
+    if (m_hp <= 0)
+    {
+        m_hp = 0;
+        m_isDead = true;
+    }
+}
+// 死亡しているか
+bool NormalEnemy::IsDead() const
+{
+    return m_isDead;
 }

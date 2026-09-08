@@ -4,10 +4,6 @@
 
 namespace
 {
-    // ==============================
-    // 攻撃設定
-    // ==============================
-
     // 攻撃開始までの予測時間
     const int WARNING_TIME = 90;
 
@@ -20,184 +16,331 @@ namespace
     // 攻撃開始距離
     const float ATTACK_RANGE = 50.0f;
 
-    // 予測線の長さ
+    // 攻撃の長さ
     const float WARNING_LENGTH = 50.0f;
-
-    // 攻撃ビームの長さ
     const float BEAM_LENGTH = 50.0f;
 
-    // ==============================
-    // 見た目設定
-    // ==============================
+    // Warning.png
+    // 1366 × 13
+    const float WARNING_ASPECT =
+        13.0f / 1366.0f;
 
-    // 予測線の色
-    const int WARNING_COLOR =
-        GetColor(255, 220, 0);   // 黄色
+    // Beam.png
+    // 1103 × 102
+    const float BEAM_ASPECT =
+        102.0f / 1103.0f;
 
-    // 攻撃ビームの色
-    const int BEAM_COLOR =
-        GetColor(255, 80, 80);   // 赤色
-
-    // 攻撃ビームの太さ
-    // 数値を大きくすると太くなる
-    const float BEAM_THICKNESS = 2.0f;
-
-    // ビームを構成する線の本数
-    const int BEAM_LINE_COUNT = 7;
+    // 攻撃の発射位置
+    const float ATTACK_HEIGHT = 0.0f;
 }
-
 
 NormalEnemyAttack::NormalEnemyAttack()
 {
     m_state = AttackState::NONE;
+
     m_timer = 0;
+
     m_isWarningVisible = false;
+
+    m_warningGraph = -1;
+    m_beamGraph = -1;
+
+    m_attackTargetPos =
+        VGet(0.0f, 0.0f, 0.0f);
+
+    // Warning画像
+    m_warningGraph =
+        LoadGraph(
+            "Data/Enemy/NormalEnemy/Warning.png");
+
+    // Beam画像
+    m_beamGraph =
+        LoadGraph(
+            "Data/Enemy/NormalEnemy/Beam.png");
 }
 
+NormalEnemyAttack::~NormalEnemyAttack()
+{
+    if (m_warningGraph != -1)
+    {
+        DeleteGraph(m_warningGraph);
+    }
+
+    if (m_beamGraph != -1)
+    {
+        DeleteGraph(m_beamGraph);
+    }
+}
 
 void NormalEnemyAttack::Update(
     VECTOR enemyPos,
     VECTOR playerPos)
 {
-    float dx = playerPos.x - enemyPos.x;
-    float dz = playerPos.z - enemyPos.z;
+    float dx =
+        playerPos.x - enemyPos.x;
 
-    float distance = sqrtf(dx * dx + dz * dz);
+    float dz =
+        playerPos.z - enemyPos.z;
 
-    // 攻撃範囲外なら何もしない
+    float distance =
+        sqrtf(
+            dx * dx +
+            dz * dz);
+
+    // 待機中
     if (m_state == AttackState::NONE)
     {
         if (distance <= ATTACK_RANGE)
         {
-            m_state = AttackState::WARNING;
+            // 攻撃開始時のプレイヤー位置を保存
+            m_attackTargetPos =
+                playerPos;
+
+            m_state =
+                AttackState::WARNING;
+
             m_timer = 0;
+
             m_isWarningVisible = true;
         }
 
         return;
     }
 
-    // ==============================
-    // 予測線
-    // ==============================
+    // 予測中
     if (m_state == AttackState::WARNING)
     {
         m_timer++;
 
-        // 点滅
-        if (m_timer % WARNING_BLINK_INTERVAL == 0)
+        // 予測線を点滅
+        if (m_timer %
+            WARNING_BLINK_INTERVAL == 0)
         {
             m_isWarningVisible =
                 !m_isWarningVisible;
         }
 
-        // 予測終了 → 攻撃
+        // 予測終了
         if (m_timer >= WARNING_TIME)
         {
-            m_state = AttackState::BEAM;
+            m_state =
+                AttackState::BEAM;
+
             m_timer = 0;
         }
 
         return;
     }
 
-    // ==============================
     // 攻撃中
-    // ==============================
     if (m_state == AttackState::BEAM)
     {
         m_timer++;
 
         if (m_timer >= BEAM_TIME)
         {
-            m_state = AttackState::NONE;
+            m_state =
+                AttackState::NONE;
+
             m_timer = 0;
         }
     }
 }
 
-
 void NormalEnemyAttack::Draw(
     VECTOR enemyPos,
     VECTOR playerPos)
 {
-    float dx = playerPos.x - enemyPos.x;
-    float dz = playerPos.z - enemyPos.z;
+    // 攻撃開始時に記録したプレイヤー位置を使用
+    float dx =
+        m_attackTargetPos.x -
+        enemyPos.x;
 
-    float length = sqrtf(dx * dx + dz * dz);
+    float dz =
+        m_attackTargetPos.z -
+        enemyPos.z;
+
+    float length =
+        sqrtf(
+            dx * dx +
+            dz * dz);
 
     if (length <= 0.001f)
+    {
         return;
+    }
 
-    // XZ平面上の方向を正規化
+    // 攻撃方向を正規化
     dx /= length;
     dz /= length;
 
-    // 攻撃線の高さ
-    const float attackHeight = 5.0f;
+    // 攻撃の発射位置
+    VECTOR start =
+        enemyPos;
 
-    VECTOR start = enemyPos;
-    start.y += attackHeight;
+    start.y += ATTACK_HEIGHT;
 
-    // ==============================
     // 予測線
-    // ==============================
     if (m_state == AttackState::WARNING)
     {
         if (!m_isWarningVisible)
-            return;
-
-        VECTOR end = start;
-
-        end.x += dx * WARNING_LENGTH;
-        end.z += dz * WARNING_LENGTH;
-
-        DrawLine3D(
-            start,
-            end,
-            WARNING_COLOR
-        );
-
-        return;
-    }
-
-    // ==============================
-    // 攻撃ビーム
-    // ==============================
-    if (m_state == AttackState::BEAM)
-    {
-        VECTOR end = start;
-
-        end.x += dx * BEAM_LENGTH;
-        end.z += dz * BEAM_LENGTH;
-
-        // ビーム方向に対して垂直な方向
-        float sideX = -dz;
-        float sideZ = dx;
-
-        // 複数の線を重ねて太く見せる
-        for (int i = 0; i < BEAM_LINE_COUNT; i++)
         {
-            float offset =
-                (i - (BEAM_LINE_COUNT - 1) * 0.5f)
-                * BEAM_THICKNESS;
-
-            VECTOR beamStart = start;
-            VECTOR beamEnd = end;
-
-            beamStart.x += sideX * offset;
-            beamStart.z += sideZ * offset;
-
-            beamEnd.x += sideX * offset;
-            beamEnd.z += sideZ * offset;
-
-            DrawLine3D(
-                beamStart,
-                beamEnd,
-                BEAM_COLOR
-            );
+            return;
         }
 
+        if (m_warningGraph == -1)
+        {
+            return;
+        }
+
+        VECTOR target =
+            start;
+
+        target.x +=
+            dx * WARNING_LENGTH;
+
+        target.z +=
+            dz * WARNING_LENGTH;
+
+        DrawAttackImage(
+            m_warningGraph,
+            start,
+            target,
+            WARNING_ASPECT);
+
         return;
     }
+
+    // 攻撃ビーム
+    if (m_state == AttackState::BEAM)
+    {
+        if (m_beamGraph == -1)
+        {
+            return;
+        }
+
+        VECTOR target =
+            start;
+
+        target.x +=
+            dx * BEAM_LENGTH;
+
+        target.z +=
+            dz * BEAM_LENGTH;
+
+        DrawAttackImage(
+            m_beamGraph,
+            start,
+            target,
+            BEAM_ASPECT);
+    }
+}
+
+void NormalEnemyAttack::DrawAttackImage(
+    int graph,
+    VECTOR start,
+    VECTOR target,
+    float imageAspect)
+{
+    float dx =
+        target.x - start.x;
+
+    float dz =
+        target.z - start.z;
+
+    float length =
+        sqrtf(
+            dx * dx +
+            dz * dz);
+
+    if (length <= 0.001f)
+    {
+        return;
+    }
+
+    // 攻撃方向の角度
+    float angle =
+        -atan2f(
+            dz,
+            dx);
+
+    // 画像の高さ
+    float imageHeight =
+        length * imageAspect;
+
+    float halfHeight =
+        imageHeight * 0.5f;
+
+    // 攻撃画像の横幅
+    float imageWidth =
+        length;
+
+    // 角度計算
+    float cosAngle =
+        cosf(angle);
+
+    float sinAngle =
+        sinf(angle);
+
+    // 2D画像上の座標を回転
+    auto RotatePoint =
+        [cosAngle, sinAngle](
+            float x,
+            float y)
+        {
+            VECTOR result;
+
+            result.x =
+                x * cosAngle -
+                y * sinAngle;
+
+            result.y =
+                x * sinAngle +
+                y * cosAngle;
+
+            result.z =
+                0.0f;
+
+            return result;
+        };
+
+    // 画像の左端をEnemyの中心にする
+    VECTOR topRight =
+        RotatePoint(
+            imageWidth,
+            -halfHeight);
+
+    VECTOR topLeft =
+        RotatePoint(
+            0.0f,
+            -halfHeight);
+
+    VECTOR bottomLeft =
+        RotatePoint(
+            0.0f,
+            halfHeight);
+
+    VECTOR bottomRight =
+        RotatePoint(
+            imageWidth,
+            halfHeight);
+
+    // startを画像の基準位置にする
+    DrawModiBillboard3D(
+        start,
+
+        topRight.x,
+        topRight.y,
+
+        topLeft.x,
+        topLeft.y,
+
+        bottomLeft.x,
+        bottomLeft.y,
+
+        bottomRight.x,
+        bottomRight.y,
+
+        graph,
+        TRUE);
 }

@@ -4,6 +4,7 @@
 #include "../Ninja/Ninja.h"
 #include "../Enemy/NormalEnemy/NormalEnemy.h"
 #include "../Collision/TouchEnemy.h"
+#include "../Collision/PlayerAttackCollision.h"
 
 class PlayScene
 {
@@ -26,6 +27,9 @@ private:
     NormalEnemy m_enemy;
 
     bool m_isTouchEnemy;
+
+    // PlayerUŒ‚”»’è
+    PlayerAttackCollision m_playerAttackCollision;
 
     // •`‰æŠÇ—
     DrawManager m_drawManager;

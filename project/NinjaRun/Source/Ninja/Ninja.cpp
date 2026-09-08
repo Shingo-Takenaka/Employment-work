@@ -193,3 +193,13 @@ bool Ninja::IsKnockback() const
 {
     return m_isKnockback;
 }
+
+bool Ninja::IsSlash() const
+{
+    return m_isSlash;
+}
+
+bool Ninja::IsReverseX() const
+{
+    return m_isReverseX;
+}

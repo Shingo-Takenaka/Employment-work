@@ -23,6 +23,12 @@ public:
     // 座標設定
     void SetPosition(VECTOR pos);
 
+    // ダメージを受ける
+    void TakeDamage(int damage);
+
+    // 死亡しているか
+    bool IsDead() const;
+
 private:
 
     // 基本情報
@@ -35,6 +41,12 @@ private:
 
     // 左右反転
     bool m_isReverseX;
+
+    // HP
+    int m_hp;
+
+    // 死亡しているか
+    bool m_isDead;
 
     // アニメーション
     NormalEnemyAnimation m_animation;

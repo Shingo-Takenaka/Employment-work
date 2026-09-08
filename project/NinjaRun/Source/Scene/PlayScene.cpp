@@ -1,5 +1,6 @@
 #include "PlayScene.h"
 #include "../Collision/TouchEnemyDebug.h"
+#include "../Collision/PlayerAttackCollision.h"
 
 PlayScene::PlayScene()
 {
@@ -13,18 +14,33 @@ void PlayScene::Update()
 {
     m_ninja.Update();
 
-    m_enemy.Update(m_ninja);
-
-    // Enemyとの接触
-    if (TouchEnemy::Check(
+    // Playerの攻撃とEnemyの当たり判定
+    if (m_playerAttackCollision.Check(
         m_ninja,
         m_enemy))
     {
-        if (!m_ninja.IsKnockback())
+        m_enemy.TakeDamage(1);
+    }
+
+    // Enemyが死亡していなければ更新
+    if (!m_enemy.IsDead())
+    {
+        m_enemy.Update(m_ninja);
+    }
+
+    // Enemyとの接触
+    if (!m_enemy.IsDead())
+    {
+        if (TouchEnemy::Check(
+            m_ninja,
+            m_enemy))
         {
-            TouchEnemy::Apply(
-                m_ninja,
-                m_enemy);
+            if (!m_ninja.IsKnockback())
+            {
+                TouchEnemy::Apply(
+                    m_ninja,
+                    m_enemy);
+            }
         }
     }
 
@@ -67,18 +83,13 @@ void PlayScene::Draw()
 
     // デバッグ
     m_camera.Draw();
-    
-    //// Enemy接触判定デバッグ
-    //DrawFormatString(
-    //    10,
-    //    10,
-    //    GetColor(255, 255, 255),
-    //    "PlayerとEnemyの接触：%s",
-    //    m_isTouchEnemy ? "true" : "false"
-    //);
 
-    // 当たり判定デバッグ
+    // Enemy接触判定デバッグ
     TouchEnemyDebug::Draw(
         m_ninja,
         m_enemy);
+
+    // Player攻撃範囲デバッグ
+    m_playerAttackCollision.DrawDebug(
+        m_ninja);
 }

@@ -64,6 +64,9 @@ public:
     // ノックバック中か
     bool IsKnockback() const;
 
+    bool IsSlash() const;
+    bool IsReverseX() const;
+
 private:
 
     // 入力処理
