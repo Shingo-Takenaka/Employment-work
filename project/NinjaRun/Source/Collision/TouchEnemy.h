@@ -26,4 +26,7 @@ public:
 
     // Z•ûŒü‚Ì”»’è”ÍˆÍ
     static float GetTouchDepth();
+
+    // Y•ûŒü‚Ì”»’è”ÍˆÍ
+    static float GetTouchHeight();
 };

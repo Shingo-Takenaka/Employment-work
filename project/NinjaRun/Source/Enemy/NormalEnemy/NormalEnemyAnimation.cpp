@@ -142,7 +142,6 @@ void NormalEnemyAnimation::Reset()
 }
 
 // ï`âÊ
-// ï`âÊ
 void NormalEnemyAnimation::DrawAnimation(
     VECTOR pos,
     float size,
@@ -157,38 +156,47 @@ void NormalEnemyAnimation::DrawAnimation(
     int graph =
         anim.graph[frame];
 
+    const float halfSize =
+        size * 0.5f;
+
     // í èÌå¸Ç´
     if (!isReverseX)
     {
-        DrawBillboard3D(
+        DrawModiBillboard3D(
             pos,
-            0.5f,
-            0.0f,
-            size,
-            0.0f,
+
+            // âEè„
+            -halfSize, size,
+
+            // ç∂è„
+            halfSize, size,
+
+            // ç∂â∫
+            halfSize, 0.0f,
+
+            // âEâ∫
+            -halfSize, 0.0f,
+
             graph,
             TRUE);
     }
     // ç∂âEîΩì]
     else
     {
-        const float halfSize =
-            size * 0.5f;
-
         DrawModiBillboard3D(
             pos,
 
-            // ç∂è„
-            halfSize, 0.0f,
-
             // âEè„
+            halfSize, size,
+
+            // ç∂è„
+            -halfSize, size,
+
+            // ç∂â∫
             -halfSize, 0.0f,
 
             // âEâ∫
-            -halfSize, -size,
-
-            // ç∂â∫
-            halfSize, -size,
+            halfSize, 0.0f,
 
             graph,
             TRUE);

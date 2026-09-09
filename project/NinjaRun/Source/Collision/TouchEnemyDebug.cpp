@@ -18,12 +18,15 @@ void TouchEnemyDebug::Draw(
     const float width =
         TouchEnemy::GetTouchWidth();
 
-    // キャラクターの中心高さ
+    // 当たり判定の高さ
     const float height = 5.0f;
 
+    // 足元を基準にする
+    const float debugOffsetY = 0.0f;
+
+    // =========================
     // Ninja
-    // デバッグ表示の高さ位置
-    const float debugOffsetY = -5.0f;
+    // =========================
 
     // 上側
     VECTOR ninjaTopLeft =
@@ -42,13 +45,13 @@ void TouchEnemyDebug::Draw(
     VECTOR ninjaBottomLeft =
         VGet(
             ninjaPos.x - width,
-            ninjaPos.y - height + debugOffsetY,
+            ninjaPos.y + debugOffsetY,
             ninjaPos.z);
 
     VECTOR ninjaBottomRight =
         VGet(
             ninjaPos.x + width,
-            ninjaPos.y - height + debugOffsetY,
+            ninjaPos.y + debugOffsetY,
             ninjaPos.z);
 
     int ninjaColor =
@@ -74,7 +77,11 @@ void TouchEnemyDebug::Draw(
         ninjaBottomRight,
         ninjaColor);
 
+
+    // =========================
     // Enemy
+    // =========================
+
     VECTOR enemyTopLeft =
         VGet(
             enemyPos.x - width,
@@ -90,13 +97,13 @@ void TouchEnemyDebug::Draw(
     VECTOR enemyBottomLeft =
         VGet(
             enemyPos.x - width,
-            enemyPos.y - height + debugOffsetY,
+            enemyPos.y + debugOffsetY,
             enemyPos.z);
 
     VECTOR enemyBottomRight =
         VGet(
             enemyPos.x + width,
-            enemyPos.y - height + debugOffsetY,
+            enemyPos.y + debugOffsetY,
             enemyPos.z);
 
     // Enemy：青

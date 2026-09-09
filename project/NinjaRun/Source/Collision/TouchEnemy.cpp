@@ -23,6 +23,12 @@ float TouchEnemy::GetTouchDepth()
     return 4.0f;
 }
 
+// Y方向の判定範囲
+float TouchEnemy::GetTouchHeight()
+{
+    return 10.0f;
+}
+
 bool TouchEnemy::Check(
     const Ninja& ninja,
     const NormalEnemy& enemy)
@@ -33,25 +39,33 @@ bool TouchEnemy::Check(
     VECTOR enemyPos =
         enemy.GetPosition();
 
-    // X方向の中心間距離
+    // X方向
     float dx =
         fabsf(ninjaPos.x - enemyPos.x);
 
-    // Z方向の中心間距離
+    // Y方向
+    float dy =
+        fabsf(ninjaPos.y - enemyPos.y);
+
+    // Z方向
     float dz =
         fabsf(ninjaPos.z - enemyPos.z);
 
-    // PlayerとEnemyそれぞれの判定幅を考慮
+    // X方向の判定
     float width =
         GetTouchWidth() * 2.0f;
 
-    // PlayerとEnemyそれぞれの奥行き判定を考慮
+    // Y方向の判定
+    float height =
+        GetTouchHeight();
+
+    // Z方向の判定
     float depth =
         GetTouchDepth() * 2.0f;
 
-    // X方向・Z方向の判定範囲が重なっていれば接触
     return
         dx <= width &&
+        dy <= height &&
         dz <= depth;
 }
 
