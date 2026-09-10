@@ -46,6 +46,15 @@ void Ninja::LoadAnimations()
         32,
         32,
         25);
+
+    // 手裏剣(Ninja)
+    LoadAnimation(
+        m_animation[(int)NinjaAnim::SHOOT],
+        "Data/Ninja/Shoot/NinjaShoot.png",
+        6,
+        32,
+        32,
+        6);
 }
 
 // 1つのアニメーションを読み込む
@@ -94,6 +103,19 @@ void Ninja::UpdateAnimation(bool isMove)
             m_isSlash = false;
         }
     }
+    // 手裏剣
+    if (m_isShoot)
+    {
+        SpriteAnimation& shootAnim =
+            m_animation[(int)NinjaAnim::SHOOT];
+
+        // 最後まで再生したら手裏剣終了
+        if (shootAnim.anim.GetFrame() ==
+            shootAnim.frameNum - 1)
+        {
+            m_isShoot = false;
+        }
+    }
 
     // アニメーション切り替え
     if (m_isSlash)
@@ -117,6 +139,14 @@ void Ninja::UpdateAnimation(bool isMove)
         if (m_currentAnim != NinjaAnim::JUMP)
         {
             m_currentAnim = NinjaAnim::JUMP;
+            m_animation[(int)m_currentAnim].anim.Reset();
+        }
+    }
+    else if (m_isShoot)
+    {
+        if (m_currentAnim != NinjaAnim::SHOOT)
+        {
+            m_currentAnim = NinjaAnim::SHOOT;
             m_animation[(int)m_currentAnim].anim.Reset();
         }
     }
@@ -176,7 +206,7 @@ void Ninja::DrawAnimation()
     DrawBillboard3D(
         m_pos,                                  // 描画位置
         0.5f,                                   // 横方向基準
-        1.0f,                                   // 縦方向基準
+        0.0f,                                   // 縦方向基準
         drawSize,                               // 描画サイズ
         0.0f,                                   // 回転
         anim.graph[anim.anim.GetFrame()],       // 現在の画像

@@ -88,8 +88,4 @@ void PlayScene::Draw()
     TouchEnemyDebug::Draw(
         m_ninja,
         m_enemy);
-
-    // Player攻撃範囲デバッグ
-    m_playerAttackCollision.DrawDebug(
-        m_ninja);
 }

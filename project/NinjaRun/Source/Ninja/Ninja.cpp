@@ -29,6 +29,8 @@ Ninja::Ninja()
     // çUåÇ
     m_isSlash = false;
 
+    m_isShoot = false;
+
     // ÉKÅ[Éh
     m_isGuard = false;
 
@@ -85,7 +87,7 @@ void Ninja::Update()
     UpdateInput();
 
     // ÉKÅ[Éh
-    if (m_input.guard && !m_isJump && !m_isSlash)
+    if (m_input.guard && !m_isJump && !m_isSlash && !m_isShoot)
     {
         m_isGuard = true;
     }
@@ -98,7 +100,8 @@ void Ninja::Update()
     if (m_input.jump &&
         !m_isJump &&
         !m_isSlash &&
-        !m_isGuard)
+        !m_isGuard &&
+        !m_isShoot)
     {
         m_isJump = true;
 
@@ -107,10 +110,11 @@ void Ninja::Update()
         m_jumpSpeed = 1.0f;
     }
 
-    // çUåÇ
+    // ãﬂê⁄çUåÇ
     if (m_input.slash &&
         !m_isSlash &&
-        !m_isGuard)
+        !m_isGuard &&
+        !m_isShoot)
     {
         m_isSlash = true;
 
@@ -119,9 +123,24 @@ void Ninja::Update()
         m_animation[(int)NinjaAnim::SLASH].anim.Reset();
     }
 
+    // âìãóó£çUåÇ
+    if (m_input.shoot &&
+        !m_isShoot &&
+        !m_isGuard &&
+        !m_isSlash)
+    {
+        m_isShoot = true;
+
+        m_currentAnim = NinjaAnim::SHOOT;
+        
+        m_animation[(int)NinjaAnim::SHOOT].anim.Reset();
+    }
+
+
     // à⁄ìÆ
     if (!m_isSlash &&
-        !m_isGuard)
+        !m_isGuard &&
+        !m_isShoot)
     {
         if (m_input.isMove)
         {
@@ -149,7 +168,8 @@ void Ninja::Update()
 
     // ç∂âEîΩì]
     if (!m_isSlash &&
-        !m_isGuard)
+        !m_isGuard &&
+        !m_isShoot)
     {
         if (m_input.moveX < 0.0f)
         {
@@ -202,4 +222,9 @@ bool Ninja::IsSlash() const
 bool Ninja::IsReverseX() const
 {
     return m_isReverseX;
+}
+
+bool Ninja::IsShoot() const
+{
+    return m_isShoot;
 }

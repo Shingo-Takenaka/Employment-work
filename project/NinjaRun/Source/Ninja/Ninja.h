@@ -10,6 +10,7 @@ enum class NinjaAnim
     JUMP,       // ジャンプ
     SLASH,      // 袈裟斬り
     GUARD,      // ガード
+    SHOOT,      // 手裏剣
 
     MAX
 };
@@ -28,6 +29,7 @@ struct NinjaInputState
     bool jump;
     bool slash;
     bool guard;
+    bool shoot;
 };
 
 // アニメーション情報
@@ -65,6 +67,7 @@ public:
     bool IsKnockback() const;
 
     bool IsSlash() const;
+    bool IsShoot() const;
     bool IsReverseX() const;
 
 private:
@@ -124,6 +127,9 @@ private:
 
     // ガード中
     bool m_isGuard;
+
+    // 手裏剣中
+    bool m_isShoot;
 
     // アニメーション
     SpriteAnimation m_animation[(int)NinjaAnim::MAX];

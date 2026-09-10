@@ -14,6 +14,7 @@ void Ninja::UpdateInput()
     m_input.jump = false;
     m_input.slash = false;
     m_input.guard = false;
+    m_input.shoot = false;
 
     // キーボード入力
     // 移動
@@ -50,9 +51,15 @@ void Ninja::UpdateInput()
     }
 
     // ガード
-    if (Input::IsPress(KEY_INPUT_N))
+    if (Input::IsPress(KEY_INPUT_K))
     {
         m_input.guard = true;
+    }
+
+    //手裏剣
+    if (Input::IsPress(KEY_INPUT_N))
+    {
+        m_input.shoot = true;
     }
 
     // コントローラー入力
@@ -89,6 +96,12 @@ void Ninja::UpdateInput()
     if (Input::IsPadTrigger(2))
     {
         m_input.slash = true;
+    }
+
+    // Yボタン
+    if (Input::IsPadTrigger(3))
+    {
+        m_input.shoot = true;
     }
 
     // RBボタン

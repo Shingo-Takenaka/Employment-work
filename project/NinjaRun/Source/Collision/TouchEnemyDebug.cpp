@@ -11,47 +11,45 @@ void TouchEnemyDebug::Draw(
     VECTOR ninjaPos =
         ninja.GetPosition();
 
+    // 現在のEnemyの座標を基準にする
     VECTOR enemyPos =
         enemy.GetPosition();
 
-    // 当たり判定サイズ
+    // 当たり判定の幅
     const float width =
         TouchEnemy::GetTouchWidth();
 
+    // 当たり判定の奥行き
+    const float depth =
+        TouchEnemy::GetTouchDepth();
+
     // 当たり判定の高さ
-    const float height = 5.0f;
+    const float height =
+        TouchEnemy::GetTouchHeight();
 
-    // 足元を基準にする
-    const float debugOffsetY = 0.0f;
-
-    // =========================
-    // Ninja
-    // =========================
-
-    // 上側
+    // Ninjaの判定表示
     VECTOR ninjaTopLeft =
         VGet(
             ninjaPos.x - width,
-            ninjaPos.y + height + debugOffsetY,
+            ninjaPos.y + height,
             ninjaPos.z);
 
     VECTOR ninjaTopRight =
         VGet(
             ninjaPos.x + width,
-            ninjaPos.y + height + debugOffsetY,
+            ninjaPos.y + height,
             ninjaPos.z);
 
-    // 下側
     VECTOR ninjaBottomLeft =
         VGet(
             ninjaPos.x - width,
-            ninjaPos.y + debugOffsetY,
+            ninjaPos.y,
             ninjaPos.z);
 
     VECTOR ninjaBottomRight =
         VGet(
             ninjaPos.x + width,
-            ninjaPos.y + debugOffsetY,
+            ninjaPos.y,
             ninjaPos.z);
 
     int ninjaColor =
@@ -77,36 +75,31 @@ void TouchEnemyDebug::Draw(
         ninjaBottomRight,
         ninjaColor);
 
-
-    // =========================
-    // Enemy
-    // =========================
-
+    // Enemyの判定表示
     VECTOR enemyTopLeft =
         VGet(
             enemyPos.x - width,
-            enemyPos.y + height + debugOffsetY,
+            enemyPos.y + height,
             enemyPos.z);
 
     VECTOR enemyTopRight =
         VGet(
             enemyPos.x + width,
-            enemyPos.y + height + debugOffsetY,
+            enemyPos.y + height,
             enemyPos.z);
 
     VECTOR enemyBottomLeft =
         VGet(
             enemyPos.x - width,
-            enemyPos.y + debugOffsetY,
+            enemyPos.y,
             enemyPos.z);
 
     VECTOR enemyBottomRight =
         VGet(
             enemyPos.x + width,
-            enemyPos.y + debugOffsetY,
+            enemyPos.y,
             enemyPos.z);
 
-    // Enemy：青
     int enemyColor =
         GetColor(0, 150, 255);
 

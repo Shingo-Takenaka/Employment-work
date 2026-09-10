@@ -33,35 +33,37 @@ bool TouchEnemy::Check(
     const Ninja& ninja,
     const NormalEnemy& enemy)
 {
-    VECTOR ninjaPos =
-        ninja.GetPosition();
-
+    // 現在のEnemyの座標を基準にする
     VECTOR enemyPos =
         enemy.GetPosition();
 
-    // X方向
+    // Playerの現在座標
+    VECTOR ninjaPos =
+        ninja.GetPosition();
+
+    // EnemyからPlayerまでのX方向の距離
     float dx =
         fabsf(ninjaPos.x - enemyPos.x);
 
-    // Y方向
+    // EnemyからPlayerまでのY方向の距離
     float dy =
         fabsf(ninjaPos.y - enemyPos.y);
 
-    // Z方向
+    // EnemyからPlayerまでのZ方向の距離
     float dz =
         fabsf(ninjaPos.z - enemyPos.z);
 
-    // X方向の判定
-    float width =
-        GetTouchWidth() * 2.0f;
+    // Enemyを中心にしたX方向の判定範囲
+    const float width =
+        GetTouchWidth();
 
-    // Y方向の判定
-    float height =
+    // Enemyを中心にしたY方向の判定範囲
+    const float height =
         GetTouchHeight();
 
-    // Z方向の判定
-    float depth =
-        GetTouchDepth() * 2.0f;
+    // Enemyを中心にしたZ方向の判定範囲
+    const float depth =
+        GetTouchDepth();
 
     return
         dx <= width &&
@@ -73,20 +75,21 @@ void TouchEnemy::Apply(
     Ninja& ninja,
     const NormalEnemy& enemy)
 {
-    VECTOR ninjaPos =
-        ninja.GetPosition();
-
+    // 現在のEnemyの座標を基準にする
     VECTOR enemyPos =
         enemy.GetPosition();
 
-    // Enemy → Ninjaの方向
+    VECTOR ninjaPos =
+        ninja.GetPosition();
+
+    // EnemyからPlayerへ向かう方向
     VECTOR direction =
         VSub(ninjaPos, enemyPos);
 
-    // X・Zだけ使用
+    // X・Z方向だけ使用する
     direction.y = 0.0f;
 
-    // 長さ
+    // EnemyからPlayerまでの距離
     float length =
         sqrtf(
             direction.x * direction.x +
