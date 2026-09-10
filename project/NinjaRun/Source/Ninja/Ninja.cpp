@@ -28,7 +28,6 @@ Ninja::Ninja()
 
     // 攻撃
     m_isSlash = false;
-
     m_isShoot = false;
 
     // ガード
@@ -43,6 +42,9 @@ Ninja::Ninja()
     m_knockbackStrength = 0.0f;
 
     m_knockbackTimer = 0.0f;
+
+    // 手裏剣発射タイミング
+    m_isShootStart = false;
 }
 
 Ninja::~Ninja()
@@ -58,6 +60,9 @@ Ninja::~Ninja()
 
 void Ninja::Update()
 {
+    // 手裏剣を投げたタイミングを毎フレームリセット
+    m_isShootStart = false;
+
     // ノックバック中なら通常操作を行わない
     if (m_isKnockback)
     {
@@ -87,7 +92,10 @@ void Ninja::Update()
     UpdateInput();
 
     // ガード
-    if (m_input.guard && !m_isJump && !m_isSlash && !m_isShoot)
+    if (m_input.guard &&
+        !m_isJump &&
+        !m_isSlash &&
+        !m_isShoot)
     {
         m_isGuard = true;
     }
@@ -129,13 +137,17 @@ void Ninja::Update()
         !m_isGuard &&
         !m_isSlash)
     {
+        // 手裏剣攻撃開始
         m_isShoot = true;
 
+        // SHOOTアニメーションを必ず最初から再生
         m_currentAnim = NinjaAnim::SHOOT;
-        
-        m_animation[(int)NinjaAnim::SHOOT].anim.Reset();
-    }
 
+        m_animation[(int)NinjaAnim::SHOOT].anim.Reset();
+
+        // このフレームで手裏剣を1個発射
+        m_isShootStart = true;
+    }
 
     // 移動
     if (!m_isSlash &&
@@ -227,4 +239,9 @@ bool Ninja::IsReverseX() const
 bool Ninja::IsShoot() const
 {
     return m_isShoot;
+}
+
+bool Ninja::IsShootStart() const
+{
+    return m_isShootStart;
 }

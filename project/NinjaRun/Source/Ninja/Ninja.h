@@ -70,6 +70,8 @@ public:
     bool IsShoot() const;
     bool IsReverseX() const;
 
+    //手裏剣を投げたタイミング
+    bool IsShootStart() const;
 private:
 
     // 入力処理
@@ -130,6 +132,9 @@ private:
 
     // 手裏剣中
     bool m_isShoot;
+
+    // 手裏剣を投げたタイミング
+    bool m_isShootStart;
 
     // アニメーション
     SpriteAnimation m_animation[(int)NinjaAnim::MAX];

@@ -46,6 +46,17 @@ void PlayScene::Update()
 
     m_camera.Update(
         m_ninja.GetPosition());
+
+    // 手裏剣アニメーションが開始した瞬間に1枚発射
+    if (m_ninja.IsShootStart())
+    {
+        m_playerAttack.CreateShoot(
+            m_ninja.GetPosition(),
+            m_ninja.IsReverseX());
+    }
+
+    // 手裏剣更新
+    m_playerAttack.UpdateShoot();
 }
 
 void PlayScene::Draw()
@@ -66,6 +77,20 @@ void PlayScene::Draw()
         {
             m_ninja.Draw();
         });
+
+    // 手裏剣登録
+    if (m_playerAttack.IsShoot())
+    {
+        VECTOR playerPos = m_ninja.GetPosition();
+
+        m_drawManager.Add(
+            playerPos,
+            playerPos.z,
+            [&]()
+            {
+                m_playerAttack.DrawShoot();
+            });
+    }
 
     // 敵登録
     VECTOR enemyPos = m_enemy.GetPosition();

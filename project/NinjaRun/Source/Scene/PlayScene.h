@@ -2,6 +2,7 @@
 #include "../Camera/Camera.h"
 #include "../Field/Field.h"
 #include "../Ninja/Ninja.h"
+#include "../Ninja/PlayerAttack.h"
 #include "../Enemy/NormalEnemy/NormalEnemy.h"
 #include "../Collision/TouchEnemy.h"
 #include "../Collision/PlayerAttackCollision.h"
@@ -30,6 +31,9 @@ private:
 
     // PlayerUŒ‚”»’è
     PlayerAttackCollision m_playerAttackCollision;
+
+    // Player‚Ìè— Œ•
+    PlayerAttack m_playerAttack;
 
     // •`‰æŠÇ—
     DrawManager m_drawManager;

@@ -57,12 +57,29 @@ void Ninja::UpdateInput()
     }
 
     //手裏剣
-    if (Input::IsPress(KEY_INPUT_N))
+    if (Input::IsTrigger(KEY_INPUT_N))
     {
         m_input.shoot = true;
     }
 
     // コントローラー入力
+    #pragma region 入力関数一覧
+    /*
+    IsPadTrigger(N)
+    A:0
+    B:1
+    X:2
+    Y:3
+    LB:4
+    RB:5
+    BACK/SELECT:6
+    START:7
+    L3:8(スティック押し込み)
+    R3:9(スティック押し込み)
+    LT:10
+    RT:11
+    */
+    #pragma endregion
     DINPUT_JOYSTATE joyState;
 
     GetJoypadDirectInputState(
