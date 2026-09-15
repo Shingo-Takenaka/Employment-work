@@ -72,6 +72,8 @@ public:
 
     //手裏剣を投げたタイミング
     bool IsShootStart() const;
+
+    int GetShootDirection() const;
 private:
 
     // 入力処理
@@ -94,6 +96,9 @@ private:
 
     // アニメーション描画
     void DrawAnimation();
+
+    // 最後に移動した手裏剣の方向
+    int m_lastShootDirection;
 
 private:
 
@@ -152,4 +157,5 @@ private:
 
     // ノックバック残り時間
     float m_knockbackTimer;
+
 };

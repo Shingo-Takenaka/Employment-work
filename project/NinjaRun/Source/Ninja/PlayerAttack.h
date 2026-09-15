@@ -9,47 +9,62 @@ public:
 
     PlayerAttack();
 
-    // 攻撃範囲取得
+    // 攻撃範囲
     float GetAttackWidth() const;
     float GetAttackDepth() const;
     float GetAttackHeight() const;
 
-    // 手裏剣
-    void CreateShoot(VECTOR pos, bool isReverseX);
+    // 手裏剣生成
+    void CreateShoot(
+        VECTOR pos,
+        int direction
+    );
+
+    // 手裏剣更新
     void UpdateShoot();
+
+    // 手裏剣描画
     void DrawShoot();
 
     // 手裏剣が存在するか
     bool IsShoot() const;
 
+    // 手裏剣の数
+    int GetShootCount() const;
+
+    // 手裏剣の位置
+    VECTOR GetShootPosition(int index) const;
+
+    // 手裏剣の向き
+    bool IsShootReverseX(int index) const;
+
+    // 手裏剣を削除
+    void RemoveShoot(int index);
+
 private:
 
-    // 手裏剣1個分の情報
+    float m_attackWidth;
+    float m_attackDepth;
+    float m_attackHeight;
+
+    int m_shootGraph;
+
+    float m_shootSpeed;
+    float m_shootMaxDistance;
+    float m_shootSize;
+
     struct Shoot
     {
         VECTOR pos;
         VECTOR startPos;
 
-        bool reverseX;
+        // 発射方向
+        // 0 = +X（D）
+        // 1 = -X（A）
+        // 2 = +Z（W）
+        // 3 = -Z（S）
+        int direction;
     };
 
-    // 攻撃範囲
-    float m_attackWidth;
-    float m_attackDepth;
-    float m_attackHeight;
-
-    // 手裏剣
-    int m_shootGraph;
-
-    // 手裏剣の移動速度
-    float m_shootSpeed;
-
-    // 手裏剣の最大飛距離
-    float m_shootMaxDistance;
-
-    // 手裏剣のサイズ
-    float m_shootSize;
-
-    // 発射中の手裏剣
     std::vector<Shoot> m_shoots;
 };

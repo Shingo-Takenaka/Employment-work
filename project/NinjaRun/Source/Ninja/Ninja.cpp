@@ -45,6 +45,9 @@ Ninja::Ninja()
 
     // 手裏剣発射タイミング
     m_isShootStart = false;
+
+    // 最初は右方向
+    m_lastShootDirection = 0;
 }
 
 Ninja::~Ninja()
@@ -158,6 +161,28 @@ void Ninja::Update()
         {
             m_pos.x += m_input.moveX * m_moveSpeed;
             m_pos.z += m_input.moveZ * m_moveSpeed;
+
+            // 最後に移動した方向を記憶
+            if (m_input.moveZ > 0.0f)
+            {
+                // W
+                m_lastShootDirection = 2;
+            }
+            else if (m_input.moveZ < 0.0f)
+            {
+                // S
+                m_lastShootDirection = 3;
+            }
+            else if (m_input.moveX > 0.0f)
+            {
+                // D
+                m_lastShootDirection = 0;
+            }
+            else if (m_input.moveX < 0.0f)
+            {
+                // A
+                m_lastShootDirection = 1;
+            }
         }
     }
 
@@ -244,4 +269,9 @@ bool Ninja::IsShoot() const
 bool Ninja::IsShootStart() const
 {
     return m_isShootStart;
+}
+
+int Ninja::GetShootDirection() const
+{
+    return m_lastShootDirection;
 }

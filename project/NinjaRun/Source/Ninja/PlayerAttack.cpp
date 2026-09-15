@@ -44,7 +44,7 @@ float PlayerAttack::GetAttackHeight() const
 // 手裏剣生成
 void PlayerAttack::CreateShoot(
     VECTOR pos,
-    bool isReverseX)
+    int direction)
 {
     // 発射位置を少し上にする
     pos.y += 3.0f;
@@ -58,8 +58,8 @@ void PlayerAttack::CreateShoot(
     // 最大飛距離を計算するための開始位置
     shoot.startPos = pos;
 
-    // 向き
-    shoot.reverseX = isReverseX;
+    // 発射方向
+    shoot.direction = direction;
 
     // 手裏剣を追加
     m_shoots.push_back(shoot);
@@ -73,21 +73,40 @@ void PlayerAttack::UpdateShoot()
     {
         Shoot& shoot = m_shoots[i];
 
-        // 移動
-        if (shoot.reverseX)
-        {
-            shoot.pos.x -= m_shootSpeed;
-        }
-        else
+        // +X方向
+        if (shoot.direction == 0)
         {
             shoot.pos.x += m_shootSpeed;
         }
+        // -X方向
+        else if (shoot.direction == 1)
+        {
+            shoot.pos.x -= m_shootSpeed;
+        }
+        // +Z方向
+        else if (shoot.direction == 2)
+        {
+            shoot.pos.z += m_shootSpeed;
+        }
+        // -Z方向
+        else if (shoot.direction == 3)
+        {
+            shoot.pos.z -= m_shootSpeed;
+        }
 
         // 発射位置からの距離
+        float dx =
+            shoot.pos.x -
+            shoot.startPos.x;
+
+        float dz =
+            shoot.pos.z -
+            shoot.startPos.z;
+
         float distance =
-            fabsf(
-                shoot.pos.x -
-                shoot.startPos.x
+            sqrtf(
+                dx * dx +
+                dz * dz
             );
 
         // 最大飛距離に到達したら削除
@@ -106,6 +125,14 @@ void PlayerAttack::DrawShoot()
     // すべての手裏剣を描画
     for (const Shoot& shoot : m_shoots)
     {
+        // 左方向の場合だけ画像を反転
+        bool reverseX = false;
+
+        if (shoot.direction == 1)
+        {
+            reverseX = true;
+        }
+
         DrawBillboard3D(
             shoot.pos,
             0.5f,
@@ -114,7 +141,7 @@ void PlayerAttack::DrawShoot()
             0.0f,
             m_shootGraph,
             TRUE,
-            shoot.reverseX
+            reverseX
         );
     }
 }
@@ -123,4 +150,48 @@ void PlayerAttack::DrawShoot()
 bool PlayerAttack::IsShoot() const
 {
     return !m_shoots.empty();
+}
+
+// 手裏剣の数を取得
+int PlayerAttack::GetShootCount() const
+{
+    return (int)m_shoots.size();
+}
+
+// 手裏剣の位置を取得
+VECTOR PlayerAttack::GetShootPosition(int index) const
+{
+    if (index < 0 ||
+        index >= (int)m_shoots.size())
+    {
+        return VGet(0.0f, 0.0f, 0.0f);
+    }
+
+    return m_shoots[index].pos;
+}
+
+// 手裏剣の向きを取得
+bool PlayerAttack::IsShootReverseX(int index) const
+{
+    if (index < 0 ||
+        index >= (int)m_shoots.size())
+    {
+        return false;
+    }
+
+    return m_shoots[index].direction == 1;
+}
+
+// 手裏剣を削除
+void PlayerAttack::RemoveShoot(int index)
+{
+    if (index < 0 ||
+        index >= (int)m_shoots.size())
+    {
+        return;
+    }
+
+    m_shoots.erase(
+        m_shoots.begin() + index
+    );
 }

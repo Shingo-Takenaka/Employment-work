@@ -13,12 +13,15 @@ public:
     // 攻撃処理の更新
     void Update(
         VECTOR enemyPos,
-        VECTOR playerPos);
+        VECTOR playerPos,
+        int animationFrame);
 
     // 攻撃の描画
     void Draw(
-        VECTOR enemyPos,
-        VECTOR playerPos);
+        VECTOR enemyPos);
+
+    // 攻撃状態をリセット
+    void Reset();
 
 private:
 
@@ -35,11 +38,11 @@ private:
     // 現在の攻撃状態
     AttackState m_state;
 
-    // 状態開始からの経過フレーム
-    int m_timer;
-
-    // 予測線の点滅
+    // Warningの点滅
     bool m_isWarningVisible;
+
+    // 点滅タイマー
+    int m_blinkTimer;
 
     // Warning画像
     int m_warningGraph;
@@ -47,15 +50,15 @@ private:
     // Beam画像
     int m_beamGraph;
 
-    //攻撃開始時に記録したプレイヤー座標
+    // Warning開始時に記録したPlayer座標
     VECTOR m_attackTargetPos;
 
 private:
 
-    // 2D画像として攻撃を描画
+    // 3D空間上に攻撃画像を描画
     void DrawAttackImage(
         int graph,
         VECTOR start,
         VECTOR target,
-        float imageAspect);
+        float width);
 };

@@ -88,12 +88,22 @@ void NormalEnemy::Update(const Ninja& ninja)
     // アニメーション更新
     m_animation.Update();
 
-    // 攻撃更新
-    m_attack.Update(
-        m_pos,
-        ninjaPos);
+    // 射撃アニメーション中
+    if (m_animation.GetCurrentAnimation() ==
+        NormalEnemyAnim::SHOOT)
+    {
+        // 現在のアニメーションフレームを渡す
+        m_attack.Update(
+            m_pos,
+            ninjaPos,
+            m_animation.GetFrame());
+    }
+    else
+    {
+        // 射撃していない場合は攻撃状態をリセット
+        m_attack.Reset();
+    }
 }
-
 
 // 描画
 void NormalEnemy::Draw()
@@ -111,11 +121,9 @@ void NormalEnemy::Draw()
         m_isReverseX);
 
     // 攻撃エフェクト
-    /*m_attack.Draw(
-        m_pos,
-        m_playerPos);*/
+    m_attack.Draw(
+        m_pos);
 }
-
 
 // 座標取得
 VECTOR NormalEnemy::GetPosition() const

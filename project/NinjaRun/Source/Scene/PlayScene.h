@@ -6,6 +6,7 @@
 #include "../Enemy/NormalEnemy/NormalEnemy.h"
 #include "../Collision/TouchEnemy.h"
 #include "../Collision/PlayerAttackCollision.h"
+#include "../Collision/ShootCollision.h"
 
 class PlayScene
 {

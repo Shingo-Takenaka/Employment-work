@@ -90,6 +90,9 @@
     <ClCompile Include="Source\Collision\PlayerAttackCollision.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Collision\ShootCollision.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -135,6 +138,9 @@
       <Filter>Source\Ninja</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\PlayerAttackCollision.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\ShootCollision.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
   </ItemGroup>

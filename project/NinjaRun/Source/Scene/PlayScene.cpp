@@ -57,6 +57,22 @@ void PlayScene::Update()
 
     // 手裏剣更新
     m_playerAttack.UpdateShoot();
+
+    // 手裏剣とEnemyの当たり判定
+    for (int i = m_playerAttack.GetShootCount() - 1; i >= 0; i--)
+    {
+        if (ShootCollision::Check(
+            m_playerAttack,
+            i,
+            m_enemy))
+        {
+            // Enemyに1ダメージ
+            m_enemy.TakeDamage(1);
+
+            // 当たった手裏剣を削除
+            m_playerAttack.RemoveShoot(i);
+        }
+    }
 }
 
 void PlayScene::Draw()

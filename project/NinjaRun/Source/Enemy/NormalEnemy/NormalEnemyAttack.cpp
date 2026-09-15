@@ -4,17 +4,8 @@
 
 namespace
 {
-    // 攻撃開始までの予測時間
-    const int WARNING_TIME = 90;
-
-    // 攻撃時間
-    const int BEAM_TIME = 30;
-
-    // 予測線の点滅間隔
+    // Warningの点滅間隔
     const int WARNING_BLINK_INTERVAL = 10;
-
-    // 攻撃開始距離
-    const float ATTACK_RANGE = 50.0f;
 
     // 攻撃の長さ
     const float WARNING_LENGTH = 50.0f;
@@ -31,16 +22,16 @@ namespace
         102.0f / 1103.0f;
 
     // 攻撃の発射位置
-    const float ATTACK_HEIGHT = 0.0f;
+    const float ATTACK_HEIGHT = 5.0f;
 }
 
 NormalEnemyAttack::NormalEnemyAttack()
 {
     m_state = AttackState::NONE;
 
-    m_timer = 0;
-
     m_isWarningVisible = false;
+
+    m_blinkTimer = 0;
 
     m_warningGraph = -1;
     m_beamGraph = -1;
@@ -48,12 +39,10 @@ NormalEnemyAttack::NormalEnemyAttack()
     m_attackTargetPos =
         VGet(0.0f, 0.0f, 0.0f);
 
-    // Warning画像
     m_warningGraph =
         LoadGraph(
-            "Data/Enemy/NormalEnemy/Warning.png");
+            "Data/Enemy/NormalEnemy/Warning2.png");
 
-    // Beam画像
     m_beamGraph =
         LoadGraph(
             "Data/Enemy/NormalEnemy/Beam.png");
@@ -74,84 +63,86 @@ NormalEnemyAttack::~NormalEnemyAttack()
 
 void NormalEnemyAttack::Update(
     VECTOR enemyPos,
-    VECTOR playerPos)
+    VECTOR playerPos,
+    int animationFrame)
 {
-    float dx =
-        playerPos.x - enemyPos.x;
-
-    float dz =
-        playerPos.z - enemyPos.z;
-
-    float distance =
-        sqrtf(
-            dx * dx +
-            dz * dz);
-
-    // 待機中
-    if (m_state == AttackState::NONE)
+    // SHOOTの2枚目
+    if (animationFrame == 1)
     {
-        if (distance <= ATTACK_RANGE)
+        // 2枚目に入った瞬間
+        if (m_state != AttackState::WARNING)
         {
-            // 攻撃開始時のプレイヤー位置を保存
+            // この瞬間のPlayer位置を記録
             m_attackTargetPos =
                 playerPos;
 
+            // Warning開始
             m_state =
                 AttackState::WARNING;
 
-            m_timer = 0;
-
-            m_isWarningVisible = true;
-        }
-
-        return;
-    }
-
-    // 予測中
-    if (m_state == AttackState::WARNING)
-    {
-        m_timer++;
-
-        // 予測線を点滅
-        if (m_timer %
-            WARNING_BLINK_INTERVAL == 0)
-        {
             m_isWarningVisible =
-                !m_isWarningVisible;
+                true;
+
+            m_blinkTimer =
+                0;
         }
-
-        // 予測終了
-        if (m_timer >= WARNING_TIME)
+        else
         {
-            m_state =
-                AttackState::BEAM;
+            // Warning点滅
+            m_blinkTimer++;
 
-            m_timer = 0;
+            if (m_blinkTimer >=
+                WARNING_BLINK_INTERVAL)
+            {
+                m_blinkTimer =
+                    0;
+
+                m_isWarningVisible =
+                    !m_isWarningVisible;
+            }
         }
 
         return;
     }
 
-    // 攻撃中
-    if (m_state == AttackState::BEAM)
+    // SHOOTの3枚目
+    if (animationFrame == 2)
     {
-        m_timer++;
+        // Beam開始
+        m_state =
+            AttackState::BEAM;
 
-        if (m_timer >= BEAM_TIME)
-        {
-            m_state =
-                AttackState::NONE;
-
-            m_timer = 0;
-        }
+        return;
     }
+
+    // それ以外のフレーム
+    m_state =
+        AttackState::NONE;
+
+    m_isWarningVisible =
+        false;
+
+    m_blinkTimer =
+        0;
 }
 
 void NormalEnemyAttack::Draw(
-    VECTOR enemyPos,
-    VECTOR playerPos)
+    VECTOR enemyPos)
 {
-    // 攻撃開始時に記録したプレイヤー位置を使用
+    // 攻撃していない
+    if (m_state == AttackState::NONE)
+    {
+        return;
+    }
+
+    // Warningの点滅中
+    if (m_state == AttackState::WARNING &&
+        !m_isWarningVisible)
+    {
+        return;
+    }
+
+    // 攻撃方向
     float dx =
         m_attackTargetPos.x -
         enemyPos.x;
@@ -174,66 +165,78 @@ void NormalEnemyAttack::Draw(
     dx /= length;
     dz /= length;
 
-    // 攻撃の発射位置
+    // 攻撃開始位置
     VECTOR start =
         enemyPos;
 
-    start.y += ATTACK_HEIGHT;
+    start.y +=
+        ATTACK_HEIGHT;
 
-    // 予測線
+    // 使用する値
+    float attackLength;
+    float imageAspect;
+    int graph;
+
     if (m_state == AttackState::WARNING)
     {
-        if (!m_isWarningVisible)
-        {
-            return;
-        }
-
         if (m_warningGraph == -1)
         {
             return;
         }
 
-        VECTOR target =
-            start;
+        attackLength =
+            WARNING_LENGTH;
 
-        target.x +=
-            dx * WARNING_LENGTH;
+        imageAspect =
+            WARNING_ASPECT;
 
-        target.z +=
-            dz * WARNING_LENGTH;
-
-        DrawAttackImage(
-            m_warningGraph,
-            start,
-            target,
-            WARNING_ASPECT);
-
-        return;
+        graph =
+            m_warningGraph;
     }
-
-    // 攻撃ビーム
-    if (m_state == AttackState::BEAM)
+    else
     {
         if (m_beamGraph == -1)
         {
             return;
         }
 
-        VECTOR target =
-            start;
+        attackLength =
+            BEAM_LENGTH;
 
-        target.x +=
-            dx * BEAM_LENGTH;
+        imageAspect =
+            BEAM_ASPECT;
 
-        target.z +=
-            dz * BEAM_LENGTH;
-
-        DrawAttackImage(
-            m_beamGraph,
-            start,
-            target,
-            BEAM_ASPECT);
+        graph =
+            m_beamGraph;
     }
+
+    // 攻撃終了位置
+    VECTOR target =
+        start;
+
+    target.x +=
+        dx * attackLength;
+
+    target.z +=
+        dz * attackLength;
+
+    DrawAttackImage(
+        graph,
+        start,
+        target,
+        imageAspect);
+}
+
+void NormalEnemyAttack::Reset()
+{
+    m_state =
+        AttackState::NONE;
+
+    m_isWarningVisible =
+        false;
+
+    m_blinkTimer =
+        0;
 }
 
 void NormalEnemyAttack::DrawAttackImage(
@@ -242,11 +245,14 @@ void NormalEnemyAttack::DrawAttackImage(
     VECTOR target,
     float imageAspect)
 {
+    // XZ平面上での方向
     float dx =
-        target.x - start.x;
+        target.x -
+        start.x;
 
     float dz =
-        target.z - start.z;
+        target.z -
+        start.z;
 
     float length =
         sqrtf(
@@ -258,11 +264,12 @@ void NormalEnemyAttack::DrawAttackImage(
         return;
     }
 
-    // 攻撃方向の角度
-    float angle =
-        -atan2f(
-            dz,
-            dx);
+    // 攻撃方向を正規化
+    float dirX =
+        dx / length;
+
+    float dirZ =
+        dz / length;
 
     // 画像の高さ
     float imageHeight =
@@ -271,18 +278,23 @@ void NormalEnemyAttack::DrawAttackImage(
     float halfHeight =
         imageHeight * 0.5f;
 
-    // 攻撃画像の横幅
+    // 画像の長さ
     float imageWidth =
         length;
 
-    // 角度計算
+    // XZ方向から角度を計算
+    float angle =
+        atan2f(
+            dirZ,
+            dirX);
+
     float cosAngle =
         cosf(angle);
 
     float sinAngle =
         sinf(angle);
 
-    // 2D画像上の座標を回転
+    // DrawModiBillboard3Dのローカル座標を回転する
     auto RotatePoint =
         [cosAngle, sinAngle](
             float x,
@@ -304,7 +316,7 @@ void NormalEnemyAttack::DrawAttackImage(
             return result;
         };
 
-    // 画像の左端をEnemyの中心にする
+    // startを画像の左端中央として扱う
     VECTOR topRight =
         RotatePoint(
             imageWidth,
@@ -325,7 +337,10 @@ void NormalEnemyAttack::DrawAttackImage(
             imageWidth,
             halfHeight);
 
-    // startを画像の基準位置にする
+    // ライティングの影響を受けない
+    SetUseLighting(FALSE);
+
+    // 以前描画できていたBillboard描画を使用
     DrawModiBillboard3D(
         start,
 
@@ -343,4 +358,6 @@ void NormalEnemyAttack::DrawAttackImage(
 
         graph,
         TRUE);
+
+    SetUseLighting(TRUE);
 }
