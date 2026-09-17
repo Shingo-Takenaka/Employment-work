@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Collision\EnemyAttackCollision.cpp" />
     <ClCompile Include="Source\Collision\PlayerAttackCollision.cpp" />
     <ClCompile Include="Source\Collision\ShootCollision.cpp" />
     <ClCompile Include="Source\Collision\TouchEnemy.cpp" />
     <ClCompile Include="Source\Collision\TouchEnemyDebug.cpp" />
     <ClCompile Include="Source\DrawManager\DrawManager.cpp" />
+    <ClCompile Include="Source\Enemy\EnemyBase\EnemyBase.cpp" />
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemy.cpp" />
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.cpp" />
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemyAttack.cpp" />
@@ -35,25 +37,27 @@
     <ClCompile Include="Source\Ninja\Ninja.cpp" />
     <ClCompile Include="Source\Ninja\NinjaAnimation.cpp" />
     <ClCompile Include="Source\Ninja\NinjaInput.cpp" />
-    <ClCompile Include="Source\Ninja\PlayerAttack.cpp" />
+    <ClCompile Include="Source\Ninja\NinjaAttack.cpp" />
     <ClCompile Include="Source\Scene\PlayScene.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
+    <ClInclude Include="Source\Collision\EnemyAttackCollision.h" />
     <ClInclude Include="Source\Collision\PlayerAttackCollision.h" />
     <ClInclude Include="Source\Collision\ShootCollision.h" />
     <ClInclude Include="Source\Collision\TouchEnemy.h" />
     <ClInclude Include="Source\Collision\TouchEnemyDebug.h" />
     <ClInclude Include="Source\DrawManager\DrawManager.h" />
+    <ClInclude Include="Source\Enemy\EnemyBase\EnemyBase.h" />
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemy.h" />
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.h" />
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemyAttack.h" />
     <ClInclude Include="Source\Field\Field.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Ninja\Ninja.h" />
-    <ClInclude Include="Source\Ninja\PlayerAttack.h" />
+    <ClInclude Include="Source\Ninja\NinjaAttack.h" />
     <ClInclude Include="Source\Scene\PlayScene.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
   </ItemGroup>

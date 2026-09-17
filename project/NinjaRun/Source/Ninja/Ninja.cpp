@@ -1,5 +1,14 @@
 #include "Ninja.h"
 
+namespace
+{
+    // ダッシュ状態になるまでの時間
+    const float DASH_STATE_TIME = 1.0f;
+
+    // ダッシュ速度
+    const float DASH_SPEED = 2.0f;
+}
+
 Ninja::Ninja()
 {
     // 基本設定
@@ -16,6 +25,18 @@ Ninja::Ninja()
 
     // 向き
     m_isReverseX = false;
+
+    // 最後に移動した方向
+    // 最初は右方向
+    m_lastMoveDirection = 0;
+
+    // ダッシュ方向
+    m_dashDirection = 0;
+
+    // ダッシュ
+    m_isDash = false;
+    m_dashTimer = 0.0f;
+    m_dashSpeed = DASH_SPEED;
 
     // ジャンプ
     m_isJump = false;
@@ -52,11 +73,16 @@ Ninja::Ninja()
 
 Ninja::~Ninja()
 {
-    for (int anim = 0; anim < (int)NinjaAnim::MAX; anim++)
+    for (int anim = 0;
+        anim < (int)NinjaAnim::MAX;
+        anim++)
     {
-        for (int frame = 0; frame < m_animation[anim].frameNum; frame++)
+        for (int frame = 0;
+            frame < m_animation[anim].frameNum;
+            frame++)
         {
-            DeleteGraph(m_animation[anim].graph[frame]);
+            DeleteGraph(
+                m_animation[anim].graph[frame]);
         }
     }
 }
@@ -69,6 +95,10 @@ void Ninja::Update()
     // ノックバック中なら通常操作を行わない
     if (m_isKnockback)
     {
+        // ダッシュを解除
+        m_isDash = false;
+        m_dashTimer = 0.0f;
+
         m_pos.x +=
             m_knockbackDirection.x *
             m_knockbackStrength;
@@ -93,6 +123,18 @@ void Ninja::Update()
 
     // 入力更新
     UpdateInput();
+
+    // ダッシュ処理
+    UpdateDash();
+
+    // ダッシュ中は通常操作を行わない
+    if (m_input.dash)
+    {
+        // ダッシュ中はアニメーションを停止
+        UpdateAnimation(false);
+
+        return;
+    }
 
     // ガード
     if (m_input.guard &&
@@ -131,7 +173,9 @@ void Ninja::Update()
 
         m_currentAnim = NinjaAnim::SLASH;
 
-        m_animation[(int)NinjaAnim::SLASH].anim.Reset();
+        m_animation[
+            (int)NinjaAnim::SLASH
+        ].anim.Reset();
     }
 
     // 遠距離攻撃
@@ -146,7 +190,9 @@ void Ninja::Update()
         // SHOOTアニメーションを必ず最初から再生
         m_currentAnim = NinjaAnim::SHOOT;
 
-        m_animation[(int)NinjaAnim::SHOOT].anim.Reset();
+        m_animation[
+            (int)NinjaAnim::SHOOT
+        ].anim.Reset();
 
         // このフレームで手裏剣を1個発射
         m_isShootStart = true;
@@ -159,28 +205,37 @@ void Ninja::Update()
     {
         if (m_input.isMove)
         {
-            m_pos.x += m_input.moveX * m_moveSpeed;
-            m_pos.z += m_input.moveZ * m_moveSpeed;
+            m_pos.x +=
+                m_input.moveX *
+                m_moveSpeed;
+
+            m_pos.z +=
+                m_input.moveZ *
+                m_moveSpeed;
 
             // 最後に移動した方向を記憶
             if (m_input.moveZ > 0.0f)
             {
                 // W
+                m_lastMoveDirection = 2;
                 m_lastShootDirection = 2;
             }
             else if (m_input.moveZ < 0.0f)
             {
                 // S
+                m_lastMoveDirection = 3;
                 m_lastShootDirection = 3;
             }
             else if (m_input.moveX > 0.0f)
             {
                 // D
+                m_lastMoveDirection = 0;
                 m_lastShootDirection = 0;
             }
             else if (m_input.moveX < 0.0f)
             {
                 // A
+                m_lastMoveDirection = 1;
                 m_lastShootDirection = 1;
             }
         }
@@ -222,6 +277,65 @@ void Ninja::Update()
     UpdateAnimation(m_input.isMove);
 }
 
+void Ninja::UpdateDash()
+{
+    // ダッシュキーを押していない場合
+    if (!m_input.dash)
+    {
+        m_isDash = false;
+        m_dashTimer = 0.0f;
+
+        return;
+    }
+
+    // ダッシュ開始
+    if (m_dashTimer <= 0.0f)
+    {
+        // ダッシュ開始時の方向を固定
+        m_dashDirection =
+            m_lastMoveDirection;
+    }
+
+    // ダッシュ時間を加算
+    m_dashTimer += 1.0f / 60.0f;
+
+    // ダッシュ方向へ高速移動
+    switch (m_dashDirection)
+    {
+    case 0:
+        // +X
+        m_pos.x += m_dashSpeed;
+
+        // 右向き
+        m_isReverseX = false;
+        break;
+
+    case 1:
+        // -X
+        m_pos.x -= m_dashSpeed;
+
+        // 左向き
+        m_isReverseX = true;
+        break;
+
+    case 2:
+        // +Z
+        m_pos.z += m_dashSpeed;
+        break;
+
+    case 3:
+        // -Z
+        m_pos.z -= m_dashSpeed;
+        break;
+    }
+
+    // 1秒以上押し続けたらダッシュ状態
+    if (m_dashTimer >= DASH_STATE_TIME)
+    {
+        m_isDash = true;
+    }
+}
+
 void Ninja::Draw()
 {
     DrawAnimation();
@@ -244,11 +358,20 @@ void Ninja::ApplyKnockback(
     m_knockbackStrength = strength;
 
     m_knockbackTimer = duration;
+
+    // ダッシュを解除
+    m_isDash = false;
+    m_dashTimer = 0.0f;
 }
 
 bool Ninja::IsKnockback() const
 {
     return m_isKnockback;
+}
+
+bool Ninja::IsDash() const
+{
+    return m_isDash;
 }
 
 bool Ninja::IsSlash() const

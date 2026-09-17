@@ -27,6 +27,7 @@ struct NinjaInputState
 
     // 各入力
     bool jump;
+    bool dash;
     bool slash;
     bool guard;
     bool shoot;
@@ -61,7 +62,10 @@ public:
     VECTOR GetPosition() const;
 
     // 敵からのノックバック
-    void ApplyKnockback(VECTOR direction, float strength, float duration);
+    void ApplyKnockback(
+        VECTOR direction,
+        float strength,
+        float duration);
 
     // ノックバック中か
     bool IsKnockback() const;
@@ -70,14 +74,21 @@ public:
     bool IsShoot() const;
     bool IsReverseX() const;
 
-    //手裏剣を投げたタイミング
+    // 手裏剣を投げたタイミング
     bool IsShootStart() const;
 
     int GetShootDirection() const;
+
+    // ダッシュ中か
+    bool IsDash() const;
+
 private:
 
     // 入力処理
     void UpdateInput();
+
+    // ダッシュ処理
+    void UpdateDash();
 
     // アニメーション読み込み
     void LoadAnimations();
@@ -97,8 +108,27 @@ private:
     // アニメーション描画
     void DrawAnimation();
 
-    // 最後に移動した手裏剣の方向
+    // 最後に移動した方向
+    // 0 = +X
+    // 1 = -X
+    // 2 = +Z
+    // 3 = -Z
+    int m_lastMoveDirection;
+
+    // 手裏剣を投げる方向
     int m_lastShootDirection;
+
+    // ダッシュ方向
+    int m_dashDirection;
+
+    // ダッシュ中か
+    bool m_isDash;
+
+    // ダッシュ経過時間
+    float m_dashTimer;
+
+    // ダッシュ速度
+    float m_dashSpeed;
 
 private:
 
@@ -157,5 +187,4 @@ private:
 
     // ノックバック残り時間
     float m_knockbackTimer;
-
 };

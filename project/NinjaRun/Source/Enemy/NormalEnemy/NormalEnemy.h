@@ -2,51 +2,35 @@
 
 #include "DxLib.h"
 
+#include "../EnemyBase/EnemyBase.h"
 #include "NormalEnemyAnimation.h"
 #include "NormalEnemyAttack.h"
 
 class Ninja;
 
-class NormalEnemy
+class NormalEnemy : public EnemyBase
 {
 public:
 
     NormalEnemy();
     ~NormalEnemy();
 
-    void Update(const Ninja& ninja);
-    void Draw();
+    void Update(const Ninja& ninja) override;
+    void Draw() override;
 
-    // 座標取得
-    VECTOR GetPosition() const;
+    // Enemy攻撃の当たり判定が有効か
+    bool IsAttackActive() const;
 
-    // 座標設定
-    void SetPosition(VECTOR pos);
+    // 攻撃開始位置を取得
+    VECTOR GetAttackStartPos() const;
 
-    // ダメージを受ける
-    void TakeDamage(int damage);
-
-    // 死亡しているか
-    bool IsDead() const;
+    // 攻撃終了位置を取得
+    VECTOR GetAttackTargetPos() const;
 
 private:
 
-    // 基本情報
-    VECTOR m_pos;
-
-    float m_size;
-
     // Player座標
     VECTOR m_playerPos;
-
-    // 左右反転
-    bool m_isReverseX;
-
-    // HP
-    int m_hp;
-
-    // 死亡しているか
-    bool m_isDead;
 
     // アニメーション
     NormalEnemyAnimation m_animation;

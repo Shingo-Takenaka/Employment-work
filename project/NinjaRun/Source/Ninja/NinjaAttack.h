@@ -3,11 +3,11 @@
 #include "DxLib.h"
 #include <vector>
 
-class PlayerAttack
+class NinjaAttack
 {
 public:
 
-    PlayerAttack();
+    NinjaAttack();
 
     // UŒ‚”ÍˆÍ
     float GetAttackWidth() const;

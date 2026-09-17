@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Ninja/PlayerAttack.h"
+#include "../Ninja/NinjaAttack.h"
 
 class Ninja;
 class NormalEnemy;
@@ -23,5 +23,5 @@ public:
 private:
 
     // Player‚ÌUŒ‚”ÍˆÍ
-    PlayerAttack m_playerAttack;
+    NinjaAttack m_playerAttack;
 };

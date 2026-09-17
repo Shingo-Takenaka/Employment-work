@@ -1,6 +1,6 @@
 #include "ShootCollision.h"
 
-#include "../Ninja/PlayerAttack.h"
+#include "../Ninja/NinjaAttack.h"
 #include "../Enemy/NormalEnemy/NormalEnemy.h"
 
 #include <math.h>
@@ -11,7 +11,7 @@ ShootCollision::ShootCollision()
 
 // Žè— Œ•‚ÆEnemy‚ª“–‚½‚Á‚Ä‚¢‚é‚©
 bool ShootCollision::Check(
-    const PlayerAttack& playerAttack,
+    const NinjaAttack& ninjaAttack,
     int shootIndex,
     NormalEnemy& enemy)
 {
@@ -21,7 +21,7 @@ bool ShootCollision::Check(
     }
 
     VECTOR shootPos =
-        playerAttack.GetShootPosition(shootIndex);
+        ninjaAttack.GetShootPosition(shootIndex);
 
     VECTOR enemyPos =
         enemy.GetPosition();

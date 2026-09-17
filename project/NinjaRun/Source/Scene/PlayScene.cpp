@@ -1,4 +1,5 @@
 #include "PlayScene.h"
+
 #include "../Collision/TouchEnemyDebug.h"
 #include "../Collision/PlayerAttackCollision.h"
 
@@ -26,6 +27,58 @@ void PlayScene::Update()
     if (!m_enemy.IsDead())
     {
         m_enemy.Update(m_ninja);
+    }
+
+    // EnemyçUåÇÇ∆PlayerÇÃìñÇΩÇËîªíË
+    if (!m_enemy.IsDead() &&
+        m_enemy.IsAttackActive() &&
+        !m_ninja.IsKnockback())
+    {
+        VECTOR start =
+            m_enemy.GetAttackStartPos();
+
+        VECTOR target =
+            m_enemy.GetAttackTargetPos();
+
+        if (EnemyAttackCollision::Check(
+            m_ninja,
+            start,
+            target))
+        {
+            // EnemyÇ©ÇÁPlayerÇ÷å¸Ç©Ç§ï˚å¸
+            VECTOR playerPos =
+                m_ninja.GetPosition();
+
+            float dx =
+                playerPos.x -
+                start.x;
+
+            float dz =
+                playerPos.z -
+                start.z;
+
+            float length =
+                sqrtf(
+                    dx * dx +
+                    dz * dz);
+
+            if (length > 0.001f)
+            {
+                dx /= length;
+                dz /= length;
+
+                VECTOR knockbackDirection =
+                    VGet(
+                        dx,
+                        0.0f,
+                        dz);
+
+                m_ninja.ApplyKnockback(
+                    knockbackDirection,
+                    0.5f,
+                    0.5f);
+            }
+        }
     }
 
     // EnemyÇ∆ÇÃê⁄êG
@@ -84,7 +137,8 @@ void PlayScene::Draw()
     m_drawManager.Clear();
 
     // ÉvÉåÉCÉÑÅ[ìoò^
-    VECTOR playerPos = m_ninja.GetPosition();
+    VECTOR playerPos =
+        m_ninja.GetPosition();
 
     m_drawManager.Add(
         playerPos,
@@ -97,7 +151,8 @@ void PlayScene::Draw()
     // éËó†åïìoò^
     if (m_playerAttack.IsShoot())
     {
-        VECTOR playerPos = m_ninja.GetPosition();
+        VECTOR playerPos =
+            m_ninja.GetPosition();
 
         m_drawManager.Add(
             playerPos,
@@ -109,7 +164,8 @@ void PlayScene::Draw()
     }
 
     // ìGìoò^
-    VECTOR enemyPos = m_enemy.GetPosition();
+    VECTOR enemyPos =
+        m_enemy.GetPosition();
 
     m_drawManager.Add(
         enemyPos,
@@ -129,4 +185,19 @@ void PlayScene::Draw()
     TouchEnemyDebug::Draw(
         m_ninja,
         m_enemy);
+
+    // EnemyçUåÇîªíËÉfÉoÉbÉO
+    if (!m_enemy.IsDead() &&
+        m_enemy.IsAttackActive())
+    {
+        VECTOR start =
+            m_enemy.GetAttackStartPos();
+
+        VECTOR target =
+            m_enemy.GetAttackTargetPos();
+
+        EnemyAttackCollision::DrawDebug(
+            start,
+            target);
+    }
 }

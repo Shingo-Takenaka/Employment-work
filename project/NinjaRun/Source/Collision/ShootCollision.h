@@ -2,7 +2,7 @@
 
 #include "DxLib.h"
 
-class PlayerAttack;
+class NinjaAttack;
 class NormalEnemy;
 
 class ShootCollision
@@ -13,8 +13,7 @@ public:
 
     // Žè— Œ•‚ÆEnemy‚Ì“–‚½‚è”»’è
     static bool Check(
-        const PlayerAttack& playerAttack,
+        const NinjaAttack& ninjaAttack,
         int shootIndex,
-        NormalEnemy& enemy
-    );
+        NormalEnemy& enemy);
 };

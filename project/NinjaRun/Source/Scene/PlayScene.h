@@ -1,12 +1,15 @@
+#pragma once
+
 #include "../DrawManager/DrawManager.h"
 #include "../Camera/Camera.h"
 #include "../Field/Field.h"
 #include "../Ninja/Ninja.h"
-#include "../Ninja/PlayerAttack.h"
+#include "../Ninja/NinjaAttack.h"
 #include "../Enemy/NormalEnemy/NormalEnemy.h"
 #include "../Collision/TouchEnemy.h"
 #include "../Collision/PlayerAttackCollision.h"
 #include "../Collision/ShootCollision.h"
+#include "../Collision/EnemyAttackCollision.h"
 
 class PlayScene
 {
@@ -34,7 +37,7 @@ private:
     PlayerAttackCollision m_playerAttackCollision;
 
     // Player‚Ìè— Œ•
-    PlayerAttack m_playerAttack;
+    NinjaAttack m_playerAttack;
 
     // •`‰æŠÇ—
     DrawManager m_drawManager;

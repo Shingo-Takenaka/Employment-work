@@ -1,7 +1,7 @@
-#include "PlayerAttack.h"
+#include "NinjaAttack.h"
 #include <math.h>
 
-PlayerAttack::PlayerAttack()
+NinjaAttack::NinjaAttack()
 {
     // UŒ‚”ÍˆÍ
     m_attackWidth = 15.0f;
@@ -24,25 +24,25 @@ PlayerAttack::PlayerAttack()
 }
 
 // X•ûŒü‚ÌUŒ‚”ÍˆÍ
-float PlayerAttack::GetAttackWidth() const
+float NinjaAttack::GetAttackWidth() const
 {
     return m_attackWidth;
 }
 
 // Z•ûŒü‚ÌUŒ‚”ÍˆÍ
-float PlayerAttack::GetAttackDepth() const
+float NinjaAttack::GetAttackDepth() const
 {
     return m_attackDepth;
 }
 
 // Y•ûŒü‚ÌUŒ‚”ÍˆÍ
-float PlayerAttack::GetAttackHeight() const
+float NinjaAttack::GetAttackHeight() const
 {
     return m_attackHeight;
 }
 
 // è— Œ•¶¬
-void PlayerAttack::CreateShoot(
+void NinjaAttack::CreateShoot(
     VECTOR pos,
     int direction)
 {
@@ -66,7 +66,7 @@ void PlayerAttack::CreateShoot(
 }
 
 // è— Œ•XV
-void PlayerAttack::UpdateShoot()
+void NinjaAttack::UpdateShoot()
 {
     // ‚·‚×‚Ä‚Ìè— Œ•‚ğXV
     for (int i = (int)m_shoots.size() - 1; i >= 0; i--)
@@ -120,7 +120,7 @@ void PlayerAttack::UpdateShoot()
 }
 
 // è— Œ••`‰æ
-void PlayerAttack::DrawShoot()
+void NinjaAttack::DrawShoot()
 {
     // ‚·‚×‚Ä‚Ìè— Œ•‚ğ•`‰æ
     for (const Shoot& shoot : m_shoots)
@@ -147,19 +147,19 @@ void PlayerAttack::DrawShoot()
 }
 
 // è— Œ•‚ª‘¶İ‚·‚é‚©
-bool PlayerAttack::IsShoot() const
+bool NinjaAttack::IsShoot() const
 {
     return !m_shoots.empty();
 }
 
 // è— Œ•‚Ì”‚ğæ“¾
-int PlayerAttack::GetShootCount() const
+int NinjaAttack::GetShootCount() const
 {
     return (int)m_shoots.size();
 }
 
 // è— Œ•‚ÌˆÊ’u‚ğæ“¾
-VECTOR PlayerAttack::GetShootPosition(int index) const
+VECTOR NinjaAttack::GetShootPosition(int index) const
 {
     if (index < 0 ||
         index >= (int)m_shoots.size())
@@ -171,7 +171,7 @@ VECTOR PlayerAttack::GetShootPosition(int index) const
 }
 
 // è— Œ•‚ÌŒü‚«‚ğæ“¾
-bool PlayerAttack::IsShootReverseX(int index) const
+bool NinjaAttack::IsShootReverseX(int index) const
 {
     if (index < 0 ||
         index >= (int)m_shoots.size())
@@ -183,7 +183,7 @@ bool PlayerAttack::IsShootReverseX(int index) const
 }
 
 // è— Œ•‚ğíœ
-void PlayerAttack::RemoveShoot(int index)
+void NinjaAttack::RemoveShoot(int index)
 {
     if (index < 0 ||
         index >= (int)m_shoots.size())

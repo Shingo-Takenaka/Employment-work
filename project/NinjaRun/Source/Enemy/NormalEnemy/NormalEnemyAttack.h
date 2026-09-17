@@ -2,63 +2,54 @@
 
 #include "DxLib.h"
 
+enum class AttackState
+{
+    NONE,
+    WARNING,
+    BEAM
+};
+
 class NormalEnemyAttack
 {
 public:
 
     NormalEnemyAttack();
-
     ~NormalEnemyAttack();
 
-    // 攻撃処理の更新
     void Update(
         VECTOR enemyPos,
         VECTOR playerPos,
         int animationFrame);
 
-    // 攻撃の描画
     void Draw(
         VECTOR enemyPos);
 
-    // 攻撃状態をリセット
     void Reset();
 
-private:
+    // 攻撃中か
+    bool IsAttacking() const;
 
-    // 攻撃状態
-    enum class AttackState
-    {
-        NONE,
-        WARNING,
-        BEAM
-    };
+    // 攻撃対象位置を取得
+    VECTOR GetAttackTargetPos() const;
 
 private:
 
-    // 現在の攻撃状態
-    AttackState m_state;
-
-    // Warningの点滅
-    bool m_isWarningVisible;
-
-    // 点滅タイマー
-    int m_blinkTimer;
-
-    // Warning画像
-    int m_warningGraph;
-
-    // Beam画像
-    int m_beamGraph;
-
-    // Warning開始時に記録したPlayer座標
-    VECTOR m_attackTargetPos;
-
-private:
-
-    // 3D空間上に攻撃画像を描画
     void DrawAttackImage(
         int graph,
         VECTOR start,
         VECTOR target,
-        float width);
+        float imageAspect);
+
+private:
+
+    AttackState m_state;
+
+    bool m_isWarningVisible;
+
+    int m_blinkTimer;
+
+    int m_warningGraph;
+    int m_beamGraph;
+
+    VECTOR m_attackTargetPos;
 };

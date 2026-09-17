@@ -5,19 +5,12 @@
 #include <math.h>
 
 NormalEnemy::NormalEnemy()
+    : EnemyBase(1)
 {
     m_pos = VGet(40.0f, 0.0f, 50.0f);
 
-    m_size = 10.0f;
-
     // 待機時は右向き
     m_isReverseX = false;
-
-    // HP
-    m_hp = 1;
-
-    // 死亡していない
-    m_isDead = false;
 
     // アニメーション読み込み
     m_animation.LoadAnimations();
@@ -125,39 +118,55 @@ void NormalEnemy::Draw()
         m_pos);
 }
 
-// 座標取得
-VECTOR NormalEnemy::GetPosition() const
+bool NormalEnemy::IsAttackActive() const
 {
-    return m_pos;
+    return m_attack.IsAttacking();
 }
 
-
-// 座標設定
-void NormalEnemy::SetPosition(VECTOR pos)
+VECTOR NormalEnemy::GetAttackStartPos() const
 {
-    m_pos = pos;
+    VECTOR start =
+        m_pos;
+
+    start.y += 3.0f;
+
+    return start;
 }
 
-
-// ダメージを受ける
-void NormalEnemy::TakeDamage(int damage)
+VECTOR NormalEnemy::GetAttackTargetPos() const
 {
+    VECTOR start =
+        GetAttackStartPos();
 
-    if (m_isDead)
+    VECTOR attackTarget =
+        m_attack.GetAttackTargetPos();
+
+    float dx =
+        attackTarget.x -
+        m_pos.x;
+
+    float dz =
+        attackTarget.z -
+        m_pos.z;
+
+    float length =
+        sqrtf(
+            dx * dx +
+            dz * dz);
+
+    if (length <= 0.001f)
     {
-        return;
+        return start;
     }
 
-    m_hp -= damage;
+    dx /= length;
+    dz /= length;
 
-    if (m_hp <= 0)
-    {
-        m_hp = 0;
-        m_isDead = true;
-    }
-}
-// 死亡しているか
-bool NormalEnemy::IsDead() const
-{
-    return m_isDead;
+    start.x +=
+        dx * 50.0f;
+
+    start.z +=
+        dz * 50.0f;
+
+    return start;
 }
