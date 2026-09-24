@@ -2,6 +2,7 @@
 
 #include "../Collision/TouchEnemyDebug.h"
 #include "../Collision/PlayerAttackCollision.h"
+#include "../Collision/Field/FieldCollision.h"
 
 PlayScene::PlayScene()
 {
@@ -13,7 +14,21 @@ PlayScene::~PlayScene()
 
 void PlayScene::Update()
 {
+    // Ninjaの移動前の位置を保存
+    VECTOR oldNinjaPos =
+        m_ninja.GetPosition();
+
     m_ninja.Update();
+
+    // Wallとの当たり判定
+    if (FieldCollision::CheckWall(
+        m_ninja,
+        m_field))
+    {
+        // 壁に入ったら移動前の位置に戻す
+        m_ninja.SetPosition(
+            oldNinjaPos);
+    }
 
     // Playerの攻撃とEnemyの当たり判定
     if (m_playerAttackCollision.Check(
@@ -200,4 +215,8 @@ void PlayScene::Draw()
             start,
             target);
     }
+
+    // Wallの当たり判定デバッグ
+    FieldCollision::DrawDebug(
+        m_field);
 }

@@ -22,6 +22,7 @@
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
     <ClCompile Include="Source\Collision\EnemyAttackCollision.cpp" />
+    <ClCompile Include="Source\Collision\Field\FieldCollision.cpp" />
     <ClCompile Include="Source\Collision\PlayerAttackCollision.cpp" />
     <ClCompile Include="Source\Collision\ShootCollision.cpp" />
     <ClCompile Include="Source\Collision\TouchEnemy.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Collision\EnemyAttackCollision.h" />
+    <ClInclude Include="Source\Collision\Field\FieldCollision.h" />
     <ClInclude Include="Source\Collision\PlayerAttackCollision.h" />
     <ClInclude Include="Source\Collision\ShootCollision.h" />
     <ClInclude Include="Source\Collision\TouchEnemy.h" />

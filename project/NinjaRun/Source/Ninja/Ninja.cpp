@@ -3,10 +3,13 @@
 namespace
 {
     // ダッシュ状態になるまでの時間
-    const float DASH_STATE_TIME = 1.0f;
+    const float DASH_STATE_TIME = 0.4f;
 
-    // ダッシュ速度
-    const float DASH_SPEED = 2.0f;
+    // Lを1回押したときの加速距離
+    const float DASH_ACCEL_DISTANCE = 10.0f;
+
+    // L + WASDでダッシュしているときの速度
+    const float DASH_SPEED = 1.0f;
 }
 
 Ninja::Ninja()
@@ -127,10 +130,17 @@ void Ninja::Update()
     // ダッシュ処理
     UpdateDash();
 
-    // ダッシュ中は通常操作を行わない
+    // ダッシュ中は通常移動を行わない
+    if (m_isDash)
+    {
+        UpdateAnimation(false);
+
+        return;
+    }
+
+    // Lを押している間はダッシュ処理だけを行う
     if (m_input.dash)
     {
-        // ダッシュ中はアニメーションを停止
         UpdateAnimation(false);
 
         return;
@@ -279,8 +289,8 @@ void Ninja::Update()
 
 void Ninja::UpdateDash()
 {
-    // ダッシュキーを押していない場合
-    if (!m_input.dash)
+    // LもWASDも押していない場合
+    if (!m_input.dash && !m_input.isMove)
     {
         m_isDash = false;
         m_dashTimer = 0.0f;
@@ -288,54 +298,176 @@ void Ninja::UpdateDash()
         return;
     }
 
-    // ダッシュ開始
-    if (m_dashTimer <= 0.0f)
+    // まだダッシュ状態ではない場合
+    if (!m_isDash)
     {
-        // ダッシュ開始時の方向を固定
-        m_dashDirection =
-            m_lastMoveDirection;
+        // L + WASD
+        if (m_input.dash && m_input.isMove)
+        {
+            // 現在押している方向を取得
+            if (m_input.moveZ > 0.0f)
+            {
+                // W
+                m_dashDirection = 2;
+            }
+            else if (m_input.moveZ < 0.0f)
+            {
+                // S
+                m_dashDirection = 3;
+            }
+            else if (m_input.moveX > 0.0f)
+            {
+                // D
+                m_dashDirection = 0;
+            }
+            else if (m_input.moveX < 0.0f)
+            {
+                // A
+                m_dashDirection = 1;
+            }
+
+            // ダッシュ時間を加算
+            m_dashTimer += 1.0f / 60.0f;
+
+            // ダッシュ移動
+            switch (m_dashDirection)
+            {
+            case 0:
+                // +X
+                m_pos.x += m_dashSpeed;
+                m_isReverseX = false;
+                break;
+
+            case 1:
+                // -X
+                m_pos.x -= m_dashSpeed;
+                m_isReverseX = true;
+                break;
+
+            case 2:
+                // +Z
+                m_pos.z += m_dashSpeed;
+                break;
+
+            case 3:
+                // -Z
+                m_pos.z -= m_dashSpeed;
+                break;
+            }
+
+            // 1秒以上ならダッシュ状態
+            if (m_dashTimer >= DASH_STATE_TIME)
+            {
+                m_isDash = true;
+            }
+
+            return;
+        }
+
+        // Lだけ
+        if (m_input.dash && !m_input.isMove)
+        {
+            // 最初の1回だけ加速
+            if (m_dashTimer <= 0.0f)
+            {
+                m_dashDirection = m_lastMoveDirection;
+
+                switch (m_dashDirection)
+                {
+                case 0:
+                    // +X
+                    m_pos.x += DASH_ACCEL_DISTANCE;
+                    m_isReverseX = false;
+                    break;
+
+                case 1:
+                    // -X
+                    m_pos.x -= DASH_ACCEL_DISTANCE;
+                    m_isReverseX = true;
+                    break;
+
+                case 2:
+                    // +Z
+                    m_pos.z += DASH_ACCEL_DISTANCE;
+                    break;
+
+                case 3:
+                    // -Z
+                    m_pos.z -= DASH_ACCEL_DISTANCE;
+                    break;
+                }
+
+                // Lを押したことを記録
+                m_dashTimer = 1.0f;
+            }
+
+            return;
+        }
     }
 
-    // ダッシュ時間を加算
-    m_dashTimer += 1.0f / 60.0f;
-
-    // ダッシュ方向へ高速移動
-    switch (m_dashDirection)
+    // ダッシュ状態中
+    if (m_isDash)
     {
-    case 0:
-        // +X
-        m_pos.x += m_dashSpeed;
+        // WASDを離したらダッシュ終了
+        if (!m_input.isMove)
+        {
+            m_isDash = false;
+            m_dashTimer = 0.0f;
 
-        // 右向き
-        m_isReverseX = false;
-        break;
+            return;
+        }
 
-    case 1:
-        // -X
-        m_pos.x -= m_dashSpeed;
+        // 現在押している方向に方向転換
+        if (m_input.moveZ > 0.0f)
+        {
+            // W
+            m_dashDirection = 2;
+        }
+        else if (m_input.moveZ < 0.0f)
+        {
+            // S
+            m_dashDirection = 3;
+        }
+        else if (m_input.moveX > 0.0f)
+        {
+            // D
+            m_dashDirection = 0;
+        }
+        else if (m_input.moveX < 0.0f)
+        {
+            // A
+            m_dashDirection = 1;
+        }
 
-        // 左向き
-        m_isReverseX = true;
-        break;
+        // ダッシュ速度で移動
+        switch (m_dashDirection)
+        {
+        case 0:
+            // +X
+            m_pos.x += m_dashSpeed;
+            m_isReverseX = false;
+            break;
 
-    case 2:
-        // +Z
-        m_pos.z += m_dashSpeed;
-        break;
+        case 1:
+            // -X
+            m_pos.x -= m_dashSpeed;
+            m_isReverseX = true;
+            break;
 
-    case 3:
-        // -Z
-        m_pos.z -= m_dashSpeed;
-        break;
-    }
+        case 2:
+            // +Z
+            m_pos.z += m_dashSpeed;
+            break;
 
-    // 1秒以上押し続けたらダッシュ状態
-    if (m_dashTimer >= DASH_STATE_TIME)
-    {
-        m_isDash = true;
+        case 3:
+            // -Z
+            m_pos.z -= m_dashSpeed;
+            break;
+        }
+
+        return;
     }
 }
-
 void Ninja::Draw()
 {
     DrawAnimation();
@@ -344,6 +476,11 @@ void Ninja::Draw()
 VECTOR Ninja::GetPosition() const
 {
     return m_pos;
+}
+
+void Ninja::SetPosition(VECTOR pos)
+{
+    m_pos = pos;
 }
 
 void Ninja::ApplyKnockback(

@@ -61,6 +61,8 @@ public:
 
     VECTOR GetPosition() const;
 
+    void SetPosition(VECTOR pos);
+
     // 敵からのノックバック
     void ApplyKnockback(
         VECTOR direction,
