@@ -24,6 +24,6 @@ private:
 
     // Wall‚Ì“–‚½‚è”»’èƒTƒCƒY
     static constexpr float WALL_WIDTH = 5.0f;      //X
-    static constexpr float WALL_HEIGHT = 200.0f;    //Y
+    static constexpr float WALL_HEIGHT = 200.0f;   //Y
     static constexpr float WALL_DEPTH = 100.0f;    //Z
 };
