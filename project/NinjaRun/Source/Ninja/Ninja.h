@@ -84,6 +84,18 @@ public:
     // ダッシュ中か
     bool IsDash() const;
 
+    // ジャンプ中か
+    bool IsJump() const;
+
+    // 壁キックできる状態か
+    bool CanWallKick() const;
+
+    // 壁に触れたので壁キック可能にする
+    void EnableWallKick(VECTOR direction);
+
+    // 壁キック
+    void WallKick();
+
 private:
 
     // 入力処理
@@ -155,11 +167,20 @@ private:
     // ジャンプ開始時の高さ
     float m_groundY;
 
+    // 壁キック後に戻る地面のY座標
+    float m_wallKickGroundY;
+
     // ジャンプ速度
     float m_jumpSpeed;
 
     // 重力
     float m_gravity;
+
+    // 壁キックできる状態か
+    bool m_canWallKick;
+
+    // 壁から離れる方向
+    VECTOR m_wallKickDirection;
 
     // 袈裟斬り中
     bool m_isSlash;

@@ -50,6 +50,12 @@ Ninja::Ninja()
 
     m_gravity = 0.05f;
 
+    // 壁キック
+    m_canWallKick = false;
+
+    m_wallKickDirection =
+        VGet(0.0f, 0.0f, 0.0f);
+
     // 攻撃
     m_isSlash = false;
     m_isShoot = false;
@@ -161,16 +167,28 @@ void Ninja::Update()
 
     // ジャンプ
     if (m_input.jump &&
-        !m_isJump &&
         !m_isSlash &&
         !m_isGuard &&
         !m_isShoot)
     {
-        m_isJump = true;
+        // 通常ジャンプ
+        if (!m_isJump)
+        {
+            m_isJump = true;
 
-        m_groundY = m_pos.y;
+            m_groundY = m_pos.y;
 
-        m_jumpSpeed = 1.0f;
+            m_jumpSpeed = 1.0f;
+
+            // 通常ジャンプを開始したら
+            // 壁キック権を消費する
+            m_canWallKick = false;
+        }
+        // 空中で壁に触れている場合は壁キック
+        else if (m_canWallKick)
+        {
+            WallKick();
+        }
     }
 
     // 近接攻撃
@@ -258,6 +276,8 @@ void Ninja::Update()
 
         m_jumpSpeed -= m_gravity;
 
+        // 常に通常ジャンプ開始時の地面Yを基準にする
+        // 壁キックではm_groundYを変更しない
         if (m_pos.y <= m_groundY)
         {
             m_pos.y = m_groundY;
@@ -265,6 +285,9 @@ void Ninja::Update()
             m_isJump = false;
 
             m_jumpSpeed = 0.0f;
+
+            // 着地したので壁キック権を消費
+            m_canWallKick = false;
         }
     }
 
@@ -468,6 +491,7 @@ void Ninja::UpdateDash()
         return;
     }
 }
+
 void Ninja::Draw()
 {
     DrawAnimation();
@@ -534,4 +558,53 @@ bool Ninja::IsShootStart() const
 int Ninja::GetShootDirection() const
 {
     return m_lastShootDirection;
+}
+
+bool Ninja::IsJump() const
+{
+    return m_isJump;
+}
+
+bool Ninja::CanWallKick() const
+{
+    return m_canWallKick;
+}
+
+void Ninja::EnableWallKick(VECTOR direction)
+{
+    // 空中にいるときだけ壁キック可能にする
+    if (!m_isJump)
+    {
+        return;
+    }
+
+    m_canWallKick = true;
+
+    m_wallKickDirection = direction;
+}
+
+void Ninja::WallKick()
+{
+    // 壁キック可能でなければ何もしない
+    if (!m_canWallKick)
+    {
+        return;
+    }
+
+    // 壁から離れる方向へ移動
+    m_pos.x +=
+        m_wallKickDirection.x * 1.0f;
+
+    m_pos.z +=
+        m_wallKickDirection.z * 1.0f;
+
+    // 上方向へ強く飛ぶ
+    m_jumpSpeed = 1.5f;
+
+    // m_groundYは変更しない
+    // 壁キック前のジャンプ開始地点を着地点として使う
+    m_isJump = true;
+
+    // 壁キック権を消費
+    m_canWallKick = false;
 }

@@ -28,6 +28,40 @@ void PlayScene::Update()
         // 壁に入ったら移動前の位置に戻す
         m_ninja.SetPosition(
             oldNinjaPos);
+
+        // Ninjaが空中にいる場合、
+        // 壁キックできる状態にする
+        if (m_ninja.IsJump())
+        {
+            VECTOR ninjaPos =
+                m_ninja.GetPosition();
+
+            VECTOR wallPos =
+                m_field.GetWallPosition();
+
+            VECTOR wallKickDirection =
+                VGet(
+                    0.0f,
+                    0.0f,
+                    0.0f);
+
+            // 壁がNinjaの右側にある場合
+            if (wallPos.x > ninjaPos.x)
+            {
+                // 左方向へ飛ぶ
+                wallKickDirection.x = -1.0f;
+            }
+            // 壁がNinjaの左側にある場合
+            else
+            {
+                // 右方向へ飛ぶ
+                wallKickDirection.x = 1.0f;
+            }
+
+            // 壁キック可能状態にする
+            m_ninja.EnableWallKick(
+                wallKickDirection);
+        }
     }
 
     // Playerの攻撃とEnemyの当たり判定
@@ -127,7 +161,9 @@ void PlayScene::Update()
     m_playerAttack.UpdateShoot();
 
     // 手裏剣とEnemyの当たり判定
-    for (int i = m_playerAttack.GetShootCount() - 1; i >= 0; i--)
+    for (int i = m_playerAttack.GetShootCount() - 1;
+        i >= 0;
+        i--)
     {
         if (ShootCollision::Check(
             m_playerAttack,
@@ -219,4 +255,15 @@ void PlayScene::Draw()
     // Wallの当たり判定デバッグ
     FieldCollision::DrawDebug(
         m_field);
+
+    // Playerの座標を左上に表示
+    DrawFormatString(
+        10,
+        10,
+        GetColor(255, 255, 255),
+        "Player X: %.2f Y: %.2f Z: %.2f",
+        playerPos.x,
+        playerPos.y,
+        playerPos.z
+    );
 }

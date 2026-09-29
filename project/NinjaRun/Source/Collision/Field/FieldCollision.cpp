@@ -11,8 +11,10 @@ bool FieldCollision::CheckWall(
     VECTOR wallPos = field.GetWallPosition();
 
     float halfWidth = WALL_WIDTH * 0.5f;
+    float halfHeight = WALL_HEIGHT * 0.5f;
     float halfDepth = WALL_DEPTH * 0.5f;
 
+    // X•ûŒü‚Ì”»’è
     if (ninjaPos.x < wallPos.x - halfWidth)
     {
         return false;
@@ -23,6 +25,18 @@ bool FieldCollision::CheckWall(
         return false;
     }
 
+    // Y•ûŒü‚Ì”»’è
+    if (ninjaPos.y < wallPos.y - halfHeight)
+    {
+        return false;
+    }
+
+    if (ninjaPos.y > wallPos.y + halfHeight)
+    {
+        return false;
+    }
+
+    // Z•ûŒü‚Ì”»’è
     if (ninjaPos.z < wallPos.z - halfDepth)
     {
         return false;
