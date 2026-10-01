@@ -59,11 +59,7 @@ void Ninja::LoadAnimations()
 
 bool Ninja::LoadAnimation(
     SpriteAnimation& animation,
-    const char* fileName,
-    int frameNum,
-    int width,
-    int height,
-    int interval)
+    const char* fileName, int frameNum, int width, int height, int interval)
 {
     animation.frameNum = frameNum;
 

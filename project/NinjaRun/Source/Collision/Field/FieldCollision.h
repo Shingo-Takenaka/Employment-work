@@ -10,15 +10,10 @@ class FieldCollision
 public:
 
     // Wallとの当たり判定
-    static bool CheckWall(
-        const Ninja& ninja,
-        const Field& field
-    );
+    static bool CheckWall(const Ninja& ninja,const Field& field);
 
     // Wallの当たり判定をデバッグ表示
-    static void DrawDebug(
-        const Field& field
-    );
+    static void DrawDebug(const Field& field);
 
 private:
 

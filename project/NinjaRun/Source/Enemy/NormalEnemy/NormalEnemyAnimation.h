@@ -52,9 +52,7 @@ public:
 
     // •`‰æ
     void DrawAnimation(
-        VECTOR pos,
-        float size,
-        bool isReverseX);
+        VECTOR pos, float size,bool isReverseX);
 
 private:
 
@@ -69,8 +67,7 @@ private:
 
 private:
 
-    EnemySpriteAnimation
-        m_animation[(int)NormalEnemyAnim::MAX];
+    EnemySpriteAnimation m_animation[(int)NormalEnemyAnim::MAX];
 
     NormalEnemyAnim m_currentAnim;
 };
