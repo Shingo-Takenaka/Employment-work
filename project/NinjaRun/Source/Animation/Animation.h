@@ -18,6 +18,9 @@ public:
 
     void Reset();
 
+    // w’è‚µ‚½ƒtƒŒ[ƒ€‚Å’â~
+    void SetFrame(int frame);
+
 private:
 
     static const int MAX_FRAME = 16;

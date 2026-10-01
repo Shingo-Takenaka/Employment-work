@@ -7,7 +7,8 @@ enum class NinjaAnim
 {
     WAIT,       // 待機
     WALK,       // 歩き
-    JUMP,       // ジャンプ
+    JUMP,       // 上昇
+    FALLING,    // 落下
     SLASH,      // 袈裟斬り
     GUARD,      // ガード
     SHOOT,      // 手裏剣
@@ -181,6 +182,9 @@ private:
 
     // 壁から離れる方向
     VECTOR m_wallKickDirection;
+
+    // 壁キック後の入力無効時間
+    float m_wallKickInputTimer;
 
     // 袈裟斬り中
     bool m_isSlash;

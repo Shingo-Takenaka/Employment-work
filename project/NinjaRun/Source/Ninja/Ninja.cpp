@@ -10,6 +10,12 @@ namespace
 
     // L + WASDでダッシュしているときの速度
     const float DASH_SPEED = 1.0f;
+
+    // 壁キック後、キック方向へ移動する時間
+    const float WALL_KICK_MOVE_TIME = 0.2f;
+
+    // 壁キック中の移動速度
+    const float WALL_KICK_SPEED = 1.0f;
 }
 
 Ninja::Ninja()
@@ -56,6 +62,8 @@ Ninja::Ninja()
     m_wallKickDirection =
         VGet(0.0f, 0.0f, 0.0f);
 
+    m_wallKickInputTimer = 0.0f;
+
     // 攻撃
     m_isSlash = false;
     m_isShoot = false;
@@ -100,6 +108,17 @@ void Ninja::Update()
 {
     // 手裏剣を投げたタイミングを毎フレームリセット
     m_isShootStart = false;
+
+    // 壁キック後の時間を減らす
+    if (m_wallKickInputTimer > 0.0f)
+    {
+        m_wallKickInputTimer -= 1.0f / 60.0f;
+
+        if (m_wallKickInputTimer < 0.0f)
+        {
+            m_wallKickInputTimer = 0.0f;
+        }
+    }
 
     // ノックバック中なら通常操作を行わない
     if (m_isKnockback)
@@ -226,8 +245,75 @@ void Ninja::Update()
         m_isShootStart = true;
     }
 
-    // 移動
-    if (!m_isSlash &&
+    // 壁キック直後の移動
+    if (m_wallKickInputTimer > 0.0f &&
+        !m_isSlash &&
+        !m_isGuard &&
+        !m_isShoot)
+    {
+        // WASDが入力されている場合は
+        // 通常のWASD入力を優先する
+        if (m_input.isMove)
+        {
+            m_pos.x +=
+                m_input.moveX *
+                m_moveSpeed;
+
+            m_pos.z +=
+                m_input.moveZ *
+                m_moveSpeed;
+
+            // 最後に移動した方向を記憶
+            if (m_input.moveZ > 0.0f)
+            {
+                // W
+                m_lastMoveDirection = 2;
+                m_lastShootDirection = 2;
+            }
+            else if (m_input.moveZ < 0.0f)
+            {
+                // S
+                m_lastMoveDirection = 3;
+                m_lastShootDirection = 3;
+            }
+            else if (m_input.moveX > 0.0f)
+            {
+                // D
+                m_lastMoveDirection = 0;
+                m_lastShootDirection = 0;
+            }
+            else if (m_input.moveX < 0.0f)
+            {
+                // A
+                m_lastMoveDirection = 1;
+                m_lastShootDirection = 1;
+            }
+
+            // 左右反転
+            if (m_input.moveX < 0.0f)
+            {
+                m_isReverseX = true;
+            }
+            else if (m_input.moveX > 0.0f)
+            {
+                m_isReverseX = false;
+            }
+        }
+        else
+        {
+            // WASDを押していない場合は
+            // 壁キック方向へ飛び続ける
+            m_pos.x +=
+                m_wallKickDirection.x *
+                WALL_KICK_SPEED;
+
+            m_pos.z +=
+                m_wallKickDirection.z *
+                WALL_KICK_SPEED;
+        }
+    }
+    // 通常移動
+    else if (!m_isSlash &&
         !m_isGuard &&
         !m_isShoot)
     {
@@ -312,6 +398,9 @@ void Ninja::Update()
 
 void Ninja::UpdateDash()
 {
+    // 壁キック後でもWASD入力を受け付けるため、
+    // ここでは壁キックによるダッシュ禁止を行わない
+
     // LもWASDも押していない場合
     if (!m_input.dash && !m_input.isMove)
     {
@@ -591,13 +680,6 @@ void Ninja::WallKick()
         return;
     }
 
-    // 壁から離れる方向へ移動
-    m_pos.x +=
-        m_wallKickDirection.x * 1.0f;
-
-    m_pos.z +=
-        m_wallKickDirection.z * 1.0f;
-
     // 上方向へ強く飛ぶ
     m_jumpSpeed = 1.5f;
 
@@ -607,4 +689,8 @@ void Ninja::WallKick()
 
     // 壁キック権を消費
     m_canWallKick = false;
+
+    // 壁キック後は一定時間、
+    // キック方向への移動を行う
+    m_wallKickInputTimer = WALL_KICK_MOVE_TIME;
 }

@@ -49,6 +49,9 @@
     <Filter Include="Source\Collision\TouchEnemy">
       <UniqueIdentifier>{8ba9bf55-13aa-4a3c-bcfe-63a82151adf2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Enemy\WalkEnemy">
+      <UniqueIdentifier>{91d3f7e1-27db-4851-a0f3-6633be9d0918}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Camera\Camera.cpp">
@@ -117,6 +120,12 @@
     <ClCompile Include="Source\Collision\TouchEnemyDebug.cpp">
       <Filter>Source\Collision\TouchEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy\WalkEnemy\WalkEnemy.cpp">
+      <Filter>Source\Enemy\WalkEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\WalkEnemy\WalkEnemyAnimation.cpp">
+      <Filter>Source\Enemy\WalkEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -175,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="Source\Collision\TouchEnemy.h">
       <Filter>Source\Collision\TouchEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\WalkEnemy\WalkEnemy.h">
+      <Filter>Source\Enemy\WalkEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\WalkEnemy\WalkEnemyAnimation.h">
+      <Filter>Source\Enemy\WalkEnemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

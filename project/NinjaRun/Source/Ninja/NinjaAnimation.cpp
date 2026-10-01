@@ -20,11 +20,20 @@ void Ninja::LoadAnimations()
         32,
         5);
 
-    // ジャンプ
+    // ジャンプ上昇
     LoadAnimation(
         m_animation[(int)NinjaAnim::JUMP],
         "Data/Ninja/Jump/Jump.png",
-        9,
+        6,
+        32,
+        32,
+        8);
+
+    // ジャンプ落下
+    LoadAnimation(
+        m_animation[(int)NinjaAnim::FALLING],
+        "Data/Ninja/Jump/falling.png",
+        3,
         32,
         32,
         8);
@@ -59,7 +68,11 @@ void Ninja::LoadAnimations()
 
 bool Ninja::LoadAnimation(
     SpriteAnimation& animation,
-    const char* fileName, int frameNum, int width, int height, int interval)
+    const char* fileName,
+    int frameNum,
+    int width,
+    int height,
+    int interval)
 {
     animation.frameNum = frameNum;
 
@@ -140,11 +153,29 @@ void Ninja::UpdateAnimation(bool isMove)
     }
     else if (m_isJump)
     {
-        if (m_currentAnim != NinjaAnim::JUMP)
+        if (m_jumpSpeed > 0.0f)
         {
-            m_currentAnim = NinjaAnim::JUMP;
+            if (m_currentAnim != NinjaAnim::JUMP)
+            {
+                m_currentAnim = NinjaAnim::JUMP;
 
-            m_animation[(int)m_currentAnim].anim.Reset();
+                m_animation[(int)m_currentAnim].anim.Reset();
+            }
+        }
+        else
+        {
+            if (m_currentAnim != NinjaAnim::FALLING)
+            {
+                m_currentAnim = NinjaAnim::FALLING;
+
+                m_animation[(int)m_currentAnim].anim.Reset();
+            }
+
+            // 落下速度が0以下になるまでは2枚目で止める
+            if (m_jumpSpeed <= 0.0f)
+            {
+                m_animation[(int)NinjaAnim::FALLING].anim.SetFrame(1);
+            }
         }
     }
     else if (isMove)

@@ -77,3 +77,19 @@ void Animation::Reset()
     m_frame = 0;
     m_timer = 0;
 }
+
+void Animation::SetFrame(int frame)
+{
+    if (frame < 0)
+    {
+        frame = 0;
+    }
+
+    if (frame >= m_frameMax)
+    {
+        frame = m_frameMax - 1;
+    }
+
+    m_frame = frame;
+    m_timer = 0;
+}
