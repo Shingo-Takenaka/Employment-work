@@ -33,20 +33,14 @@ void NormalEnemy::Update(const Ninja& ninja)
     m_playerPos = ninja.GetPosition();
 
     // Player‚ÌÀ•W
-    VECTOR ninjaPos =
-        ninja.GetPosition();
+    VECTOR ninjaPos = ninja.GetPosition();
 
     // XEZ•ûŒü‚Ì‹——£
-    float dx =
-        ninjaPos.x - m_pos.x;
+    float dx = ninjaPos.x - m_pos.x;
 
-    float dz =
-        ninjaPos.z - m_pos.z;
+    float dz = ninjaPos.z - m_pos.z;
 
-    float distance =
-        sqrtf(
-            dx * dx +
-            dz * dz);
+    float distance = sqrtf(dx * dx + dz * dz);
 
     // ËŒ‚”»’è
     const float shootRange = 50.0f;
