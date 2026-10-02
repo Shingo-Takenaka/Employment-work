@@ -1,7 +1,8 @@
+
 #include "TouchEnemy.h"
 
 #include "../Ninja/Ninja.h"
-#include "../Enemy/NormalEnemy/NormalEnemy.h"
+#include "../Enemy/EnemyBase/EnemyBase.h"
 
 #include <math.h>
 
@@ -29,9 +30,10 @@ float TouchEnemy::GetTouchHeight()
     return 10.0f;
 }
 
+// 接触判定
 bool TouchEnemy::Check(
     const Ninja& ninja,
-    const NormalEnemy& enemy)
+    const EnemyBase& enemy)
 {
     // 現在のEnemyの座標を基準にする
     VECTOR enemyPos =
@@ -71,9 +73,10 @@ bool TouchEnemy::Check(
         dz <= depth;
 }
 
+// ノックバック処理
 void TouchEnemy::Apply(
     Ninja& ninja,
-    const NormalEnemy& enemy)
+    const EnemyBase& enemy)
 {
     // 現在のEnemyの座標を基準にする
     VECTOR enemyPos =

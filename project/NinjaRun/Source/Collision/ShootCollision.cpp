@@ -1,7 +1,8 @@
+
 #include "ShootCollision.h"
 
 #include "../Ninja/NinjaAttack.h"
-#include "../Enemy/NormalEnemy/NormalEnemy.h"
+#include "../Enemy/EnemyBase/EnemyBase.h"
 
 #include <math.h>
 
@@ -13,7 +14,7 @@ ShootCollision::ShootCollision()
 bool ShootCollision::Check(
     const NinjaAttack& ninjaAttack,
     int shootIndex,
-    NormalEnemy& enemy)
+    const EnemyBase& enemy)
 {
     if (enemy.IsDead())
     {

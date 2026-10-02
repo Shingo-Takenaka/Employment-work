@@ -1,7 +1,8 @@
+
 #include "PlayerAttackCollision.h"
 
 #include "../Ninja/Ninja.h"
-#include "../Enemy/NormalEnemy/NormalEnemy.h"
+#include "../Enemy/EnemyBase/EnemyBase.h"
 
 #include <math.h>
 
@@ -12,7 +13,7 @@ PlayerAttackCollision::PlayerAttackCollision()
 // Player‚ÌUŒ‚‚ÆEnemy‚ª“–‚½‚Á‚Ä‚¢‚é‚©
 bool PlayerAttackCollision::Check(
     const Ninja& ninja,
-    const NormalEnemy& enemy)
+    const EnemyBase& enemy)
 {
     // UŒ‚’†‚Å‚È‚¯‚ê‚Î“–‚½‚è”»’è‚È‚µ
     if (!ninja.IsSlash())

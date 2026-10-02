@@ -3,23 +3,20 @@
 #include "DxLib.h"
 
 class Ninja;
-class NormalEnemy;
+class EnemyBase;
 
 class TouchEnemy
 {
 public:
-
     // 接触判定
     static bool Check(
         const Ninja& ninja,
-        const NormalEnemy& enemy
-    );
+        const EnemyBase& enemy);
 
-    // ノックバック
+    // ノックバック処理
     static void Apply(
         Ninja& ninja,
-        const NormalEnemy& enemy
-    );
+        const EnemyBase& enemy);
 
     // X方向の判定範囲
     static float GetTouchWidth();

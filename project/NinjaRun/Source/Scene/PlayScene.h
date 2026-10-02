@@ -10,6 +10,7 @@
 #include "../Collision/PlayerAttackCollision.h"
 #include "../Collision/ShootCollision.h"
 #include "../Collision/EnemyAttackCollision.h"
+#include "../Enemy/WalkEnemy/WalkEnemy.h"
 
 class PlayScene
 {
@@ -30,6 +31,8 @@ private:
     Ninja m_ninja;
 
     NormalEnemy m_enemy;
+
+    WalkEnemy m_walkEnemy;
 
     bool m_isTouchEnemy;
 

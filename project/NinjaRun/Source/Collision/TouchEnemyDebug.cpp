@@ -1,12 +1,13 @@
+
 #include "TouchEnemyDebug.h"
 
 #include "../Ninja/Ninja.h"
-#include "../Enemy/NormalEnemy/NormalEnemy.h"
+#include "../Enemy/EnemyBase/EnemyBase.h"
 #include "TouchEnemy.h"
 
 void TouchEnemyDebug::Draw(
     const Ninja& ninja,
-    const NormalEnemy& enemy)
+    const EnemyBase& enemy)
 {
     VECTOR ninjaPos =
         ninja.GetPosition();

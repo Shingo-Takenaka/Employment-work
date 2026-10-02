@@ -1,19 +1,19 @@
+
 #pragma once
 
 #include "DxLib.h"
 
 class NinjaAttack;
-class NormalEnemy;
+class EnemyBase;
 
 class ShootCollision
 {
 public:
-
     ShootCollision();
 
     // Žè— Œ•‚ÆEnemy‚Ì“–‚½‚è”»’è
     static bool Check(
         const NinjaAttack& ninjaAttack,
         int shootIndex,
-        NormalEnemy& enemy);
+        const EnemyBase& enemy);
 };
