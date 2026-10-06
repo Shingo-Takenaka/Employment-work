@@ -285,20 +285,20 @@ void PlayScene::Draw()
     m_camera.Draw();
 
     // NormalEnemy接触判定デバッグ
-    if (!m_enemy.IsDead())
+    /*if (!m_enemy.IsDead())
     {
         TouchEnemyDebug::Draw(
             m_ninja,
             m_enemy);
-    }
+    }*/
 
     // WalkEnemy接触判定デバッグ
-    if (!m_walkEnemy.IsDead())
+    /*if (!m_walkEnemy.IsDead())
     {
         TouchEnemyDebug::Draw(
             m_ninja,
             m_walkEnemy);
-    }
+    }*/
 
     // NormalEnemy攻撃判定デバッグ
     if (!m_enemy.IsDead() &&
@@ -316,16 +316,12 @@ void PlayScene::Draw()
     }
 
     // Wallの当たり判定デバッグ
-    FieldCollision::DrawDebug(
-        m_field);
+    /*FieldCollision::DrawDebug(
+        m_field);*/
 
-    // Playerの座標を左上に表示
-    DrawFormatString(
-        10,
-        10,
+    // Playerの座標
+    DrawFormatString( 10, 10,
         GetColor(255, 255, 255),
         "Player X: %.2f Y: %.2f Z: %.2f",
-        playerPos.x,
-        playerPos.y,
-        playerPos.z);
+        playerPos.x, playerPos.y, playerPos.z);
 }
