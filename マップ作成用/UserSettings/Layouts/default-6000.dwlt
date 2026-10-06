@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -694,10 +694,10 @@ MonoBehaviour:
       m_LastClickedID:
         m_Data: 0
       m_ExpandedIDs:
-      - m_Data: -21802
-      - m_Data: -3370
-      - m_Data: -1344
-      - m_Data: -1342
+      - m_Data: -23096
+      - m_Data: -19180
+      - m_Data: -18440
+      - m_Data: -1290
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1220,9 +1220,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 1.5781517, y: 2.2869213, z: 1.723969}
+    m_Target: {x: -1.1907597, y: -3.5729892, z: -0.8943386}
     speed: 2
-    m_Value: {x: 1.5781517, y: 2.2869213, z: 1.723969}
+    m_Value: {x: -1.1907597, y: -3.5729892, z: -0.8943386}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1268,13 +1268,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.13503139, y: -0.6894791, z: 0.13317835, w: 0.69905}
+    m_Target: {x: -0.0722326, y: -0.9181478, z: 0.197435, w: -0.3358866}
     speed: 2
-    m_Value: {x: 0.13482997, y: -0.69051915, z: 0.13337927, w: 0.6980072}
+    m_Value: {x: -0.07252818, y: -0.9176368, z: 0.19732513, w: -0.33726117}
   m_Size:
-    m_Target: 5.066801
+    m_Target: 8.887186
     speed: 2
-    m_Value: 5.305551
+    m_Value: 8.504484
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1412,7 +1412,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Data
+    - Assets/Environment Pack 2 (Cliffs & Hills)/Prefabs/Built-In
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1422,7 +1422,7 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 68
   m_LastFolders:
-  - Assets/Data
+  - Assets/Environment Pack 2 (Cliffs & Hills)/Prefabs/Built-In
   m_LastFoldersGridSize: 68
   m_LastProjectPath: "C:\\\u7AF9\u4E2D\u69D9\u543E\\Employment-work\\\u30DE\u30C3\u30D7\u4F5C\u6210\u7528"
   m_LockTracker:
@@ -1431,12 +1431,15 @@ MonoBehaviour:
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs:
-    - m_Data: 35530
+    - m_Data: 37186
     m_LastClickedID:
-      m_Data: 35530
+      m_Data: 37186
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 35438
+    - m_Data: 35434
+    - m_Data: 35528
+    - m_Data: 37058
+    - m_Data: 37070
     - m_Data: 1000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1470,7 +1473,7 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 35438
+    - m_Data: 35434
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
