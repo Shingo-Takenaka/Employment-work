@@ -13,9 +13,7 @@ Animation::Animation()
 }
 
 // 全フレーム同じ速度
-void Animation::Init(
-    int frameMax,
-    int interval)
+void Animation::Init(int frameMax, int interval)
 {
     m_frame = 0;
     m_timer = 0;
@@ -28,9 +26,7 @@ void Animation::Init(
 }
 
 // フレームごとに速度を設定
-void Animation::Init(
-    int frameMax,
-    const int* intervals)
+void Animation::Init(int frameMax, const int* intervals)
 {
     m_frame = 0;
     m_timer = 0;

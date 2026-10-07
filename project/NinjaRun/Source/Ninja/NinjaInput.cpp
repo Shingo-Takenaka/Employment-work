@@ -19,25 +19,94 @@ void Ninja::UpdateInput()
 
     // キーボード入力
     // 移動
-    if (Input::IsPress(KEY_INPUT_A))
+    bool pressA = Input::IsPress(KEY_INPUT_A);
+    bool pressD = Input::IsPress(KEY_INPUT_D);
+    bool pressW = Input::IsPress(KEY_INPUT_W);
+    bool pressS = Input::IsPress(KEY_INPUT_S);
+
+    // Aを新しく押した
+    if (pressA && !m_prevA)
     {
-        m_input.moveX -= 1.0f;
+        m_lastHorizontalInput = -1;
     }
 
-    if (Input::IsPress(KEY_INPUT_D))
+    // Dを新しく押した
+    if (pressD && !m_prevD)
     {
-        m_input.moveX += 1.0f;
+        m_lastHorizontalInput = 1;
     }
 
-    if (Input::IsPress(KEY_INPUT_W))
+    // Wを新しく押した
+    if (pressW && !m_prevW)
     {
-        m_input.moveZ += 1.0f;
+        m_lastVerticalInput = 1;
     }
 
-    if (Input::IsPress(KEY_INPUT_S))
+    // Sを新しく押した
+    if (pressS && !m_prevS)
     {
-        m_input.moveZ -= 1.0f;
+        m_lastVerticalInput = -1;
     }
+
+    // AとDの入力
+    if (pressA && pressD)
+    {
+        // 後から押した方向を優先
+        if (m_lastHorizontalInput == -1)
+        {
+            m_input.moveX = -1.0f;
+        }
+        else if (m_lastHorizontalInput == 1)
+        {
+            m_input.moveX = 1.0f;
+        }
+    }
+    else if (pressA)
+    {
+        m_input.moveX = -1.0f;
+    }
+    else if (pressD)
+    {
+        m_input.moveX = 1.0f;
+    }
+    else
+    {
+        m_lastHorizontalInput = 0;
+    }
+
+    // WとSの入力
+    if (pressW && pressS)
+    {
+        // 後から押した方向を優先
+        if (m_lastVerticalInput == 1)
+        {
+            m_input.moveZ = 1.0f;
+        }
+        else if (m_lastVerticalInput == -1)
+        {
+            m_input.moveZ = -1.0f;
+        }
+    }
+    else if (pressW)
+    {
+        m_input.moveZ = 1.0f;
+    }
+    else if (pressS)
+    {
+        m_input.moveZ = -1.0f;
+    }
+    else
+    {
+        m_lastVerticalInput = 0;
+    }
+
+    // 次のフレーム用にA/Dの状態を保存
+    m_prevA = pressA;
+    m_prevD = pressD;
+
+    // 次のフレーム用にW/Sの状態を保存
+    m_prevW = pressW;
+    m_prevS = pressS;
 
     // ジャンプ
     if (Input::IsTrigger(KEY_INPUT_SPACE))

@@ -11,7 +11,7 @@ public:
     void Draw();
 
 private:
-    VECTOR m_eye;
+    VECTOR m_CameraPos;
     VECTOR m_target;
 
     VECTOR m_offset;

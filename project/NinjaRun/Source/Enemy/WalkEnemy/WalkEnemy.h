@@ -10,24 +10,23 @@ class Ninja;
 class WalkEnemy : public EnemyBase
 {
 public:
-	WalkEnemy();
-	~WalkEnemy();
 
-	void Update(const Ninja& ninja) override;
-	void Draw() override;
+    WalkEnemy();
+    ~WalkEnemy();
+
+    void Update(const Ninja& ninja) override;
+    void Draw() override;
+
+    void SetPosition(VECTOR pos);
 
 private:
-	// 移動速度
-	float m_moveSpeed;
 
-	// 移動範囲
-	float m_minX;
-	float m_maxX;
+    float m_moveSpeed;
 
-	// 移動方向 trueなら左、falseなら右
-	bool m_isMoveLeft;
+    float m_minX;
+    float m_maxX;
 
-	// アニメーション
-	WalkEnemyAnimation m_animation;
+    bool m_isMoveLeft;
 
+    WalkEnemyAnimation m_animation;
 };

@@ -103,6 +103,7 @@ void Ninja::UpdateAnimation(bool isMove)
         SpriteAnimation& slashAnim =
             m_animation[(int)NinjaAnim::SLASH];
 
+        // アニメーション最後まで再生したら攻撃終了
         if (slashAnim.anim.GetFrame() ==
             slashAnim.frameNum - 1)
         {
@@ -116,6 +117,7 @@ void Ninja::UpdateAnimation(bool isMove)
         SpriteAnimation& shootAnim =
             m_animation[(int)NinjaAnim::SHOOT];
 
+        // アニメーション最後まで再生したら攻撃終了
         if (shootAnim.anim.GetFrame() ==
             shootAnim.frameNum - 1)
         {
@@ -130,7 +132,9 @@ void Ninja::UpdateAnimation(bool isMove)
         {
             m_currentAnim = NinjaAnim::SLASH;
 
-            m_animation[(int)m_currentAnim].anim.Reset();
+            m_animation[
+                (int)m_currentAnim
+            ].anim.Reset();
         }
     }
     else if (m_isGuard)
@@ -139,7 +143,9 @@ void Ninja::UpdateAnimation(bool isMove)
         {
             m_currentAnim = NinjaAnim::GUARD;
 
-            m_animation[(int)m_currentAnim].anim.Reset();
+            m_animation[
+                (int)m_currentAnim
+            ].anim.Reset();
         }
     }
     else if (m_isShoot)
@@ -148,7 +154,9 @@ void Ninja::UpdateAnimation(bool isMove)
         {
             m_currentAnim = NinjaAnim::SHOOT;
 
-            m_animation[(int)m_currentAnim].anim.Reset();
+            m_animation[
+                (int)m_currentAnim
+            ].anim.Reset();
         }
     }
     else if (m_isJump)
@@ -159,7 +167,9 @@ void Ninja::UpdateAnimation(bool isMove)
             {
                 m_currentAnim = NinjaAnim::JUMP;
 
-                m_animation[(int)m_currentAnim].anim.Reset();
+                m_animation[
+                    (int)m_currentAnim
+                ].anim.Reset();
             }
         }
         else
@@ -168,13 +178,17 @@ void Ninja::UpdateAnimation(bool isMove)
             {
                 m_currentAnim = NinjaAnim::FALLING;
 
-                m_animation[(int)m_currentAnim].anim.Reset();
+                m_animation[
+                    (int)m_currentAnim
+                ].anim.Reset();
             }
 
             // 落下速度が0以下になるまでは2枚目で止める
             if (m_jumpSpeed <= 0.0f)
             {
-                m_animation[(int)NinjaAnim::FALLING].anim.SetFrame(1);
+                m_animation[
+                    (int)NinjaAnim::FALLING
+                ].anim.SetFrame(1);
             }
         }
     }
@@ -184,7 +198,9 @@ void Ninja::UpdateAnimation(bool isMove)
         {
             m_currentAnim = NinjaAnim::WALK;
 
-            m_animation[(int)m_currentAnim].anim.Reset();
+            m_animation[
+                (int)m_currentAnim
+            ].anim.Reset();
         }
     }
     else
@@ -193,12 +209,16 @@ void Ninja::UpdateAnimation(bool isMove)
         {
             m_currentAnim = NinjaAnim::WAIT;
 
-            m_animation[(int)m_currentAnim].anim.Reset();
+            m_animation[
+                (int)m_currentAnim
+            ].anim.Reset();
         }
     }
 
     // 現在のアニメーション更新
-    m_animation[(int)m_currentAnim].anim.Update();
+    m_animation[
+        (int)m_currentAnim
+    ].anim.Update();
 }
 
 void Ninja::DrawAnimation()

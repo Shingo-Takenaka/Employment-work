@@ -5,7 +5,8 @@
 WalkEnemy::WalkEnemy()
     : EnemyBase(1)
 {
-    m_pos = VGet(50.0f, 0.0f, 50.0f);
+    // 初期位置はEnemyManagerから設定する
+    m_pos = VGet(0.0f, 0.0f, 0.0f);
 
     // 移動速度
     m_moveSpeed = 0.2f;
@@ -20,7 +21,6 @@ WalkEnemy::WalkEnemy()
 
     // アニメーション読み込み
     m_animation.LoadAnimations();
-
 }
 
 WalkEnemy::~WalkEnemy()
@@ -68,7 +68,6 @@ void WalkEnemy::Update(const Ninja& ninja)
 
     // アニメーション更新
     m_animation.Update();
-
 }
 
 // 描画
@@ -85,5 +84,13 @@ void WalkEnemy::Draw()
         m_pos,
         m_size,
         m_isReverseX);
+}
 
+void WalkEnemy::SetPosition(VECTOR pos)
+{
+    m_pos = pos;
+
+    // 設定された位置を中心に移動範囲を決める
+    m_minX = m_pos.x - 25.0f;
+    m_maxX = m_pos.x + 25.0f;
 }

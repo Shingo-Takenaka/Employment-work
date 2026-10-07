@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Collision\TouchEnemyDebug.cpp" />
     <ClCompile Include="Source\DrawManager\DrawManager.cpp" />
     <ClCompile Include="Source\Enemy\EnemyBase\EnemyBase.cpp" />
+    <ClCompile Include="Source\Enemy\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemy.cpp" />
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.cpp" />
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemyAttack.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="Source\Collision\TouchEnemyDebug.h" />
     <ClInclude Include="Source\DrawManager\DrawManager.h" />
     <ClInclude Include="Source\Enemy\EnemyBase\EnemyBase.h" />
+    <ClInclude Include="Source\Enemy\EnemyManager\EnemyManager.h" />
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemy.h" />
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemyAnimation.h" />
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemyAttack.h" />
@@ -64,6 +66,7 @@
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Ninja\Ninja.h" />
     <ClInclude Include="Source\Ninja\NinjaAttack.h" />
+    <ClInclude Include="Source\Ninja\NinjaInput.h" />
     <ClInclude Include="Source\Scene\PlayScene.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
   </ItemGroup>

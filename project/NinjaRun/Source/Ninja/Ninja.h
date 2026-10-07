@@ -2,6 +2,7 @@
 
 #include "DxLib.h"
 #include "../Animation/Animation.h"
+#include "NinjaInput.h"
 
 enum class NinjaAnim
 {
@@ -14,24 +15,6 @@ enum class NinjaAnim
     SHOOT,      // 手裏剣
 
     MAX
-};
-
-// 入力情報
-struct NinjaInputState
-{
-    // 移動方向
-    float moveX;
-    float moveZ;
-
-    // 移動しているか
-    bool isMove;
-
-    // 各入力
-    bool jump;
-    bool dash;
-    bool slash;
-    bool guard;
-    bool shoot;
 };
 
 // アニメーション情報
@@ -61,14 +44,11 @@ public:
     void Draw();
 
     VECTOR GetPosition() const;
-
     void SetPosition(VECTOR pos);
 
     // 敵からのノックバック
     void ApplyKnockback(
-        VECTOR direction,
-        float strength,
-        float duration);
+        VECTOR direction, float strength, float duration);
 
     // ノックバック中か
     bool IsKnockback() const;
@@ -123,6 +103,25 @@ private:
     // アニメーション描画
     void DrawAnimation();
 
+
+    // 入力関連
+    int m_lastHorizontalInput;
+    int m_lastVerticalInput;
+
+    bool m_prevA;
+    bool m_prevD;
+    bool m_prevW;
+    bool m_prevS;
+
+    // Lキーの前フレーム状態
+    bool m_prevDash;
+
+    // 入力情報
+    NinjaInputState m_input;
+
+
+    // -----移動関連-----
+
     // 最後に移動した方向
     // 0 = +X
     // 1 = -X
@@ -130,8 +129,14 @@ private:
     // 3 = -Z
     int m_lastMoveDirection;
 
-    // 手裏剣を投げる方向
-    int m_lastShootDirection;
+    // 移動速度
+    float m_moveSpeed;
+
+    // 左右反転
+    bool m_isReverseX;
+
+
+    // -----ダッシュ関連-----
 
     // ダッシュ方向
     int m_dashDirection;
@@ -139,28 +144,17 @@ private:
     // ダッシュ中か
     bool m_isDash;
 
-    // ダッシュ経過時間
+    // WASDを押し始めてからの経過時間
     float m_dashTimer;
 
     // ダッシュ速度
     float m_dashSpeed;
 
-private:
+    // Lのみで1.5の速度で移動している時間
+    float m_dashAccelTimer;
 
-    // プレイヤー情報
-    VECTOR m_pos;
 
-    float m_size;
-
-    float m_moveSpeed;
-
-    // 左右反転
-    bool m_isReverseX;
-
-    // 入力情報
-    NinjaInputState m_input;
-
-    // 状態
+    // -----ジャンプ関連-----
 
     // ジャンプ中
     bool m_isJump;
@@ -168,14 +162,14 @@ private:
     // ジャンプ開始時の高さ
     float m_groundY;
 
-    // 壁キック後に戻る地面のY座標
-    float m_wallKickGroundY;
-
     // ジャンプ速度
     float m_jumpSpeed;
 
     // 重力
     float m_gravity;
+
+
+    // -----壁キック関連-----
 
     // 壁キックできる状態か
     bool m_canWallKick;
@@ -183,8 +177,14 @@ private:
     // 壁から離れる方向
     VECTOR m_wallKickDirection;
 
+    // 壁キック後に戻る地面のY座標
+    float m_wallKickGroundY;
+
     // 壁キック後の入力無効時間
     float m_wallKickInputTimer;
+
+
+    // -----攻撃関連-----
 
     // 袈裟斬り中
     bool m_isSlash;
@@ -198,10 +198,25 @@ private:
     // 手裏剣を投げたタイミング
     bool m_isShootStart;
 
-    // アニメーション
+    // 手裏剣を投げる方向
+    int m_lastShootDirection;
+
+
+    // プレイヤー情報
+
+    VECTOR m_pos;
+
+    float m_size;
+
+
+    // アニメーション関連
+
     SpriteAnimation m_animation[(int)NinjaAnim::MAX];
 
     NinjaAnim m_currentAnim;
+
+
+    // ノックバック関連
 
     // ノックバック中
     bool m_isKnockback;

@@ -7,7 +7,7 @@
 NormalEnemy::NormalEnemy()
     : EnemyBase(1)
 {
-    m_pos = VGet(40.0f, 0.0f, 50.0f);
+    m_pos = VGet(0.0f, 0.0f, 0.0f);
 
     // 待機時は右向き
     m_isReverseX = false;
@@ -48,8 +48,7 @@ void NormalEnemy::Update(const Ninja& ninja)
     if (distance <= shootRange)
     {
         // 射撃アニメーション
-        m_animation.SetAnimation(
-            NormalEnemyAnim::SHOOT);
+        m_animation.SetAnimation(NormalEnemyAnim::SHOOT);
 
         if (ninjaPos.x < m_pos.x)
         {
@@ -65,8 +64,7 @@ void NormalEnemy::Update(const Ninja& ninja)
     else
     {
         // 待機
-        m_animation.SetAnimation(
-            NormalEnemyAnim::WAIT);
+        m_animation.SetAnimation(NormalEnemyAnim::WAIT);
 
         // 待機時は右向き
         m_isReverseX = false;
@@ -76,14 +74,10 @@ void NormalEnemy::Update(const Ninja& ninja)
     m_animation.Update();
 
     // 射撃アニメーション中
-    if (m_animation.GetCurrentAnimation() ==
-        NormalEnemyAnim::SHOOT)
+    if (m_animation.GetCurrentAnimation() == NormalEnemyAnim::SHOOT)
     {
         // 現在のアニメーションフレームを渡す
-        m_attack.Update(
-            m_pos,
-            ninjaPos,
-            m_animation.GetFrame());
+        m_attack.Update(m_pos, ninjaPos, m_animation.GetFrame());
     }
     else
     {
@@ -102,14 +96,10 @@ void NormalEnemy::Draw()
     }
 
     // 敵本体
-    m_animation.DrawAnimation(
-        m_pos,
-        m_size,
-        m_isReverseX);
+    m_animation.DrawAnimation(m_pos, m_size, m_isReverseX);
 
     // 攻撃エフェクト
-    m_attack.Draw(
-        m_pos);
+    m_attack.Draw(m_pos);
 }
 
 bool NormalEnemy::IsAttackActive() const
@@ -119,8 +109,7 @@ bool NormalEnemy::IsAttackActive() const
 
 VECTOR NormalEnemy::GetAttackStartPos() const
 {
-    VECTOR start =
-        m_pos;
+    VECTOR start = m_pos;
 
     start.y += 3.0f;
 
@@ -132,21 +121,13 @@ VECTOR NormalEnemy::GetAttackTargetPos() const
     VECTOR start =
         GetAttackStartPos();
 
-    VECTOR attackTarget =
-        m_attack.GetAttackTargetPos();
+    VECTOR attackTarget = m_attack.GetAttackTargetPos();
 
-    float dx =
-        attackTarget.x -
-        m_pos.x;
+    float dx = attackTarget.x - m_pos.x;
 
-    float dz =
-        attackTarget.z -
-        m_pos.z;
+    float dz = attackTarget.z - m_pos.z;
 
-    float length =
-        sqrtf(
-            dx * dx +
-            dz * dz);
+    float length = sqrtf( dx * dx + dz * dz);
 
     if (length <= 0.001f)
     {
@@ -156,11 +137,9 @@ VECTOR NormalEnemy::GetAttackTargetPos() const
     dx /= length;
     dz /= length;
 
-    start.x +=
-        dx * 50.0f;
+    start.x += dx * 50.0f;
 
-    start.z +=
-        dz * 50.0f;
+    start.z += dz * 50.0f;
 
     return start;
 }

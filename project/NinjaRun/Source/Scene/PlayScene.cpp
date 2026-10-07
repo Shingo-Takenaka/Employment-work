@@ -1,4 +1,3 @@
-
 #include "PlayScene.h"
 
 #include "../Collision/TouchEnemyDebug.h"
@@ -60,46 +59,55 @@ void PlayScene::Update()
         }
     }
 
+    // “Gˆê——‚ğæ“¾
+    auto& normalEnemies =
+        m_enemyManager.GetNormalEnemies();
+
+    auto& walkEnemies =
+        m_enemyManager.GetWalkEnemies();
+
     // Player‚Ì‹ßÚUŒ‚‚ÆNormalEnemy‚Ì“–‚½‚è”»’è
-    if (!m_enemy.IsDead() &&
-        m_playerAttackCollision.Check(
-            m_ninja,
-            m_enemy))
+    for (auto& enemy : normalEnemies)
     {
-        m_enemy.TakeDamage(1);
+        if (!enemy.IsDead() &&
+            m_playerAttackCollision.Check(
+                m_ninja,
+                enemy))
+        {
+            enemy.TakeDamage(1);
+        }
     }
 
     // Player‚Ì‹ßÚUŒ‚‚ÆWalkEnemy‚Ì“–‚½‚è”»’è
-    if (!m_walkEnemy.IsDead() &&
-        m_playerAttackCollision.Check(
-            m_ninja,
-            m_walkEnemy))
+    for (auto& enemy : walkEnemies)
     {
-        m_walkEnemy.TakeDamage(1);
+        if (!enemy.IsDead() &&
+            m_playerAttackCollision.Check(
+                m_ninja,
+                enemy))
+        {
+            enemy.TakeDamage(1);
+        }
     }
 
-    // NormalEnemyXV
-    if (!m_enemy.IsDead())
-    {
-        m_enemy.Update(m_ninja);
-    }
-
-    // WalkEnemyXV
-    if (!m_walkEnemy.IsDead())
-    {
-        m_walkEnemy.Update(m_ninja);
-    }
+    // “GXV
+    m_enemyManager.Update(m_ninja);
 
     // NormalEnemyUŒ‚‚ÆPlayer‚Ì“–‚½‚è”»’è
-    if (!m_enemy.IsDead() &&
-        m_enemy.IsAttackActive() &&
-        !m_ninja.IsKnockback())
+    for (auto& enemy : normalEnemies)
     {
+        if (enemy.IsDead() ||
+            !enemy.IsAttackActive() ||
+            m_ninja.IsKnockback())
+        {
+            continue;
+        }
+
         VECTOR start =
-            m_enemy.GetAttackStartPos();
+            enemy.GetAttackStartPos();
 
         VECTOR target =
-            m_enemy.GetAttackTargetPos();
+            enemy.GetAttackTargetPos();
 
         if (EnemyAttackCollision::Check(
             m_ninja,
@@ -135,33 +143,43 @@ void PlayScene::Update()
     }
 
     // NormalEnemy‚Æ‚ÌÚG
-    if (!m_enemy.IsDead())
+    for (auto& enemy : normalEnemies)
     {
+        if (enemy.IsDead())
+        {
+            continue;
+        }
+
         if (TouchEnemy::Check(
             m_ninja,
-            m_enemy))
+            enemy))
         {
             if (!m_ninja.IsKnockback())
             {
                 TouchEnemy::Apply(
                     m_ninja,
-                    m_enemy);
+                    enemy);
             }
         }
     }
 
     // WalkEnemy‚Æ‚ÌÚG
-    if (!m_walkEnemy.IsDead())
+    for (auto& enemy : walkEnemies)
     {
+        if (enemy.IsDead())
+        {
+            continue;
+        }
+
         if (TouchEnemy::Check(
             m_ninja,
-            m_walkEnemy))
+            enemy))
         {
             if (!m_ninja.IsKnockback())
             {
                 TouchEnemy::Apply(
                     m_ninja,
-                    m_walkEnemy);
+                    enemy);
             }
         }
     }
@@ -189,28 +207,43 @@ void PlayScene::Update()
         bool isHit = false;
 
         // NormalEnemy‚Æ‚Ì“–‚½‚è”»’è
-        if (!m_enemy.IsDead())
+        for (auto& enemy : normalEnemies)
         {
+            if (enemy.IsDead())
+            {
+                continue;
+            }
+
             if (ShootCollision::Check(
                 m_playerAttack,
                 i,
-                m_enemy))
+                enemy))
             {
-                m_enemy.TakeDamage(1);
+                enemy.TakeDamage(1);
                 isHit = true;
+                break;
             }
         }
 
         // WalkEnemy‚Æ‚Ì“–‚½‚è”»’è
-        if (!isHit && !m_walkEnemy.IsDead())
+        if (!isHit)
         {
-            if (ShootCollision::Check(
-                m_playerAttack,
-                i,
-                m_walkEnemy))
+            for (auto& enemy : walkEnemies)
             {
-                m_walkEnemy.TakeDamage(1);
-                isHit = true;
+                if (enemy.IsDead())
+                {
+                    continue;
+                }
+
+                if (ShootCollision::Check(
+                    m_playerAttack,
+                    i,
+                    enemy))
+                {
+                    enemy.TakeDamage(1);
+                    isHit = true;
+                    break;
+                }
             }
         }
 
@@ -254,29 +287,44 @@ void PlayScene::Draw()
             });
     }
 
+    // “G‚ğ•`‰æ
     // NormalEnemy“o˜^
-    VECTOR enemyPos =
-        m_enemy.GetPosition();
+    auto& normalEnemies =
+        m_enemyManager.GetNormalEnemies();
 
-    m_drawManager.Add(
-        enemyPos,
-        enemyPos.z,
-        [&]()
-        {
-            m_enemy.Draw();
-        });
+    for (auto& enemy : normalEnemies)
+    {
+        VECTOR enemyPos =
+            enemy.GetPosition();
+
+        NormalEnemy* enemyPtr = &enemy;
+
+        m_drawManager.Add(
+            enemyPos,
+            enemyPos.z,
+            [enemyPtr]()
+            {
+                enemyPtr->Draw();
+            });
+    }
 
     // WalkEnemy“o˜^
-    VECTOR walkEnemyPos =
-        m_walkEnemy.GetPosition();
+    auto& walkEnemies =
+        m_enemyManager.GetWalkEnemies();
 
-    m_drawManager.Add(
-        walkEnemyPos,
-        walkEnemyPos.z,
-        [&]()
-        {
-            m_walkEnemy.Draw();
-        });
+    for (auto& enemy : walkEnemies)
+    {
+        VECTOR enemyPos =
+            enemy.GetPosition();
+
+        m_drawManager.Add(
+            enemyPos,
+            enemyPos.z,
+            [&enemy]()
+            {
+                enemy.Draw();
+            });
+    }
 
     // ƒ\[ƒg‚µ‚Ä•`‰æ
     m_drawManager.Draw();
@@ -285,43 +333,61 @@ void PlayScene::Draw()
     m_camera.Draw();
 
     // NormalEnemyÚG”»’èƒfƒoƒbƒO
-    /*if (!m_enemy.IsDead())
+    /*
+    for (auto& enemy : normalEnemies)
     {
-        TouchEnemyDebug::Draw(
-            m_ninja,
-            m_enemy);
-    }*/
+        if (!enemy.IsDead())
+        {
+            TouchEnemyDebug::Draw(
+                m_ninja,
+                enemy);
+        }
+    }
+    */
 
     // WalkEnemyÚG”»’èƒfƒoƒbƒO
-    /*if (!m_walkEnemy.IsDead())
+    /*
+    for (auto& enemy : walkEnemies)
     {
-        TouchEnemyDebug::Draw(
-            m_ninja,
-            m_walkEnemy);
-    }*/
+        if (!enemy.IsDead())
+        {
+            TouchEnemyDebug::Draw(
+                m_ninja,
+                enemy);
+        }
+    }
+    */
 
     // NormalEnemyUŒ‚”»’èƒfƒoƒbƒO
-    if (!m_enemy.IsDead() &&
-        m_enemy.IsAttackActive())
+    for (auto& enemy : normalEnemies)
     {
-        VECTOR start =
-            m_enemy.GetAttackStartPos();
+        if (!enemy.IsDead() &&
+            enemy.IsAttackActive())
+        {
+            VECTOR start =
+                enemy.GetAttackStartPos();
 
-        VECTOR target =
-            m_enemy.GetAttackTargetPos();
+            VECTOR target =
+                enemy.GetAttackTargetPos();
 
-        EnemyAttackCollision::DrawDebug(
-            start,
-            target);
+            EnemyAttackCollision::DrawDebug(
+                start,
+                target);
+        }
     }
 
     // Wall‚Ì“–‚½‚è”»’èƒfƒoƒbƒO
-    /*FieldCollision::DrawDebug(
-        m_field);*/
+    /*
+    FieldCollision::DrawDebug(
+        m_field);
+    */
 
     // Player‚ÌÀ•W
-    DrawFormatString( 10, 10,
+    DrawFormatString(
+        10, 10,
         GetColor(255, 255, 255),
         "Player X: %.2f Y: %.2f Z: %.2f",
-        playerPos.x, playerPos.y, playerPos.z);
+        playerPos.x,
+        playerPos.y,
+        playerPos.z);
 }

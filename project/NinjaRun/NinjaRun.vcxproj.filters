@@ -52,6 +52,9 @@
     <Filter Include="Source\Enemy\WalkEnemy">
       <UniqueIdentifier>{91d3f7e1-27db-4851-a0f3-6633be9d0918}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Enemy\EnemyManager">
+      <UniqueIdentifier>{e7155fd9-d7bb-40e8-bb8a-3431d8b7cb4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Camera\Camera.cpp">
@@ -126,6 +129,9 @@
     <ClCompile Include="Source\Enemy\WalkEnemy\WalkEnemyAnimation.cpp">
       <Filter>Source\Enemy\WalkEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy\EnemyManager\EnemyManager.cpp">
+      <Filter>Source\Enemy\EnemyManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -190,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="Source\Enemy\WalkEnemy\WalkEnemyAnimation.h">
       <Filter>Source\Enemy\WalkEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Ninja\NinjaInput.h">
+      <Filter>Source\Ninja</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\EnemyManager\EnemyManager.h">
+      <Filter>Source\Enemy\EnemyManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

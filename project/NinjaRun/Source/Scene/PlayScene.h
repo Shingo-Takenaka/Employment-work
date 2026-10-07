@@ -5,12 +5,11 @@
 #include "../Field/Field.h"
 #include "../Ninja/Ninja.h"
 #include "../Ninja/NinjaAttack.h"
-#include "../Enemy/NormalEnemy/NormalEnemy.h"
+#include "../Enemy/EnemyManager/EnemyManager.h"
 #include "../Collision/TouchEnemy.h"
 #include "../Collision/PlayerAttackCollision.h"
 #include "../Collision/ShootCollision.h"
 #include "../Collision/EnemyAttackCollision.h"
-#include "../Enemy/WalkEnemy/WalkEnemy.h"
 
 class PlayScene
 {
@@ -30,9 +29,7 @@ private:
 
     Ninja m_ninja;
 
-    NormalEnemy m_enemy;
-
-    WalkEnemy m_walkEnemy;
+    EnemyManager m_enemyManager;
 
     bool m_isTouchEnemy;
 
