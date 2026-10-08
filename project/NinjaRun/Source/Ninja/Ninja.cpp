@@ -3,7 +3,7 @@
 namespace
 {
     // Lを押した直後の速度
-    const float DASH_ACCEL_SPEED = 1.0f;
+    const float DASH_ACCEL_SPEED = 0.8f;
 
     // Lのみを押したときに1.0の速度で移動する時間
     const float DASH_L_ONLY_TIME = 0.2f;
@@ -72,8 +72,7 @@ Ninja::Ninja()
     // 壁キック
     m_canWallKick = false;
 
-    m_wallKickDirection =
-        VGet(0.0f, 0.0f, 0.0f);
+    m_wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
 
     m_wallKickInputTimer = 0.0f;
 
@@ -87,8 +86,7 @@ Ninja::Ninja()
     // ノックバック
     m_isKnockback = false;
 
-    m_knockbackDirection =
-        VGet(0.0f, 0.0f, 0.0f);
+    m_knockbackDirection = VGet(0.0f, 0.0f, 0.0f);
 
     m_knockbackStrength = 0.0f;
 
@@ -128,13 +126,9 @@ void Ninja::Update()
         m_isDash = false;
         m_dashTimer = 0.0f;
 
-        m_pos.x +=
-            m_knockbackDirection.x *
-            m_knockbackStrength;
+        m_pos.x += m_knockbackDirection.x * m_knockbackStrength;
 
-        m_pos.z +=
-            m_knockbackDirection.z *
-            m_knockbackStrength;
+        m_pos.z += m_knockbackDirection.z * m_knockbackStrength;
 
         m_knockbackTimer -= 1.0f / 60.0f;
 
@@ -172,9 +166,7 @@ void Ninja::Update()
 
         m_currentAnim = NinjaAnim::GUARD;
 
-        m_animation[
-            (int)NinjaAnim::GUARD
-        ].anim.Reset();
+        m_animation[(int)NinjaAnim::GUARD].anim.Reset();
     }
 
     // 近接攻撃
@@ -187,9 +179,7 @@ void Ninja::Update()
 
         m_currentAnim = NinjaAnim::SLASH;
 
-        m_animation[
-            (int)NinjaAnim::SLASH
-        ].anim.Reset();
+        m_animation[(int)NinjaAnim::SLASH].anim.Reset();
     }
 
     // 遠距離攻撃
@@ -204,9 +194,7 @@ void Ninja::Update()
         // SHOOTアニメーションを最初から再生
         m_currentAnim = NinjaAnim::SHOOT;
 
-        m_animation[
-            (int)NinjaAnim::SHOOT
-        ].anim.Reset();
+        m_animation[(int)NinjaAnim::SHOOT].anim.Reset();
 
         // このフレームで手裏剣を1個発射
         m_isShootStart = true;
@@ -256,13 +244,9 @@ void Ninja::Update()
         // 通常のWASD入力を優先する
         if (m_input.isMove)
         {
-            m_pos.x +=
-                m_input.moveX *
-                m_moveSpeed;
+            m_pos.x += m_input.moveX * m_moveSpeed;
 
-            m_pos.z +=
-                m_input.moveZ *
-                m_moveSpeed;
+            m_pos.z += m_input.moveZ * m_moveSpeed;
 
             // 最後に移動した方向を記憶
             if (m_input.moveZ > 0.0f)

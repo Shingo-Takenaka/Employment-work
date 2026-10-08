@@ -329,9 +329,6 @@ void PlayScene::Draw()
     // ソートして描画
     m_drawManager.Draw();
 
-    // カメラデバッグ
-    m_camera.Draw();
-
     // NormalEnemy接触判定デバッグ
     /*
     for (auto& enemy : normalEnemies)
