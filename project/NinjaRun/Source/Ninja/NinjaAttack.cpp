@@ -195,3 +195,79 @@ void NinjaAttack::RemoveShoot(int index)
         m_shoots.begin() + index
     );
 }
+
+bool NinjaAttack::StartDashCut(int direction)
+{
+    // 発動中やクールタイム中は開始しない
+    if (m_isDashCutActive || !CanStartDashCut())
+    {
+        return false;
+    }
+
+    // 方向を保存する
+    m_dashCutDirection = direction;
+
+    // 発動開始時刻を記録する
+    m_dashCutStartTime = GetNowCount();
+
+    // ダッシュ斬りを開始する
+    m_isDashCutActive = true;
+
+    // 連続発動回数を増やす
+    m_dashCutComboCount++;
+
+    return true;
+}
+
+void NinjaAttack::UpdateDashCut()
+{
+    if (!m_isDashCutActive)
+    {
+        return;
+    }
+
+    // 0.1秒経過したら終了する
+    if (GetNowCount() - m_dashCutStartTime >= DASH_CUT_DURATION)
+    {
+        m_isDashCutActive = false;
+
+        // 3回目の終了時点からクールタイムを開始する
+        if (m_dashCutComboCount >= DASH_CUT_MAX_COUNT)
+        {
+            m_isDashCutCooldown = true;
+            m_dashCutCooldownStartTime = GetNowCount();
+        }
+    }
+}
+
+bool NinjaAttack::IsDashCutActive() const
+{
+    return m_isDashCutActive;
+}
+
+bool NinjaAttack::CanStartDashCut()
+{
+    // クールタイム中か確認する
+    if (m_isDashCutCooldown)
+    {
+        // 3秒経過したらクールタイムを解除する
+        if (GetNowCount() - m_dashCutCooldownStartTime
+            >= DASH_CUT_COOLDOWN)
+        {
+            m_isDashCutCooldown = false;
+            m_dashCutComboCount = 0;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // 最大発動回数に達していない場合は発動可能
+    return m_dashCutComboCount < DASH_CUT_MAX_COUNT;
+}
+
+int NinjaAttack::GetDashCutDirection() const
+{
+    return m_dashCutDirection;
+}

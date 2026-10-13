@@ -1,8 +1,10 @@
+
 #pragma once
 
 #include "DxLib.h"
 #include "../Animation/Animation.h"
 #include "NinjaInput.h"
+#include "NinjaAttack.h"
 
 enum class NinjaAnim
 {
@@ -36,7 +38,6 @@ struct SpriteAnimation
 class Ninja
 {
 public:
-
     Ninja();
     ~Ninja();
 
@@ -62,11 +63,14 @@ public:
 
     int GetShootDirection() const;
 
-    // ダッシュ中か
+    // ダッシュ中
     bool IsDash() const;
 
-    // ジャンプ中か
+    // ジャンプ中
     bool IsJump() const;
+
+    // ダッシュ斬り中
+    bool IsDashCut() const;
 
     // 壁キックできる状態か
     bool CanWallKick() const;
@@ -78,10 +82,6 @@ public:
     void WallKick();
 
 private:
-
-    // 入力処理
-    void UpdateInput();
-
     // ダッシュ処理
     void UpdateDash();
 
@@ -103,7 +103,6 @@ private:
     // アニメーション描画
     void DrawAnimation();
 
-
     // 入力関連
     int m_lastHorizontalInput;
     int m_lastVerticalInput;
@@ -116,11 +115,10 @@ private:
     // Lキーの前フレーム状態
     bool m_prevDash;
 
-    // 入力情報
-    NinjaInputState m_input;
+    // 入力管理
+    NinjaInput m_input;
 
-
-    // -----移動関連-----
+    // 移動関連
 
     // 最後に移動した方向
     // 0 = +X
@@ -135,8 +133,7 @@ private:
     // 左右反転
     bool m_isReverseX;
 
-
-    // -----ダッシュ関連-----
+    // ダッシュ関連
 
     // ダッシュ方向
     int m_dashDirection;
@@ -150,11 +147,10 @@ private:
     // ダッシュ速度
     float m_dashSpeed;
 
-    // Lのみで1.5の速度で移動している時間
+    // Lのみで加速している時間
     float m_dashAccelTimer;
 
-
-    // -----ジャンプ関連-----
+    // ジャンプ関連
 
     // ジャンプ中
     bool m_isJump;
@@ -168,8 +164,7 @@ private:
     // 重力
     float m_gravity;
 
-
-    // -----壁キック関連-----
+    // 壁キック関連
 
     // 壁キックできる状態か
     bool m_canWallKick;
@@ -183,8 +178,7 @@ private:
     // 壁キック後の入力無効時間
     float m_wallKickInputTimer;
 
-
-    // -----攻撃関連-----
+    // 攻撃関連
 
     // 袈裟斬り中
     bool m_isSlash;
@@ -201,20 +195,18 @@ private:
     // 手裏剣を投げる方向
     int m_lastShootDirection;
 
+    // ダッシュ斬り管理
+    NinjaAttack m_ninjaAttack;
 
     // プレイヤー情報
-
     VECTOR m_pos;
 
     float m_size;
 
-
     // アニメーション関連
-
     SpriteAnimation m_animation[(int)NinjaAnim::MAX];
 
     NinjaAnim m_currentAnim;
-
 
     // ノックバック関連
 

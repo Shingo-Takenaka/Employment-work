@@ -41,6 +41,13 @@ public:
     // 手裏剣を削除
     void RemoveShoot(int index);
 
+    // ダッシュ斬り
+    bool StartDashCut(int direction);
+    void UpdateDashCut();
+    bool IsDashCutActive() const;
+    bool CanStartDashCut();
+    int GetDashCutDirection() const;
+
 private:
 
     float m_attackWidth;
@@ -65,6 +72,21 @@ private:
         // 3 = -Z（S）
         int direction;
     };
+
+    // ダッシュ斬りの設定
+    static const int DASH_CUT_DURATION = 500; //移動している時間(0.5秒)
+    static const int DASH_CUT_COOLDOWN = 3000;//クールタイム(3秒)
+    static const int DASH_CUT_MAX_COUNT = 3;  //最大回数
+
+    // ダッシュ斬りの状態
+    bool m_isDashCutActive;
+    int m_dashCutDirection;
+    int m_dashCutStartTime;
+
+    // 連続発動とクールタイム
+    int m_dashCutComboCount;
+    bool m_isDashCutCooldown;
+    int m_dashCutCooldownStartTime;
 
     std::vector<Shoot> m_shoots;
 };
