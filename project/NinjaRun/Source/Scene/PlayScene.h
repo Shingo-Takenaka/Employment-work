@@ -5,6 +5,7 @@
 #include "../Field/Field.h"
 #include "../Ninja/Ninja.h"
 #include "../Ninja/NinjaAttack.h"
+#include "../Ninja/NinjaAnimation.h"
 #include "../Enemy/EnemyManager/EnemyManager.h"
 #include "../Collision/TouchEnemy.h"
 #include "../Collision/PlayerAttackCollision.h"

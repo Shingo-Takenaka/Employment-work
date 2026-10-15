@@ -1,72 +1,73 @@
-#include "Ninja.h"
+#include "NinjaAnimation.h"
 
-void Ninja::LoadAnimations()
+NinjaAnimation::NinjaAnimation()
 {
-    // 待機
-    LoadAnimation(
-        m_animation[(int)NinjaAnim::WAIT],
-        "Data/Ninja/Wait/Wait.png",
-        6,
-        32,
-        32,
-        15);
+    m_currentAnim = NinjaAnim::WAIT;
 
-    // 歩き
-    LoadAnimation(
-        m_animation[(int)NinjaAnim::WALK],
-        "Data/Ninja/Walk/Walk.png",
-        9,
-        32,
-        32,
-        5);
+    for (int i = 0; i < (int)NinjaAnim::MAX; i++)
+    {
+        m_animation[i].frameNum = 0;
 
-    // ジャンプ上昇
-    LoadAnimation(
-        m_animation[(int)NinjaAnim::JUMP],
-        "Data/Ninja/Jump/Jump.png",
-        6,
-        32,
-        32,
-        8);
-
-    // ジャンプ落下
-    LoadAnimation(
-        m_animation[(int)NinjaAnim::FALLING],
-        "Data/Ninja/Jump/falling.png",
-        3,
-        32,
-        32,
-        8);
-
-    // 袈裟斬り
-    LoadAnimation(
-        m_animation[(int)NinjaAnim::SLASH],
-        "Data/Ninja/Slash/Slash.png",
-        7,
-        32,
-        32,
-        6);
-
-    // ガード
-    LoadAnimation(
-        m_animation[(int)NinjaAnim::GUARD],
-        "Data/Ninja/Guard/Guard.png",
-        2,
-        32,
-        32,
-        25);
-
-    // 手裏剣
-    LoadAnimation(
-        m_animation[(int)NinjaAnim::SHOOT],
-        "Data/Ninja/Shoot/NinjaShoot.png",
-        6,
-        32,
-        32,
-        6);
+        for (int j = 0; j < SpriteAnimation::MAX_FRAME; j++)
+        {
+            m_animation[i].graph[j] = -1;
+        }
+    }
 }
 
-bool Ninja::LoadAnimation(
+bool NinjaAnimation::LoadAnimations()
+{
+    bool result = true;
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::WAIT],
+        "Data/Ninja/Move/Wait/Wait.png",
+        6, 32, 32, 15);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::WALK],
+        "Data/Ninja/Move/Walk/Walk.png",
+        9, 32, 32, 5);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::JUMP],
+        "Data/Ninja/Move/Jump/Jump.png",
+        6, 32, 32, 8);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::FALLING],
+        "Data/Ninja/Move/Jump/falling.png",
+        3, 32, 32, 8);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::SLASH],
+        "Data/Ninja/Attack/Slash/Slash.png",
+        7, 32, 32, 6);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::GUARD],
+        "Data/Ninja/Move/Guard/Guard.png",
+        2, 32, 32, 25);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::SHOOT],
+        "Data/Ninja/Attack/Shoot/NinjaShoot.png",
+        6, 32, 32, 6);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::DASH],
+        "Data/Ninja/Move/Dash/NinjaDash.png",
+        3, 32, 32, 6);
+
+    result &= LoadAnimation(
+        m_animation[(int)NinjaAnim::DASH_SLASH],
+        "Data/Ninja/Attack/DashSlash/DashSlash.png",
+        6, 40, 32, 5);
+
+    return result;
+}
+
+bool NinjaAnimation::LoadAnimation(
     SpriteAnimation& animation,
     const char* fileName,
     int frameNum,
@@ -88,103 +89,88 @@ bool Ninja::LoadAnimation(
         return false;
     }
 
-    animation.anim.Init(
-        frameNum,
-        interval);
+    animation.anim.Init(frameNum, interval);
 
     return true;
 }
 
-void Ninja::UpdateAnimation(bool isMove)
+void NinjaAnimation::Play(NinjaAnim animation)
 {
-    // 近接攻撃
-    if (m_isSlash)
+    m_currentAnim = animation;
+
+    m_animation[(int)m_currentAnim].anim.Reset();
+}
+
+void NinjaAnimation::ChangeAnimation(NinjaAnim animation)
+{
+    if (m_currentAnim != animation)
+    {
+        m_currentAnim = animation;
+        m_animation[(int)m_currentAnim].anim.Reset();
+    }
+}
+
+void NinjaAnimation::Update(
+    bool isMove,
+    bool isJump,
+    float jumpSpeed,
+    bool& isSlash,
+    bool isGuard,
+    bool& isShoot,
+    bool isDash,
+    bool isDashCut)
+{
+    if (isSlash)
     {
         SpriteAnimation& slashAnim =
             m_animation[(int)NinjaAnim::SLASH];
 
-        // アニメーション最後まで再生したら攻撃終了
         if (slashAnim.anim.GetFrame() ==
             slashAnim.frameNum - 1)
         {
-            m_isSlash = false;
+            isSlash = false;
         }
     }
 
-    // 手裏剣
-    if (m_isShoot)
+    if (isShoot)
     {
         SpriteAnimation& shootAnim =
             m_animation[(int)NinjaAnim::SHOOT];
 
-        // アニメーション最後まで再生したら攻撃終了
         if (shootAnim.anim.GetFrame() ==
             shootAnim.frameNum - 1)
         {
-            m_isShoot = false;
+            isShoot = false;
         }
     }
 
-    // アニメーション切り替え
-    if (m_isSlash)
+    if (isDashCut)
     {
-        if (m_currentAnim != NinjaAnim::SLASH)
-        {
-            m_currentAnim = NinjaAnim::SLASH;
-
-            m_animation[
-                (int)m_currentAnim
-            ].anim.Reset();
-        }
+        ChangeAnimation(NinjaAnim::DASH_SLASH);
     }
-    else if (m_isGuard)
+    else if (isSlash)
     {
-        if (m_currentAnim != NinjaAnim::GUARD)
-        {
-            m_currentAnim = NinjaAnim::GUARD;
-
-            m_animation[
-                (int)m_currentAnim
-            ].anim.Reset();
-        }
+        ChangeAnimation(NinjaAnim::SLASH);
     }
-    else if (m_isShoot)
+    else if (isGuard)
     {
-        if (m_currentAnim != NinjaAnim::SHOOT)
-        {
-            m_currentAnim = NinjaAnim::SHOOT;
-
-            m_animation[
-                (int)m_currentAnim
-            ].anim.Reset();
-        }
+        ChangeAnimation(NinjaAnim::GUARD);
     }
-    else if (m_isJump)
+    else if (isShoot)
     {
-        if (m_jumpSpeed > 0.0f)
+        ChangeAnimation(NinjaAnim::SHOOT);
+    }
+    else if (isJump)
+    {
+        if (jumpSpeed > 0.0f)
         {
-            if (m_currentAnim != NinjaAnim::JUMP)
-            {
-                m_currentAnim = NinjaAnim::JUMP;
-
-                m_animation[
-                    (int)m_currentAnim
-                ].anim.Reset();
-            }
+            ChangeAnimation(NinjaAnim::JUMP);
         }
         else
         {
-            if (m_currentAnim != NinjaAnim::FALLING)
-            {
-                m_currentAnim = NinjaAnim::FALLING;
+            ChangeAnimation(NinjaAnim::FALLING);
 
-                m_animation[
-                    (int)m_currentAnim
-                ].anim.Reset();
-            }
-
-            // 落下速度が0以下になるまでは2枚目で止める
-            if (m_jumpSpeed <= 0.0f)
+            if (jumpSpeed <= 0.0f)
             {
                 m_animation[
                     (int)NinjaAnim::FALLING
@@ -192,56 +178,43 @@ void Ninja::UpdateAnimation(bool isMove)
             }
         }
     }
+    else if (isDash)
+    {
+        ChangeAnimation(NinjaAnim::DASH);
+    }
     else if (isMove)
     {
-        if (m_currentAnim != NinjaAnim::WALK)
-        {
-            m_currentAnim = NinjaAnim::WALK;
-
-            m_animation[
-                (int)m_currentAnim
-            ].anim.Reset();
-        }
+        ChangeAnimation(NinjaAnim::WALK);
     }
     else
     {
-        if (m_currentAnim != NinjaAnim::WAIT)
-        {
-            m_currentAnim = NinjaAnim::WAIT;
-
-            m_animation[
-                (int)m_currentAnim
-            ].anim.Reset();
-        }
+        ChangeAnimation(NinjaAnim::WAIT);
     }
 
-    // 現在のアニメーション更新
-    m_animation[
-        (int)m_currentAnim
-    ].anim.Update();
+    m_animation[(int)m_currentAnim].anim.Update();
 }
 
-void Ninja::DrawAnimation()
+void NinjaAnimation::Draw(
+    VECTOR pos,
+    float size,
+    bool isReverseX)
 {
     SpriteAnimation& anim =
         m_animation[(int)m_currentAnim];
 
-    // 通常サイズ
-    float drawSize = m_size;
+    float drawSize = size;
+    
+    if (m_currentAnim == NinjaAnim::DASH_SLASH)
+    {
+        drawSize = size * 1.25f;
+    }
 
-    // Slash中だけサイズを変更
     if (m_currentAnim == NinjaAnim::SLASH)
     {
         switch (anim.anim.GetFrame())
         {
         case 1:
-            drawSize = 11.0f;
-            break;
-
         case 2:
-            drawSize = 11.0f;
-            break;
-
         case 3:
             drawSize = 11.0f;
             break;
@@ -253,12 +226,12 @@ void Ninja::DrawAnimation()
     }
 
     DrawBillboard3D(
-        m_pos,
+        pos,
         0.5f,
         0.0f,
         drawSize,
         0.0f,
         anim.graph[anim.anim.GetFrame()],
         TRUE,
-        m_isReverseX);
+        isReverseX);
 }

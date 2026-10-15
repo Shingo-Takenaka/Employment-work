@@ -65,6 +65,7 @@
     <ClInclude Include="Source\Field\Field.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Ninja\Ninja.h" />
+    <ClInclude Include="Source\Ninja\NinjaAnimation.h" />
     <ClInclude Include="Source\Ninja\NinjaAttack.h" />
     <ClInclude Include="Source\Ninja\NinjaInput.h" />
     <ClInclude Include="Source\Scene\PlayScene.h" />

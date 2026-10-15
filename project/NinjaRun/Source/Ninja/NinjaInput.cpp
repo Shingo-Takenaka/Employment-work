@@ -20,11 +20,12 @@ NinjaInput::NinjaInput()
     m_prevD = false;
     m_prevW = false;
     m_prevS = false;
+
+    m_lastMoveDirection = MoveDirection::RIGHT;
 }
 
 void NinjaInput::Update()
 {
-    // 入力情報を初期化
     m_state.moveX = 0.0f;
     m_state.moveZ = 0.0f;
     m_state.isMove = false;
@@ -43,38 +44,35 @@ void NinjaInput::Update()
     bool pressW = Input::IsPress(KEY_INPUT_W);
     bool pressS = Input::IsPress(KEY_INPUT_S);
 
-    // 後から押した方向を記録
-    static int lastHorizontalInput = 0;
-    static int lastVerticalInput = 0;
-
+    // 最後に押された移動方向を記録
     if (pressA && !m_prevA)
     {
-        lastHorizontalInput = -1;
+        m_lastMoveDirection = MoveDirection::LEFT;
     }
 
     if (pressD && !m_prevD)
     {
-        lastHorizontalInput = 1;
+        m_lastMoveDirection = MoveDirection::RIGHT;
     }
 
     if (pressW && !m_prevW)
     {
-        lastVerticalInput = 1;
+        m_lastMoveDirection = MoveDirection::BACK;
     }
 
     if (pressS && !m_prevS)
     {
-        lastVerticalInput = -1;
+        m_lastMoveDirection = MoveDirection::FRONT;
     }
 
     // A・Dの入力
     if (pressA && pressD)
     {
-        if (lastHorizontalInput == -1)
+        if (m_lastMoveDirection == MoveDirection::LEFT)
         {
             m_state.moveX = -1.0f;
         }
-        else if (lastHorizontalInput == 1)
+        else if (m_lastMoveDirection == MoveDirection::RIGHT)
         {
             m_state.moveX = 1.0f;
         }
@@ -87,19 +85,15 @@ void NinjaInput::Update()
     {
         m_state.moveX = 1.0f;
     }
-    else
-    {
-        lastHorizontalInput = 0;
-    }
 
     // W・Sの入力
     if (pressW && pressS)
     {
-        if (lastVerticalInput == 1)
+        if (m_lastMoveDirection == MoveDirection::BACK)
         {
             m_state.moveZ = 1.0f;
         }
-        else if (lastVerticalInput == -1)
+        else if (m_lastMoveDirection == MoveDirection::FRONT)
         {
             m_state.moveZ = -1.0f;
         }
@@ -111,10 +105,6 @@ void NinjaInput::Update()
     else if (pressS)
     {
         m_state.moveZ = -1.0f;
-    }
-    else
-    {
-        lastVerticalInput = 0;
     }
 
     // 次のフレーム用にキー状態を保存
@@ -242,4 +232,9 @@ void NinjaInput::Update()
 const NinjaInputState& NinjaInput::GetState() const
 {
     return m_state;
+}
+
+MoveDirection NinjaInput::GetLastMoveDirection() const
+{
+    return m_lastMoveDirection;
 }

@@ -10,7 +10,7 @@ NinjaAttack::NinjaAttack()
 
     // 手裏剣
     m_shootGraph = LoadGraph(
-        "Data/Ninja/Shoot/Shoot.png"
+        "Data/Ninja/Attack/Shoot/Shoot.png"
     );
 
     // 手裏剣の移動速度
@@ -21,6 +21,17 @@ NinjaAttack::NinjaAttack()
 
     // 手裏剣のサイズ
     m_shootSize = 1.0f;
+
+    // ダッシュ斬り
+    m_isDashCutActive = false;
+    m_dashCutDirectionX = 1.0f;
+    m_dashCutDirectionZ = 0.0f;
+    m_dashCutStartTime = 0;
+
+    // 連続発動とクールタイム
+    m_dashCutComboCount = 0;
+    m_isDashCutCooldown = false;
+    m_dashCutCooldownStartTime = 0;
 }
 
 // X方向の攻撃範囲
@@ -196,24 +207,63 @@ void NinjaAttack::RemoveShoot(int index)
     );
 }
 
+
 bool NinjaAttack::StartDashCut(int direction)
 {
-    // 発動中やクールタイム中は開始しない
+    float directionX = 0.0f;
+    float directionZ = 0.0f;
+
+    // 従来の4方向指定にも対応
+    switch (direction)
+    {
+    case 0:
+        directionX = 1.0f;
+        break;
+
+    case 1:
+        directionX = -1.0f;
+        break;
+
+    case 2:
+        directionZ = 1.0f;
+        break;
+
+    case 3:
+        directionZ = -1.0f;
+        break;
+
+    default:
+        return false;
+    }
+
+    return StartDashCut(directionX, directionZ);
+}
+
+bool NinjaAttack::StartDashCut(float directionX, float directionZ)
+{
     if (m_isDashCutActive || !CanStartDashCut())
     {
         return false;
     }
 
-    // 方向を保存する
-    m_dashCutDirection = direction;
+    // 入力がない場合は発動しない
+    float length = sqrtf(
+        directionX * directionX +
+        directionZ * directionZ
+    );
 
-    // 発動開始時刻を記録する
+    if (length <= 0.001f)
+    {
+        return false;
+    }
+
+    // 斜め方向でも速度が一定になるように正規化
+    m_dashCutDirectionX = directionX / length;
+    m_dashCutDirectionZ = directionZ / length;
+
     m_dashCutStartTime = GetNowCount();
-
-    // ダッシュ斬りを開始する
     m_isDashCutActive = true;
 
-    // 連続発動回数を増やす
     m_dashCutComboCount++;
 
     return true;
@@ -226,12 +276,10 @@ void NinjaAttack::UpdateDashCut()
         return;
     }
 
-    // 0.1秒経過したら終了する
     if (GetNowCount() - m_dashCutStartTime >= DASH_CUT_DURATION)
     {
         m_isDashCutActive = false;
 
-        // 3回目の終了時点からクールタイムを開始する
         if (m_dashCutComboCount >= DASH_CUT_MAX_COUNT)
         {
             m_isDashCutCooldown = true;
@@ -247,10 +295,8 @@ bool NinjaAttack::IsDashCutActive() const
 
 bool NinjaAttack::CanStartDashCut()
 {
-    // クールタイム中か確認する
     if (m_isDashCutCooldown)
     {
-        // 3秒経過したらクールタイムを解除する
         if (GetNowCount() - m_dashCutCooldownStartTime
             >= DASH_CUT_COOLDOWN)
         {
@@ -263,11 +309,27 @@ bool NinjaAttack::CanStartDashCut()
         }
     }
 
-    // 最大発動回数に達していない場合は発動可能
     return m_dashCutComboCount < DASH_CUT_MAX_COUNT;
 }
 
 int NinjaAttack::GetDashCutDirection() const
 {
-    return m_dashCutDirection;
+    // 従来の4方向取得との互換性を維持
+    if (fabsf(m_dashCutDirectionX) >=
+        fabsf(m_dashCutDirectionZ))
+    {
+        return m_dashCutDirectionX >= 0.0f ? 0 : 1;
+    }
+
+    return m_dashCutDirectionZ >= 0.0f ? 2 : 3;
+}
+
+float NinjaAttack::GetDashCutDirectionX() const
+{
+    return m_dashCutDirectionX;
+}
+
+float NinjaAttack::GetDashCutDirectionZ() const
+{
+    return m_dashCutDirectionZ;
 }

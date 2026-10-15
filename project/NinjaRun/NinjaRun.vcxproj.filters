@@ -203,5 +203,8 @@
     <ClInclude Include="Source\Enemy\EnemyManager\EnemyManager.h">
       <Filter>Source\Enemy\EnemyManager</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Ninja\NinjaAnimation.h">
+      <Filter>Source\Ninja</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

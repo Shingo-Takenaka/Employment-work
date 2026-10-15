@@ -1,25 +1,21 @@
 #include "Ninja.h"
+#include <cmath>
 
-namespace
-{
-    // Lを押した直後の速度
-    const float DASH_ACCEL_SPEED = 0.8f;
+// ダッシュ開始直後の速度
+const float Ninja::DASH_ACCEL_SPEED = 1.2f;
+// Lのみを押したときに移動する時間
+const float Ninja::DASH_L_ONLY_TIME = 0.1f;
+// ダッシュ状態になるまでの時間
+const float Ninja::DASH_STATE_TIME = 0.4f;
+// ダッシュ中の速度
+const float Ninja::DASH_SPEED = 0.8f;
+// ダッシュクールタイム
+const float Ninja::DASH_COOLDOWN = 0.5f;
 
-    // Lのみを押したときに移動する時間
-    const float DASH_L_ONLY_TIME = 0.2f;
-
-    // L + WASDを押し続けてダッシュ状態になるまでの時間
-    const float DASH_STATE_TIME = 0.4f;
-
-    // ダッシュ中の速度
-    const float DASH_SPEED = 0.8f;
-
-    // 壁キック後、キック方向へ移動する時間
-    const float WALL_KICK_MOVE_TIME = 0.2f;
-
-    // 壁キック中の移動速度
-    const float WALL_KICK_SPEED = 1.0f;
-}
+// 壁キック後の移動時間
+const float Ninja::WALL_KICK_MOVE_TIME = 0.2f;
+// 壁キック後の移動速度
+const float Ninja::WALL_KICK_SPEED = 1.0f;
 
 Ninja::Ninja()
 {
@@ -29,15 +25,14 @@ Ninja::Ninja()
     m_size = 10.0f;
 
     // アニメーション読み込み
-    LoadAnimations();
-    m_currentAnim = NinjaAnim::WAIT;
+    m_ninjaAnimation.LoadAnimations();
 
     // 向き
     m_isReverseX = false;
 
     // 最後に移動した方向
-    // 0 = +X、1 = -X、2 = +Z、3 = -Z
-    m_lastMoveDirection = 0;
+    m_lastMoveDirectionX = 1.0f;
+    m_lastMoveDirectionZ = 0.0f;
 
     m_lastHorizontalInput = 0;
     m_lastVerticalInput = 0;
@@ -49,13 +44,16 @@ Ninja::Ninja()
     m_prevDash = false;
 
     // ダッシュ方向
-    m_dashDirection = 0;
+    m_dashDirectionX = 1.0f;
+    m_dashDirectionZ = 0.0f;
 
     // ダッシュ
     m_isDash = false;
     m_dashTimer = 0.0f;
     m_dashSpeed = DASH_ACCEL_SPEED;
     m_dashAccelTimer = 0.0f;
+    m_isDashCooldown = false;
+    m_dashCooldownTimer = 0.0f;
 
     // ジャンプ
     m_isJump = false;
@@ -66,6 +64,7 @@ Ninja::Ninja()
     // 壁キック
     m_canWallKick = false;
     m_wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
+    m_wallKickGroundY = m_pos.y;
     m_wallKickInputTimer = 0.0f;
 
     // 攻撃
@@ -95,6 +94,18 @@ void Ninja::Update()
     // 手裏剣を投げたタイミングを毎フレームリセット
     m_isShootStart = false;
 
+    // ダッシュのクールタイムを更新
+    if (m_isDashCooldown)
+    {
+        m_dashCooldownTimer -= 1.0f / 60.0f;
+
+        if (m_dashCooldownTimer <= 0.0f)
+        {
+            m_dashCooldownTimer = 0.0f;
+            m_isDashCooldown = false;
+        }
+    }
+
     // 壁キック後の時間を減らす
     if (m_wallKickInputTimer > 0.0f)
     {
@@ -109,7 +120,6 @@ void Ninja::Update()
     // ノックバック中なら通常操作を行わない
     if (m_isKnockback)
     {
-        // ダッシュを解除
         m_isDash = false;
         m_dashTimer = 0.0f;
 
@@ -125,7 +135,16 @@ void Ninja::Update()
             m_knockbackStrength = 0.0f;
         }
 
-        UpdateAnimation(false);
+        m_ninjaAnimation.Update(
+            false,
+            m_isJump,
+            m_jumpSpeed,
+            m_isSlash,
+            m_isGuard,
+            m_isShoot,
+            m_isDash,
+            m_ninjaAttack.IsDashCutActive());
+
         return;
     }
 
@@ -136,8 +155,6 @@ void Ninja::Update()
     const NinjaInputState& input = m_input.GetState();
 
     // ガード終了
-    // Kを離したらガードだけ終了し、
-    // ダッシュ状態はそのまま維持する
     if (m_isGuard && !input.guard)
     {
         m_isGuard = false;
@@ -151,8 +168,7 @@ void Ninja::Update()
         !m_isGuard)
     {
         m_isGuard = true;
-        m_currentAnim = NinjaAnim::GUARD;
-        m_animation[(int)NinjaAnim::GUARD].anim.Reset();
+        m_ninjaAnimation.Play(NinjaAnim::GUARD);
     }
 
     // 近接攻撃
@@ -162,8 +178,7 @@ void Ninja::Update()
         !m_isShoot)
     {
         m_isSlash = true;
-        m_currentAnim = NinjaAnim::SLASH;
-        m_animation[(int)NinjaAnim::SLASH].anim.Reset();
+        m_ninjaAnimation.Play(NinjaAnim::SLASH);
     }
 
     // 遠距離攻撃
@@ -172,65 +187,116 @@ void Ninja::Update()
         !m_isGuard &&
         !m_isSlash)
     {
-        // 手裏剣攻撃開始
         m_isShoot = true;
-
-        // SHOOTアニメーションを最初から再生
-        m_currentAnim = NinjaAnim::SHOOT;
-        m_animation[(int)NinjaAnim::SHOOT].anim.Reset();
-
-        // このフレームで手裏剣を1個発射
+        m_ninjaAnimation.Play(NinjaAnim::SHOOT);
         m_isShootStart = true;
     }
 
     // Jキーでダッシュ斬りを開始
     if (input.dashCut)
     {
-        m_ninjaAttack.StartDashCut(m_lastMoveDirection);
+        float directionX = m_lastMoveDirectionX;
+        float directionZ = m_lastMoveDirectionZ;
+
+        // 移動入力があれば、その方向を優先する
+        if (input.isMove)
+        {
+            directionX = input.moveX;
+            directionZ = input.moveZ;
+        }
+
+        m_ninjaAttack.StartDashCut(directionX, directionZ);
     }
 
     // ダッシュ斬り中
     if (m_ninjaAttack.IsDashCutActive())
     {
-        // ダッシュ斬りの時間を更新
         m_ninjaAttack.UpdateDashCut();
 
-        // 終了していなければダッシュ移動
         if (m_ninjaAttack.IsDashCutActive())
         {
-            switch (m_ninjaAttack.GetDashCutDirection())
+            // X方向とZ方向の両方に移動する
+            m_pos.x +=
+                m_ninjaAttack.GetDashCutDirectionX() * 1.5f;
+
+            m_pos.z +=
+                m_ninjaAttack.GetDashCutDirectionZ() * 1.5f;
+
+            // 左右反転
+            if (m_ninjaAttack.GetDashCutDirectionX() < 0.0f)
             {
-            case 0:
-                m_pos.x += 1.0f;
-                m_isReverseX = false;
-                break;
-
-            case 1:
-                m_pos.x -= 1.0f;
                 m_isReverseX = true;
-                break;
-
-            case 2:
-                m_pos.z += 1.0f;
-                break;
-
-            case 3:
-                m_pos.z -= 1.0f;
-                break;
+            }
+            else if (m_ninjaAttack.GetDashCutDirectionX() > 0.0f)
+            {
+                m_isReverseX = false;
             }
 
-            // ダッシュ斬り中は通常操作を行わない
             m_prevDash = input.dash;
-            UpdateAnimation(false);
+
+            m_ninjaAnimation.Update(
+                false,
+                m_isJump,
+                m_jumpSpeed,
+                m_isSlash,
+                m_isGuard,
+                m_isShoot,
+                m_isDash,
+                m_ninjaAttack.IsDashCutActive());
+
             return;
         }
     }
 
     // ダッシュ処理
-    // アクション開始フレームからダッシュ移動を止める
     UpdateDash();
 
     m_prevDash = input.dash;
+
+    // ダッシュ中のジャンプ入力
+    if (m_isDash &&
+        input.jump &&
+        !m_isJump &&
+        !m_isSlash &&
+        !m_isGuard &&
+        !m_isShoot)
+    {
+        m_isJump = true;
+        m_groundY = m_pos.y;
+        m_jumpSpeed = 1.0f;
+        m_canWallKick = false;
+    }
+
+    // ダッシュ中は通常移動を行わない
+    if (m_isDash)
+    {
+        // ジャンプ処理は継続する
+        if (m_isJump)
+        {
+            m_pos.y += m_jumpSpeed;
+            m_jumpSpeed -= m_gravity;
+
+            if (m_pos.y <= m_groundY)
+            {
+                m_pos.y = m_groundY;
+                m_isJump = false;
+                m_jumpSpeed = 0.0f;
+                m_canWallKick = false;
+            }
+        }
+
+        m_ninjaAnimation.Update(
+            false,
+            m_isJump,
+            m_jumpSpeed,
+            m_isSlash,
+            m_isGuard,
+            m_isShoot,
+            m_isDash,
+            m_ninjaAttack.IsDashCutActive());
+
+        return;
+    }
 
     // ガード・近接攻撃・手裏剣中はX/Z移動しない
     if (m_isGuard ||
@@ -252,40 +318,29 @@ void Ninja::Update()
             }
         }
 
-        UpdateAnimation(false);
+        m_ninjaAnimation.Update(
+            false,
+            m_isJump,
+            m_jumpSpeed,
+            m_isSlash,
+            m_isGuard,
+            m_isShoot,
+            m_isDash,
+            m_ninjaAttack.IsDashCutActive());
+
         return;
     }
 
     // 壁キック直後の移動
     if (m_wallKickInputTimer > 0.0f)
     {
-        // WASDが入力されている場合は通常入力を優先
         if (input.isMove)
         {
             m_pos.x += input.moveX * m_moveSpeed;
             m_pos.z += input.moveZ * m_moveSpeed;
 
             // 最後に移動した方向を記憶
-            if (input.moveZ > 0.0f)
-            {
-                m_lastMoveDirection = 2;
-                m_lastShootDirection = 2;
-            }
-            else if (input.moveZ < 0.0f)
-            {
-                m_lastMoveDirection = 3;
-                m_lastShootDirection = 3;
-            }
-            else if (input.moveX > 0.0f)
-            {
-                m_lastMoveDirection = 0;
-                m_lastShootDirection = 0;
-            }
-            else if (input.moveX < 0.0f)
-            {
-                m_lastMoveDirection = 1;
-                m_lastShootDirection = 1;
-            }
+            RememberMoveDirection(input.moveX, input.moveZ);
 
             // 左右反転
             if (input.moveX < 0.0f)
@@ -304,8 +359,7 @@ void Ninja::Update()
             m_pos.z += m_wallKickDirection.z * WALL_KICK_SPEED;
         }
     }
-    // ダッシュ中はUpdateDash()で移動しているため通常移動しない
-    else if (!m_isDash)
+    else if (m_dashTimer <= 0.0f)
     {
         if (input.isMove)
         {
@@ -313,26 +367,7 @@ void Ninja::Update()
             m_pos.z += input.moveZ * m_moveSpeed;
 
             // 最後に移動した方向を記憶
-            if (input.moveZ > 0.0f)
-            {
-                m_lastMoveDirection = 2;
-                m_lastShootDirection = 2;
-            }
-            else if (input.moveZ < 0.0f)
-            {
-                m_lastMoveDirection = 3;
-                m_lastShootDirection = 3;
-            }
-            else if (input.moveX > 0.0f)
-            {
-                m_lastMoveDirection = 0;
-                m_lastShootDirection = 0;
-            }
-            else if (input.moveX < 0.0f)
-            {
-                m_lastMoveDirection = 1;
-                m_lastShootDirection = 1;
-            }
+            RememberMoveDirection(input.moveX, input.moveZ);
         }
     }
 
@@ -342,19 +377,17 @@ void Ninja::Update()
         !m_isGuard &&
         !m_isShoot)
     {
-        // 通常ジャンプ
         if (!m_isJump)
         {
+            // 通常ジャンプ
             m_isJump = true;
             m_groundY = m_pos.y;
             m_jumpSpeed = 1.0f;
-
-            // 通常ジャンプを開始したら壁キック権を消費する
             m_canWallKick = false;
         }
-        // 空中で壁に触れている場合は壁キック
         else if (m_canWallKick)
         {
+            // 空中で壁に触れている場合は壁キック
             WallKick();
         }
     }
@@ -365,14 +398,11 @@ void Ninja::Update()
         m_pos.y += m_jumpSpeed;
         m_jumpSpeed -= m_gravity;
 
-        // 壁キックではm_groundYを変更しない
         if (m_pos.y <= m_groundY)
         {
             m_pos.y = m_groundY;
             m_isJump = false;
             m_jumpSpeed = 0.0f;
-
-            // 着地したので壁キック権を消費
             m_canWallKick = false;
         }
     }
@@ -393,15 +423,84 @@ void Ninja::Update()
     }
 
     // アニメーション更新
-    UpdateAnimation(input.isMove);
+    m_ninjaAnimation.Update(
+        input.isMove,
+        m_isJump,
+        m_jumpSpeed,
+        m_isSlash,
+        m_isGuard,
+        m_isShoot,
+        m_isDash,
+        m_ninjaAttack.IsDashCutActive());
+}
+
+void Ninja::RememberMoveDirection(float moveX, float moveZ)
+{
+    float length = sqrtf(moveX * moveX + moveZ * moveZ);
+
+    if (length <= 0.001f)
+    {
+        return;
+    }
+
+    // 移動方向を正規化して保存
+    m_lastMoveDirectionX = moveX / length;
+    m_lastMoveDirectionZ = moveZ / length;
+
+    // 手裏剣の方向は従来どおり4方向で保持する
+    if (fabsf(m_lastMoveDirectionX) >= fabsf(m_lastMoveDirectionZ))
+    {
+        m_lastShootDirection =
+            m_lastMoveDirectionX >= 0.0f ? 0 : 1;
+    }
+    else
+    {
+        m_lastShootDirection =
+            m_lastMoveDirectionZ >= 0.0f ? 2 : 3;
+    }
+
+    if (moveX < 0.0f)
+    {
+        m_isReverseX = true;
+    }
+    else if (moveX > 0.0f)
+    {
+        m_isReverseX = false;
+    }
 }
 
 void Ninja::UpdateDash()
 {
-    // 入力情報を取得
     const NinjaInputState& input = m_input.GetState();
-
     const float deltaTime = 1.0f / 60.0f;
+
+    // 移動方向を正規化して保存する
+    auto setDashDirection = [this](float moveX, float moveZ)
+        {
+            float length = sqrtf(moveX * moveX + moveZ * moveZ);
+
+            if (length > 0.001f)
+            {
+                m_dashDirectionX = moveX / length;
+                m_dashDirectionZ = moveZ / length;
+            }
+        };
+
+    // 保存した方向へ指定速度で移動する
+    auto moveDash = [this](float speed)
+        {
+            m_pos.x += m_dashDirectionX * speed;
+            m_pos.z += m_dashDirectionZ * speed;
+
+            if (m_dashDirectionX < 0.0f)
+            {
+                m_isReverseX = true;
+            }
+            else if (m_dashDirectionX > 0.0f)
+            {
+                m_isReverseX = false;
+            }
+        };
 
     // ダッシュ中
     if (m_isDash)
@@ -413,11 +512,19 @@ void Ninja::UpdateDash()
         }
 
         // ダッシュ中にLをもう一度押したら再加速
-        if (input.dash && !m_prevDash)
+        if (input.dash && !m_prevDash && !m_isDashCooldown)
         {
             m_dashTimer = 0.0f;
             m_dashAccelTimer = 0.0f;
             m_dashSpeed = DASH_ACCEL_SPEED;
+
+            m_isDashCooldown = true;
+            m_dashCooldownTimer = DASH_COOLDOWN;
+
+            if (input.isMove)
+            {
+                setDashDirection(input.moveX, input.moveZ);
+            }
         }
 
         // 再加速中
@@ -434,48 +541,13 @@ void Ninja::UpdateDash()
                 return;
             }
 
-            m_dashTimer += deltaTime;
-
             // 再加速中の方向変更
-            if (input.moveZ > 0.0f)
-            {
-                m_dashDirection = 2;
-            }
-            else if (input.moveZ < 0.0f)
-            {
-                m_dashDirection = 3;
-            }
-            else if (input.moveX > 0.0f)
-            {
-                m_dashDirection = 0;
-            }
-            else if (input.moveX < 0.0f)
-            {
-                m_dashDirection = 1;
-            }
+            setDashDirection(input.moveX, input.moveZ);
+            RememberMoveDirection(input.moveX, input.moveZ);
 
+            m_dashTimer += deltaTime;
             m_dashSpeed = DASH_ACCEL_SPEED;
-
-            switch (m_dashDirection)
-            {
-            case 0:
-                m_pos.x += m_dashSpeed;
-                m_isReverseX = false;
-                break;
-
-            case 1:
-                m_pos.x -= m_dashSpeed;
-                m_isReverseX = true;
-                break;
-
-            case 2:
-                m_pos.z += m_dashSpeed;
-                break;
-
-            case 3:
-                m_pos.z -= m_dashSpeed;
-                break;
-            }
+            moveDash(m_dashSpeed);
 
             // 0.4秒経過したら通常のダッシュ速度へ戻す
             if (m_dashTimer >= DASH_STATE_TIME)
@@ -497,51 +569,17 @@ void Ninja::UpdateDash()
             return;
         }
 
-        // ダッシュ中の方向変更
-        if (input.moveZ > 0.0f)
-        {
-            m_dashDirection = 2;
-        }
-        else if (input.moveZ < 0.0f)
-        {
-            m_dashDirection = 3;
-        }
-        else if (input.moveX > 0.0f)
-        {
-            m_dashDirection = 0;
-        }
-        else if (input.moveX < 0.0f)
-        {
-            m_dashDirection = 1;
-        }
+        // ダッシュ中も入力方向へ移動する
+        setDashDirection(input.moveX, input.moveZ);
+        RememberMoveDirection(input.moveX, input.moveZ);
 
         m_dashSpeed = DASH_SPEED;
-
-        switch (m_dashDirection)
-        {
-        case 0:
-            m_pos.x += m_dashSpeed;
-            m_isReverseX = false;
-            break;
-
-        case 1:
-            m_pos.x -= m_dashSpeed;
-            m_isReverseX = true;
-            break;
-
-        case 2:
-            m_pos.z += m_dashSpeed;
-            break;
-
-        case 3:
-            m_pos.z -= m_dashSpeed;
-            break;
-        }
+        moveDash(m_dashSpeed);
 
         return;
     }
 
-    // ダッシュ開始前の処理中
+    // ダッシュ開始前の加速処理
     if (m_dashTimer > 0.0f)
     {
         // ガード・攻撃中は移動せず、タイマーも進めない
@@ -550,32 +588,12 @@ void Ninja::UpdateDash()
             return;
         }
 
-        // WASDがない場合
+        // WASDがない場合は、最後に移動した方向へ短時間だけ加速
         if (!input.isMove)
         {
             m_dashAccelTimer += deltaTime;
             m_dashSpeed = DASH_ACCEL_SPEED;
-
-            switch (m_dashDirection)
-            {
-            case 0:
-                m_pos.x += m_dashSpeed;
-                m_isReverseX = false;
-                break;
-
-            case 1:
-                m_pos.x -= m_dashSpeed;
-                m_isReverseX = true;
-                break;
-
-            case 2:
-                m_pos.z += m_dashSpeed;
-                break;
-
-            case 3:
-                m_pos.z -= m_dashSpeed;
-                break;
-            }
+            moveDash(m_dashSpeed);
 
             if (m_dashAccelTimer >= DASH_L_ONLY_TIME)
             {
@@ -587,48 +605,13 @@ void Ninja::UpdateDash()
             return;
         }
 
-        // WASDがある場合
+        // WASDがある場合は入力方向へ加速する
+        setDashDirection(input.moveX, input.moveZ);
+        RememberMoveDirection(input.moveX, input.moveZ);
+
         m_dashTimer += deltaTime;
-
-        if (input.moveZ > 0.0f)
-        {
-            m_dashDirection = 2;
-        }
-        else if (input.moveZ < 0.0f)
-        {
-            m_dashDirection = 3;
-        }
-        else if (input.moveX > 0.0f)
-        {
-            m_dashDirection = 0;
-        }
-        else if (input.moveX < 0.0f)
-        {
-            m_dashDirection = 1;
-        }
-
         m_dashSpeed = DASH_ACCEL_SPEED;
-
-        switch (m_dashDirection)
-        {
-        case 0:
-            m_pos.x += m_dashSpeed;
-            m_isReverseX = false;
-            break;
-
-        case 1:
-            m_pos.x -= m_dashSpeed;
-            m_isReverseX = true;
-            break;
-
-        case 2:
-            m_pos.z += m_dashSpeed;
-            break;
-
-        case 3:
-            m_pos.z -= m_dashSpeed;
-            break;
-        }
+        moveDash(m_dashSpeed);
 
         if (m_dashTimer >= DASH_STATE_TIME)
         {
@@ -640,64 +623,40 @@ void Ninja::UpdateDash()
         return;
     }
 
-    // Lを押した瞬間だけ開始
-    if (input.dash && !m_prevDash)
+    // Lを押した瞬間だけダッシュを開始
+    if (input.dash && !m_prevDash && !m_isDashCooldown)
     {
         m_dashTimer = deltaTime;
         m_dashAccelTimer = 0.0f;
 
+        // Lを押した時点でクールタイム開始
+        m_isDashCooldown = true;
+        m_dashCooldownTimer = DASH_COOLDOWN;
+
         if (input.isMove)
         {
-            if (input.moveZ > 0.0f)
-            {
-                m_dashDirection = 2;
-            }
-            else if (input.moveZ < 0.0f)
-            {
-                m_dashDirection = 3;
-            }
-            else if (input.moveX > 0.0f)
-            {
-                m_dashDirection = 0;
-            }
-            else if (input.moveX < 0.0f)
-            {
-                m_dashDirection = 1;
-            }
+            setDashDirection(input.moveX, input.moveZ);
+            RememberMoveDirection(input.moveX, input.moveZ);
         }
         else
         {
-            m_dashDirection = m_lastMoveDirection;
+            // WASDを押していない場合は最後の移動方向を使う
+            setDashDirection(
+                m_lastMoveDirectionX,
+                m_lastMoveDirectionZ);
         }
 
         m_dashSpeed = DASH_ACCEL_SPEED;
-
-        switch (m_dashDirection)
-        {
-        case 0:
-            m_pos.x += m_dashSpeed;
-            m_isReverseX = false;
-            break;
-
-        case 1:
-            m_pos.x -= m_dashSpeed;
-            m_isReverseX = true;
-            break;
-
-        case 2:
-            m_pos.z += m_dashSpeed;
-            break;
-
-        case 3:
-            m_pos.z -= m_dashSpeed;
-            break;
-        }
+        moveDash(m_dashSpeed);
     }
 }
 
 void Ninja::Draw()
 {
-    DrawAnimation();
+    m_ninjaAnimation.Draw(
+        m_pos,
+        m_size,
+        m_isReverseX);
 }
 
 VECTOR Ninja::GetPosition() const

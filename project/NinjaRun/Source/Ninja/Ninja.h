@@ -1,39 +1,9 @@
-
 #pragma once
 
 #include "DxLib.h"
-#include "../Animation/Animation.h"
+#include "NinjaAnimation.h"
 #include "NinjaInput.h"
 #include "NinjaAttack.h"
-
-enum class NinjaAnim
-{
-    WAIT,       // 待機
-    WALK,       // 歩き
-    JUMP,       // 上昇
-    FALLING,    // 落下
-    SLASH,      // 袈裟斬り
-    GUARD,      // ガード
-    SHOOT,      // 手裏剣
-
-    MAX
-};
-
-// アニメーション情報
-struct SpriteAnimation
-{
-    // アニメーションに使える最大フレーム数
-    static const int MAX_FRAME = 16;
-
-    // 分割した画像
-    int graph[MAX_FRAME];
-
-    // フレーム数
-    int frameNum;
-
-    // アニメーション
-    Animation anim;
-};
 
 class Ninja
 {
@@ -82,26 +52,20 @@ public:
     void WallKick();
 
 private:
+    // ダッシュ関連の定数
+    static const float DASH_ACCEL_SPEED;
+    static const float DASH_L_ONLY_TIME;
+    static const float DASH_STATE_TIME;
+    static const float DASH_SPEED;
+
+    // 壁キック関連の定数
+    static const float WALL_KICK_MOVE_TIME;
+    static const float WALL_KICK_SPEED;
+
+    static const float DASH_COOLDOWN;
+
     // ダッシュ処理
     void UpdateDash();
-
-    // アニメーション読み込み
-    void LoadAnimations();
-
-    // アニメーション1種類読み込み
-    bool LoadAnimation(
-        SpriteAnimation& animation,
-        const char* fileName,
-        int frameNum,
-        int width,
-        int height,
-        int interval);
-
-    // アニメーション更新
-    void UpdateAnimation(bool isMove);
-
-    // アニメーション描画
-    void DrawAnimation();
 
     // 入力関連
     int m_lastHorizontalInput;
@@ -121,11 +85,8 @@ private:
     // 移動関連
 
     // 最後に移動した方向
-    // 0 = +X
-    // 1 = -X
-    // 2 = +Z
-    // 3 = -Z
-    int m_lastMoveDirection;
+    float m_lastMoveDirectionX;
+    float m_lastMoveDirectionZ;
 
     // 移動速度
     float m_moveSpeed;
@@ -136,7 +97,8 @@ private:
     // ダッシュ関連
 
     // ダッシュ方向
-    int m_dashDirection;
+    float m_dashDirectionX;
+    float m_dashDirectionZ;
 
     // ダッシュ中か
     bool m_isDash;
@@ -149,6 +111,15 @@ private:
 
     // Lのみで加速している時間
     float m_dashAccelTimer;
+
+    // ダッシュのクールタイム中か
+    bool m_isDashCooldown;
+
+    // クールタイムの残り時間
+    float m_dashCooldownTimer;
+
+    // 移動方向を記憶する関数
+    void RememberMoveDirection(float moveX, float moveZ);
 
     // ジャンプ関連
 
@@ -203,10 +174,7 @@ private:
 
     float m_size;
 
-    // アニメーション関連
-    SpriteAnimation m_animation[(int)NinjaAnim::MAX];
-
-    NinjaAnim m_currentAnim;
+    NinjaAnimation m_ninjaAnimation;
 
     // ノックバック関連
 

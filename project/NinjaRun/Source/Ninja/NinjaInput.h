@@ -1,6 +1,14 @@
 #pragma once
 #include "DxLib.h"
 
+enum class MoveDirection
+{
+    RIGHT,
+    LEFT,
+    BACK,
+    FRONT
+};
+
 // “ü—Íî•ñ
 struct NinjaInputState
 {
@@ -31,6 +39,8 @@ public:
     // æ“¾‚µ‚½“ü—Íî•ñ
     const NinjaInputState& GetState() const;
 
+    // ÅŒã‚É‰Ÿ‚³‚ê‚½ˆÚ“®•ûŒü‚ğæ“¾‚·‚é
+    MoveDirection GetLastMoveDirection() const;
 private:
     // “ü—Íî•ñ
     NinjaInputState m_state;
@@ -40,4 +50,7 @@ private:
     bool m_prevD;
     bool m_prevW;
     bool m_prevS;
+
+    // ÅŒã‚É‰Ÿ‚³‚ê‚½ˆÚ“®•ûŒü
+    MoveDirection m_lastMoveDirection;
 };
