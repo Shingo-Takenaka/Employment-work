@@ -31,9 +31,7 @@ float TouchEnemy::GetTouchHeight()
 }
 
 // ÚG”»’è
-bool TouchEnemy::Check(
-    const Ninja& ninja,
-    const EnemyBase& enemy)
+bool TouchEnemy::Check(const Ninja& ninja, const EnemyBase& enemy)
 {
     // Œ»İ‚ÌEnemy‚ÌÀ•W‚ğŠî€‚É‚·‚é
     VECTOR enemyPos =

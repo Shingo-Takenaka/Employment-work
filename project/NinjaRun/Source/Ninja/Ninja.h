@@ -18,8 +18,7 @@ public:
     void SetPosition(VECTOR pos);
 
     // 敵からのノックバック
-    void ApplyKnockback(
-        VECTOR direction, float strength, float duration);
+    void ApplyKnockback(VECTOR direction, float strength, float duration);
 
     // ノックバック中か
     bool IsKnockback() const;

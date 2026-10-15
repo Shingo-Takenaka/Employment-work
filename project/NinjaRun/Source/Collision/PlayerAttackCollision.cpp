@@ -11,9 +11,7 @@ PlayerAttackCollision::PlayerAttackCollision()
 }
 
 // Player‚ÌUŒ‚‚ÆEnemy‚ª“–‚½‚Á‚Ä‚¢‚é‚©
-bool PlayerAttackCollision::Check(
-    const Ninja& ninja,
-    const EnemyBase& enemy)
+bool PlayerAttackCollision::Check(const Ninja& ninja,const EnemyBase& enemy)
 {
     // UŒ‚’†‚Å‚È‚¯‚ê‚Î“–‚½‚è”»’è‚È‚µ
     if (!ninja.IsSlash())
@@ -21,21 +19,16 @@ bool PlayerAttackCollision::Check(
         return false;
     }
 
-    VECTOR ninjaPos =
-        ninja.GetPosition();
+    VECTOR ninjaPos = ninja.GetPosition();
 
-    VECTOR enemyPos =
-        enemy.GetPosition();
+    VECTOR enemyPos = enemy.GetPosition();
 
     // PlayerAttack‚©‚çUŒ‚”ÍˆÍ‚ğæ“¾
-    float attackWidth =
-        m_playerAttack.GetAttackWidth();
+    float attackWidth = m_playerAttack.GetAttackWidth();
 
-    float attackDepth =
-        m_playerAttack.GetAttackDepth();
+    float attackDepth = m_playerAttack.GetAttackDepth();
 
-    float attackHeight =
-        m_playerAttack.GetAttackHeight();
+    float attackHeight = m_playerAttack.GetAttackHeight();
 
     // X•ûŒü
     float minX;
@@ -55,15 +48,13 @@ bool PlayerAttackCollision::Check(
     }
 
     // X•ûŒü‚Ì”»’è
-    if (enemyPos.x < minX ||
-        enemyPos.x > maxX)
+    if (enemyPos.x < minX || enemyPos.x > maxX)
     {
         return false;
     }
 
     // Z•ûŒü
-    float dz =
-        fabsf(enemyPos.z - ninjaPos.z);
+    float dz = fabsf(enemyPos.z - ninjaPos.z);
 
     if (dz > attackDepth)
     {
@@ -71,11 +62,9 @@ bool PlayerAttackCollision::Check(
     }
 
     // Y•ûŒü
-    float attackCenterY =
-        ninjaPos.y - 5.0f;
+    float attackCenterY = ninjaPos.y - 5.0f;
 
-    float dy =
-        fabsf(enemyPos.y - attackCenterY);
+    float dy = fabsf(enemyPos.y - attackCenterY);
 
     if (dy > attackHeight)
     {

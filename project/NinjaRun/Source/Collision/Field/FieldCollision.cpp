@@ -3,9 +3,7 @@
 #include "../../Ninja/Ninja.h"
 #include "../../Field/Field.h"
 
-bool FieldCollision::CheckWall(
-    const Ninja& ninja,
-    const Field& field)
+bool FieldCollision::CheckWall(const Ninja& ninja, const Field& field)
 {
     VECTOR ninjaPos = ninja.GetPosition();
     VECTOR wallPos = field.GetWallPosition();
@@ -62,20 +60,14 @@ void FieldCollision::DrawDebug(
     VECTOR pos1 = VGet(
         wallPos.x - halfWidth,
         wallPos.y - halfHeight,
-        wallPos.z - halfDepth
-    );
+        wallPos.z - halfDepth);
 
     VECTOR pos2 = VGet(
         wallPos.x + halfWidth,
         wallPos.y + halfHeight,
-        wallPos.z + halfDepth
-    );
+        wallPos.z + halfDepth);
 
-    DrawCube3D(
-        pos1,
-        pos2,
-        0,
+    DrawCube3D(pos1,pos2, 0,
         GetColor(255, 0, 0),
-        GetColor(255, 0, 0)
-    );
+        GetColor(255, 0, 0));
 }
