@@ -21,12 +21,12 @@
   <ItemGroup>
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
-    <ClCompile Include="Source\Collision\EnemyAttackCollision.cpp" />
+    <ClCompile Include="Source\Collision\EnemyAttack\EnemyAttackCollision.cpp" />
     <ClCompile Include="Source\Collision\Field\FieldCollision.cpp" />
-    <ClCompile Include="Source\Collision\PlayerAttackCollision.cpp" />
-    <ClCompile Include="Source\Collision\ShootCollision.cpp" />
-    <ClCompile Include="Source\Collision\TouchEnemy.cpp" />
-    <ClCompile Include="Source\Collision\TouchEnemyDebug.cpp" />
+    <ClCompile Include="Source\Collision\NinjaAttack\AttackCollision.cpp" />
+    <ClCompile Include="Source\Collision\NinjaAttack\DashAttackCollision.cpp" />
+    <ClCompile Include="Source\Collision\NinjaAttack\ShootCollision.cpp" />
+    <ClCompile Include="Source\Collision\TouchEnemy\TouchEnemy.cpp" />
     <ClCompile Include="Source\DrawManager\DrawManager.cpp" />
     <ClCompile Include="Source\Enemy\EnemyBase\EnemyBase.cpp" />
     <ClCompile Include="Source\Enemy\EnemyManager\EnemyManager.cpp" />
@@ -48,12 +48,12 @@
   <ItemGroup>
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
-    <ClInclude Include="Source\Collision\EnemyAttackCollision.h" />
+    <ClInclude Include="Source\Collision\EnemyAttack\EnemyAttackCollision.h" />
     <ClInclude Include="Source\Collision\Field\FieldCollision.h" />
-    <ClInclude Include="Source\Collision\PlayerAttackCollision.h" />
-    <ClInclude Include="Source\Collision\ShootCollision.h" />
-    <ClInclude Include="Source\Collision\TouchEnemy.h" />
-    <ClInclude Include="Source\Collision\TouchEnemyDebug.h" />
+    <ClInclude Include="Source\Collision\NinjaAttack\AttackCollision.h" />
+    <ClInclude Include="Source\Collision\NinjaAttack\DashAttackCollision.h" />
+    <ClInclude Include="Source\Collision\NinjaAttack\ShootCollision.h" />
+    <ClInclude Include="Source\Collision\TouchEnemy\TouchEnemy.h" />
     <ClInclude Include="Source\DrawManager\DrawManager.h" />
     <ClInclude Include="Source\Enemy\EnemyBase\EnemyBase.h" />
     <ClInclude Include="Source\Enemy\EnemyManager\EnemyManager.h" />

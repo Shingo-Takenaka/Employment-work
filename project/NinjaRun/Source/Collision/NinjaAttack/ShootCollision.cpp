@@ -1,8 +1,7 @@
-
 #include "ShootCollision.h"
 
-#include "../Ninja/NinjaAttack.h"
-#include "../Enemy/EnemyBase/EnemyBase.h"
+#include "../../Ninja/NinjaAttack.h"
+#include "../../Enemy/EnemyBase/EnemyBase.h"
 
 #include <math.h>
 

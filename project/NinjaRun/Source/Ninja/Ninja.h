@@ -50,6 +50,9 @@ public:
     // 壁キック
     void WallKick();
 
+    float GetDashCutDirectionX() const;
+    float GetDashCutDirectionZ() const;
+
 private:
     // ダッシュ関連の定数
     static const float DASH_ACCEL_SPEED;

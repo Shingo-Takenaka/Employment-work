@@ -1,9 +1,6 @@
-
 #include "TouchEnemy.h"
-
-#include "../Ninja/Ninja.h"
-#include "../Enemy/EnemyBase/EnemyBase.h"
-
+#include "../../Ninja/Ninja.h"
+#include "../../Enemy/EnemyBase/EnemyBase.h"
 #include <math.h>
 
 // ノックバックの強さ
@@ -34,8 +31,9 @@ float TouchEnemy::GetTouchHeight()
 bool TouchEnemy::Check(const Ninja& ninja, const EnemyBase& enemy)
 {
     // 現在のEnemyの座標を基準にする
-    VECTOR enemyPos =
-        enemy.GetPosition();
+    const EnemyBase& enemyRef = enemy;
+
+    VECTOR enemyPos = enemyRef.GetPosition();
 
     // Playerの現在座標
     VECTOR ninjaPos =

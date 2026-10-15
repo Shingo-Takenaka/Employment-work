@@ -105,23 +105,8 @@
     <ClCompile Include="Source\Enemy\EnemyBase\EnemyBase.cpp">
       <Filter>Source\Enemy\EnemyBase</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collision\EnemyAttackCollision.cpp">
-      <Filter>Source\Collision\EnemyAttack</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Collision\Field\FieldCollision.cpp">
       <Filter>Source\Collision\Field</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\PlayerAttackCollision.cpp">
-      <Filter>Source\Collision\PlayerAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\ShootCollision.cpp">
-      <Filter>Source\Collision\PlayerAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\TouchEnemy.cpp">
-      <Filter>Source\Collision\TouchEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\TouchEnemyDebug.cpp">
-      <Filter>Source\Collision\TouchEnemy</Filter>
     </ClCompile>
     <ClCompile Include="Source\Enemy\WalkEnemy\WalkEnemy.cpp">
       <Filter>Source\Enemy\WalkEnemy</Filter>
@@ -131,6 +116,21 @@
     </ClCompile>
     <ClCompile Include="Source\Enemy\EnemyManager\EnemyManager.cpp">
       <Filter>Source\Enemy\EnemyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\NinjaAttack\AttackCollision.cpp">
+      <Filter>Source\Collision\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\NinjaAttack\ShootCollision.cpp">
+      <Filter>Source\Collision\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\NinjaAttack\DashAttackCollision.cpp">
+      <Filter>Source\Collision\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EnemyAttack\EnemyAttackCollision.cpp">
+      <Filter>Source\Collision\EnemyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\TouchEnemy\TouchEnemy.cpp">
+      <Filter>Source\Collision\TouchEnemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,23 +173,8 @@
     <ClInclude Include="Source\Enemy\EnemyBase\EnemyBase.h">
       <Filter>Source\Enemy\EnemyBase</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision\EnemyAttackCollision.h">
-      <Filter>Source\Collision\EnemyAttack</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Collision\Field\FieldCollision.h">
       <Filter>Source\Collision\Field</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\PlayerAttackCollision.h">
-      <Filter>Source\Collision\PlayerAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\ShootCollision.h">
-      <Filter>Source\Collision\PlayerAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\TouchEnemyDebug.h">
-      <Filter>Source\Collision\TouchEnemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\TouchEnemy.h">
-      <Filter>Source\Collision\TouchEnemy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy\WalkEnemy\WalkEnemy.h">
       <Filter>Source\Enemy\WalkEnemy</Filter>
@@ -205,6 +190,21 @@
     </ClInclude>
     <ClInclude Include="Source\Ninja\NinjaAnimation.h">
       <Filter>Source\Ninja</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\NinjaAttack\AttackCollision.h">
+      <Filter>Source\Collision\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\NinjaAttack\ShootCollision.h">
+      <Filter>Source\Collision\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\NinjaAttack\DashAttackCollision.h">
+      <Filter>Source\Collision\PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EnemyAttack\EnemyAttackCollision.h">
+      <Filter>Source\Collision\EnemyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\TouchEnemy\TouchEnemy.h">
+      <Filter>Source\Collision\TouchEnemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

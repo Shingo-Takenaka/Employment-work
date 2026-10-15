@@ -7,10 +7,12 @@
 #include "../Ninja/NinjaAttack.h"
 #include "../Ninja/NinjaAnimation.h"
 #include "../Enemy/EnemyManager/EnemyManager.h"
-#include "../Collision/TouchEnemy.h"
-#include "../Collision/PlayerAttackCollision.h"
-#include "../Collision/ShootCollision.h"
-#include "../Collision/EnemyAttackCollision.h"
+#include "../Collision/TouchEnemy/TouchEnemy.h"
+#include "../Collision/NinjaAttack/AttackCollision.h"
+#include "../Collision/NinjaAttack/ShootCollision.h"
+#include "../Collision/EnemyAttack/EnemyAttackCollision.h"
+#include "../Collision/NinjaAttack/DashAttackCollision.h"
+#include "../Collision/Field/FieldCollision.h"
 
 class PlayScene
 {
@@ -31,6 +33,8 @@ private:
     Ninja m_ninja;
 
     EnemyManager m_enemyManager;
+
+    DashAttackCollision m_dashAttackCollision;
 
     bool m_isTouchEnemy;
 

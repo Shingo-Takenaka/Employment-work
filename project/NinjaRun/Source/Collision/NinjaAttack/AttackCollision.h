@@ -1,7 +1,6 @@
-
 #pragma once
 
-#include "../Ninja/NinjaAttack.h"
+#include "../../Ninja/NinjaAttack.h"
 
 class Ninja;
 class EnemyBase;

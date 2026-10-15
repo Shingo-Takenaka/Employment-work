@@ -1,9 +1,4 @@
 #include "PlayScene.h"
-
-#include "../Collision/TouchEnemyDebug.h"
-#include "../Collision/PlayerAttackCollision.h"
-#include "../Collision/Field/FieldCollision.h"
-
 #include <math.h>
 
 PlayScene::PlayScene()
@@ -17,15 +12,15 @@ PlayScene::~PlayScene()
 void PlayScene::Update()
 {
     // Ninjaの移動前の位置を保存
-    VECTOR oldNinjaPos =
-        m_ninja.GetPosition();
+    VECTOR oldNinjaPos = m_ninja.GetPosition();
 
     m_ninja.Update();
 
+    // ダッシュ切りの当たり判定を更新
+    m_dashAttackCollision.Update(m_ninja);
+
     // Wallとの当たり判定
-    if (FieldCollision::CheckWall(
-        m_ninja,
-        m_field))
+    if (FieldCollision::CheckWall(m_ninja, m_field))
     {
         // 壁に入ったら移動前の位置に戻す
         m_ninja.SetPosition(oldNinjaPos);
@@ -33,58 +28,67 @@ void PlayScene::Update()
         // Ninjaが空中にいる場合
         if (m_ninja.IsJump())
         {
-            VECTOR ninjaPos =
-                m_ninja.GetPosition();
+            VECTOR ninjaPos = m_ninja.GetPosition();
+            VECTOR wallPos = m_field.GetWallPosition();
 
-            VECTOR wallPos =
-                m_field.GetWallPosition();
-
-            VECTOR wallKickDirection =
-                VGet(0.0f, 0.0f, 0.0f);
+            VECTOR wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
 
             // 壁がNinjaの右側にある場合
             if (wallPos.x > ninjaPos.x)
             {
                 wallKickDirection.x = -1.0f;
             }
-            // 壁がNinjaの左側にある場合
             else
             {
                 wallKickDirection.x = 1.0f;
             }
 
             // 壁キック可能状態にする
-            m_ninja.EnableWallKick(
-                wallKickDirection);
+            m_ninja.EnableWallKick(wallKickDirection);
         }
     }
 
     // 敵一覧を取得
-    auto& normalEnemies =
-        m_enemyManager.GetNormalEnemies();
+    auto& normalEnemies = m_enemyManager.GetNormalEnemies();
+    auto& walkEnemies = m_enemyManager.GetWalkEnemies();
 
-    auto& walkEnemies =
-        m_enemyManager.GetWalkEnemies();
-
-    // Playerの近接攻撃とNormalEnemyの当たり判定
+    // NormalEnemyへの通常攻撃とダッシュ切り
     for (auto& enemy : normalEnemies)
     {
-        if (!enemy.IsDead() &&
-            m_playerAttackCollision.Check(
-                m_ninja,
-                enemy))
+        if (enemy.IsDead())
+        {
+            continue;
+        }
+
+        // 通常の近接攻撃
+        if (m_playerAttackCollision.Check(m_ninja, enemy))
+        {
+            enemy.TakeDamage(1);
+        }
+
+        // ダッシュ切り
+        if (m_dashAttackCollision.Check(m_ninja, enemy))
         {
             enemy.TakeDamage(1);
         }
     }
 
-    // Playerの近接攻撃とWalkEnemyの当たり判定
+    // WalkEnemyへの通常攻撃とダッシュ切り
     for (auto& enemy : walkEnemies)
     {
-        if (!enemy.IsDead() &&
-            m_playerAttackCollision.Check(
-                m_ninja,
-                enemy))
+        if (enemy.IsDead())
+        {
+            continue;
+        }
+
+        // 通常の近接攻撃
+        if (m_playerAttackCollision.Check(m_ninja, enemy))
+        {
+            enemy.TakeDamage(1);
+        }
+
+        // ダッシュ切り
+        if (m_dashAttackCollision.Check(m_ninja, enemy))
         {
             enemy.TakeDamage(1);
         }
@@ -103,36 +107,24 @@ void PlayScene::Update()
             continue;
         }
 
-        VECTOR start =
-            enemy.GetAttackStartPos();
+        VECTOR start = enemy.GetAttackStartPos();
+        VECTOR target = enemy.GetAttackTargetPos();
 
-        VECTOR target =
-            enemy.GetAttackTargetPos();
-
-        if (EnemyAttackCollision::Check(
-            m_ninja,
-            start,
-            target))
+        if (EnemyAttackCollision::Check(m_ninja, start, target))
         {
-            VECTOR playerPos =
-                m_ninja.GetPosition();
+            VECTOR playerPos = m_ninja.GetPosition();
 
-            float dx =
-                playerPos.x - start.x;
+            float dx = playerPos.x - start.x;
+            float dz = playerPos.z - start.z;
 
-            float dz =
-                playerPos.z - start.z;
-
-            float length =
-                sqrtf(dx * dx + dz * dz);
+            float length = sqrtf(dx * dx + dz * dz);
 
             if (length > 0.001f)
             {
                 dx /= length;
                 dz /= length;
 
-                VECTOR knockbackDirection =
-                    VGet(dx, 0.0f, dz);
+                VECTOR knockbackDirection = VGet(dx, 0.0f, dz);
 
                 m_ninja.ApplyKnockback(
                     knockbackDirection,
@@ -150,15 +142,11 @@ void PlayScene::Update()
             continue;
         }
 
-        if (TouchEnemy::Check(
-            m_ninja,
-            enemy))
+        if (TouchEnemy::Check(m_ninja, enemy))
         {
             if (!m_ninja.IsKnockback())
             {
-                TouchEnemy::Apply(
-                    m_ninja,
-                    enemy);
+                TouchEnemy::Apply(m_ninja, enemy);
             }
         }
     }
@@ -171,22 +159,17 @@ void PlayScene::Update()
             continue;
         }
 
-        if (TouchEnemy::Check(
-            m_ninja,
-            enemy))
+        if (TouchEnemy::Check(m_ninja, enemy))
         {
             if (!m_ninja.IsKnockback())
             {
-                TouchEnemy::Apply(
-                    m_ninja,
-                    enemy);
+                TouchEnemy::Apply(m_ninja, enemy);
             }
         }
     }
 
     // カメラ更新
-    m_camera.Update(
-        m_ninja.GetPosition());
+    m_camera.Update(m_ninja.GetPosition());
 
     // 手裏剣アニメーション開始時に発射
     if (m_ninja.IsShootStart())
@@ -200,9 +183,7 @@ void PlayScene::Update()
     m_playerAttack.UpdateShoot();
 
     // 手裏剣と敵の当たり判定
-    for (int i = m_playerAttack.GetShootCount() - 1;
-        i >= 0;
-        i--)
+    for (int i = m_playerAttack.GetShootCount() - 1; i >= 0; i--)
     {
         bool isHit = false;
 
@@ -214,10 +195,7 @@ void PlayScene::Update()
                 continue;
             }
 
-            if (ShootCollision::Check(
-                m_playerAttack,
-                i,
-                enemy))
+            if (ShootCollision::Check(m_playerAttack, i, enemy))
             {
                 enemy.TakeDamage(1);
                 isHit = true;
@@ -235,10 +213,7 @@ void PlayScene::Update()
                     continue;
                 }
 
-                if (ShootCollision::Check(
-                    m_playerAttack,
-                    i,
-                    enemy))
+                if (ShootCollision::Check(m_playerAttack, i, enemy))
                 {
                     enemy.TakeDamage(1);
                     isHit = true;
@@ -264,8 +239,7 @@ void PlayScene::Draw()
     m_drawManager.Clear();
 
     // Player登録
-    VECTOR playerPos =
-        m_ninja.GetPosition();
+    VECTOR playerPos = m_ninja.GetPosition();
 
     m_drawManager.Add(
         playerPos,
@@ -287,16 +261,17 @@ void PlayScene::Draw()
             });
     }
 
-    // 敵を描画
     // NormalEnemy登録
-    auto& normalEnemies =
-        m_enemyManager.GetNormalEnemies();
+    auto& normalEnemies = m_enemyManager.GetNormalEnemies();
 
     for (auto& enemy : normalEnemies)
     {
-        VECTOR enemyPos =
-            enemy.GetPosition();
+        if (enemy.IsDead())
+        {
+            continue;
+        }
 
+        VECTOR enemyPos = enemy.GetPosition();
         NormalEnemy* enemyPtr = &enemy;
 
         m_drawManager.Add(
@@ -309,75 +284,41 @@ void PlayScene::Draw()
     }
 
     // WalkEnemy登録
-    auto& walkEnemies =
-        m_enemyManager.GetWalkEnemies();
+    auto& walkEnemies = m_enemyManager.GetWalkEnemies();
 
     for (auto& enemy : walkEnemies)
     {
-        VECTOR enemyPos =
-            enemy.GetPosition();
+        if (enemy.IsDead())
+        {
+            continue;
+        }
+
+        VECTOR enemyPos = enemy.GetPosition();
+        WalkEnemy* enemyPtr = &enemy;
 
         m_drawManager.Add(
             enemyPos,
             enemyPos.z,
-            [&enemy]()
+            [enemyPtr]()
             {
-                enemy.Draw();
+                enemyPtr->Draw();
             });
     }
 
     // ソートして描画
     m_drawManager.Draw();
 
-    // NormalEnemy接触判定デバッグ
-    /*
-    for (auto& enemy : normalEnemies)
-    {
-        if (!enemy.IsDead())
-        {
-            TouchEnemyDebug::Draw(
-                m_ninja,
-                enemy);
-        }
-    }
-    */
-
-    // WalkEnemy接触判定デバッグ
-    /*
-    for (auto& enemy : walkEnemies)
-    {
-        if (!enemy.IsDead())
-        {
-            TouchEnemyDebug::Draw(
-                m_ninja,
-                enemy);
-        }
-    }
-    */
-
     // NormalEnemy攻撃判定デバッグ
     for (auto& enemy : normalEnemies)
     {
-        if (!enemy.IsDead() &&
-            enemy.IsAttackActive())
+        if (!enemy.IsDead() && enemy.IsAttackActive())
         {
-            VECTOR start =
-                enemy.GetAttackStartPos();
+            VECTOR start = enemy.GetAttackStartPos();
+            VECTOR target = enemy.GetAttackTargetPos();
 
-            VECTOR target =
-                enemy.GetAttackTargetPos();
-
-            EnemyAttackCollision::DrawDebug(
-                start,
-                target);
+            EnemyAttackCollision::DrawDebug(start, target);
         }
     }
-
-    // Wallの当たり判定デバッグ
-    /*
-    FieldCollision::DrawDebug(
-        m_field);
-    */
 
     // Playerの座標
     DrawFormatString(

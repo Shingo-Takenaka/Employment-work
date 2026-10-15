@@ -1,6 +1,6 @@
 #include "EnemyAttackCollision.h"
 
-#include "../Ninja/Ninja.h"
+#include "../../Ninja/Ninja.h"
 
 #include <math.h>
 

@@ -768,3 +768,13 @@ void Ninja::WallKick()
     // 壁キック後は一定時間、キック方向への移動を行う
     m_wallKickInputTimer = WALL_KICK_MOVE_TIME;
 }
+
+float Ninja::GetDashCutDirectionX() const
+{
+    return m_ninjaAttack.GetDashCutDirectionX();
+}
+
+float Ninja::GetDashCutDirectionZ() const
+{
+    return m_ninjaAttack.GetDashCutDirectionZ();
+}

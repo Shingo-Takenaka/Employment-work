@@ -1,8 +1,7 @@
+#include "AttackCollision.h"
 
-#include "PlayerAttackCollision.h"
-
-#include "../Ninja/Ninja.h"
-#include "../Enemy/EnemyBase/EnemyBase.h"
+#include "../../Ninja/Ninja.h"
+#include "../../Enemy/EnemyBase/EnemyBase.h"
 
 #include <math.h>
 
