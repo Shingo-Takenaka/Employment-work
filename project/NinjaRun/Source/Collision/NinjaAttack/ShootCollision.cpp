@@ -1,7 +1,7 @@
 #include "ShootCollision.h"
-
 #include "../../Ninja/NinjaAttack.h"
 #include "../../Enemy/EnemyBase/EnemyBase.h"
+#include "../CollisionSetting.h"
 
 #include <math.h>
 
@@ -9,8 +9,10 @@ ShootCollision::ShootCollision()
 {
 }
 
-// Žè— Œ•‚ÆEnemy‚ª“–‚½‚Á‚Ä‚¢‚é‚©
-bool ShootCollision::Check(const NinjaAttack& ninjaAttack,int shootIndex,const EnemyBase& enemy)
+bool ShootCollision::Check(
+    const NinjaAttack& ninjaAttack,
+    int shootIndex,
+    const EnemyBase& enemy)
 {
     if (enemy.IsDead())
     {
@@ -18,13 +20,11 @@ bool ShootCollision::Check(const NinjaAttack& ninjaAttack,int shootIndex,const E
     }
 
     VECTOR shootPos = ninjaAttack.GetShootPosition(shootIndex);
-
     VECTOR enemyPos = enemy.GetPosition();
 
-    // Žè— Œ•‚Ì“–‚½‚è”»’è
-    float shootWidth = 3.0f;
-    float shootDepth = 6.0f;
-    float shootHeight = 6.0f;
+    float shootWidth = CollisionSettings::SHURIKEN_WIDTH;
+    float shootDepth = CollisionSettings::SHURIKEN_DEPTH;
+    float shootHeight = CollisionSettings::SHURIKEN_HEIGHT;
 
     float dx = fabsf(enemyPos.x - shootPos.x);
 

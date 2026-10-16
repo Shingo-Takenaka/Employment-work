@@ -55,6 +55,9 @@
     <Filter Include="Source\Enemy\EnemyManager">
       <UniqueIdentifier>{e7155fd9-d7bb-40e8-bb8a-3431d8b7cb4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Collision\Debug">
+      <UniqueIdentifier>{cfa603bc-719f-4147-9f65-d1a3ed667fa5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Camera\Camera.cpp">
@@ -132,6 +135,12 @@
     <ClCompile Include="Source\Collision\TouchEnemy\TouchEnemy.cpp">
       <Filter>Source\Collision\TouchEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Collision\CollisionSetting.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\Debug\CollisionDebug.cpp">
+      <Filter>Source\Collision\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -205,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="Source\Collision\TouchEnemy\TouchEnemy.h">
       <Filter>Source\Collision\TouchEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionSetting.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\Debug\CollisionDebug.h">
+      <Filter>Source\Collision\Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -232,7 +232,7 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
-    // 地面
+    // 地面を描画
     m_field.Draw();
 
     // 描画リストを空にする
@@ -305,20 +305,64 @@ void PlayScene::Draw()
             });
     }
 
-    // ソートして描画
+    // ソートしてキャラクターと手裏剣を描画
     m_drawManager.Draw();
 
-    // NormalEnemy攻撃判定デバッグ
-    for (auto& enemy : normalEnemies)
-    {
-        if (!enemy.IsDead() && enemy.IsAttackActive())
-        {
-            VECTOR start = enemy.GetAttackStartPos();
-            VECTOR target = enemy.GetAttackTargetPos();
+    //// デバッグ表示
+    //// Playerの接触判定範囲
+    //CollisionDebug::DrawPlayerBody(playerPos);
 
-            EnemyAttackCollision::DrawDebug(start, target);
-        }
-    }
+    //// Playerの通常攻撃判定範囲
+    //if (m_ninja.IsSlash())
+    //{
+    //    CollisionDebug::DrawPlayerAttack(
+    //        playerPos,
+    //        m_ninja.IsReverseX());
+    //}
+
+    //// 手裏剣の当たり判定範囲
+    //for (int i = 0; i < m_playerAttack.GetShootCount(); i++)
+    //{
+    //    VECTOR shootPos = m_playerAttack.GetShootPosition(i);
+
+    //    CollisionDebug::DrawShuriken(shootPos);
+    //}
+
+    //// NormalEnemyの接触判定範囲と攻撃判定範囲
+    //for (auto& enemy : normalEnemies)
+    //{
+    //    if (enemy.IsDead())
+    //    {
+    //        continue;
+    //    }
+
+    //    VECTOR enemyPos = enemy.GetPosition();
+
+    //    // 敵の接触判定範囲
+    //    CollisionDebug::DrawEnemyBody(enemyPos);
+
+    //    // 敵の攻撃判定範囲
+    //    if (enemy.IsAttackActive())
+    //    {
+    //        VECTOR start = enemy.GetAttackStartPos();
+    //        VECTOR target = enemy.GetAttackTargetPos();
+
+    //        CollisionDebug::DrawEnemyAttack(start, target);
+    //    }
+    //}
+
+    //// WalkEnemyの接触判定範囲
+    //for (auto& enemy : walkEnemies)
+    //{
+    //    if (enemy.IsDead())
+    //    {
+    //        continue;
+    //    }
+
+    //    VECTOR enemyPos = enemy.GetPosition();
+
+    //    CollisionDebug::DrawEnemyBody(enemyPos);
+    //}
 
     // Playerの座標
     DrawFormatString(

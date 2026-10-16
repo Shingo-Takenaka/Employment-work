@@ -23,12 +23,11 @@ public:
 
 private:
 
+    //16枚まで扱い可能
     static const int MAX_FRAME = 16;
 
     int m_frame;
-
     int m_timer;
-
     int m_frameMax;
 
     // フレームごとの切り替え速度

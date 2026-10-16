@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Collision\CollisionSetting.cpp" />
+    <ClCompile Include="Source\Collision\Debug\CollisionDebug.cpp" />
     <ClCompile Include="Source\Collision\EnemyAttack\EnemyAttackCollision.cpp" />
     <ClCompile Include="Source\Collision\Field\FieldCollision.cpp" />
     <ClCompile Include="Source\Collision\NinjaAttack\AttackCollision.cpp" />
@@ -48,6 +50,8 @@
   <ItemGroup>
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
+    <ClInclude Include="Source\Collision\CollisionSetting.h" />
+    <ClInclude Include="Source\Collision\Debug\CollisionDebug.h" />
     <ClInclude Include="Source\Collision\EnemyAttack\EnemyAttackCollision.h" />
     <ClInclude Include="Source\Collision\Field\FieldCollision.h" />
     <ClInclude Include="Source\Collision\NinjaAttack\AttackCollision.h" />

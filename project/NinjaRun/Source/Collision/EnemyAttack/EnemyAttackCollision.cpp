@@ -1,26 +1,8 @@
 #include "EnemyAttackCollision.h"
-
 #include "../../Ninja/Ninja.h"
+#include "../CollisionSetting.h"
 
 #include <math.h>
-
-namespace
-{
-    // Enemy攻撃の当たり判定の横幅
-    const float COLLISION_WIDTH = 3.0f;
-
-    // Enemy攻撃の当たり判定の高さ
-    const float COLLISION_HEIGHT = 5.0f;
-
-    // Playerの当たり判定の横幅
-    const float PLAYER_COLLISION_WIDTH = 4.0f;
-
-    // Playerの当たり判定の高さ
-    const float PLAYER_COLLISION_HEIGHT = 8.0f;
-
-    // Playerの当たり判定の奥行き
-    const float PLAYER_COLLISION_DEPTH = 4.0f;
-}
 
 bool EnemyAttackCollision::Check(const Ninja& ninja, VECTOR start, VECTOR target)
 {
@@ -56,16 +38,16 @@ bool EnemyAttackCollision::Check(const Ninja& ninja, VECTOR start, VECTOR target
     float sideDistance = playerX * sideX + playerZ * sideZ;
 
     // Playerの半分のサイズ
-    float playerHalfWidth = PLAYER_COLLISION_WIDTH * 0.5f;
+    float playerHalfWidth = CollisionSettings::ENEMY_ATTACK_PLAYER_WIDTH * 0.5f;
 
-    float playerHalfHeight = PLAYER_COLLISION_HEIGHT * 0.5f;
+    float playerHalfHeight = CollisionSettings::ENEMY_ATTACK_PLAYER_HEIGHT * 0.5f;
 
-    float playerHalfDepth = PLAYER_COLLISION_DEPTH * 0.5f;
+    float playerHalfDepth = CollisionSettings::ENEMY_ATTACK_PLAYER_DEPTH * 0.5f;
 
     // Beamの半分のサイズ
-    float beamHalfWidth = COLLISION_WIDTH * 0.5f;
+    float beamHalfWidth = CollisionSettings::ENEMY_ATTACK_WIDTH * 0.5f;
 
-    float beamHalfHeight = COLLISION_HEIGHT * 0.5f;
+    float beamHalfHeight = CollisionSettings::ENEMY_ATTACK_HEIGHT * 0.5f;
 
     // Beamの前後方向の判定
     if (forwardDistance + playerHalfDepth < 0.0f ||
@@ -114,9 +96,9 @@ void EnemyAttackCollision::DrawDebug(VECTOR start, VECTOR target)
     // 上方向
     VECTOR up = VGet(0.0f, 1.0f, 0.0f);
 
-    float halfWidth = COLLISION_WIDTH * 0.5f;
+    float halfWidth = CollisionSettings::ENEMY_ATTACK_WIDTH * 0.5f;
 
-    float halfHeight = COLLISION_HEIGHT * 0.5f;
+    float halfHeight = CollisionSettings::ENEMY_ATTACK_HEIGHT * 0.5f;
 
     // 開始地点の4頂点
     VECTOR startTopRight = VAdd(VAdd(start, VScale(side, halfWidth)), VScale(up, halfHeight));

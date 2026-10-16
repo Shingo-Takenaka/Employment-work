@@ -1,6 +1,7 @@
 #include "TouchEnemy.h"
 #include "../../Ninja/Ninja.h"
 #include "../../Enemy/EnemyBase/EnemyBase.h"
+#include "../CollisionSetting.h"
 #include <math.h>
 
 // ノックバックの強さ
@@ -12,19 +13,17 @@ const float KNOCKBACK_DURATION = 0.5f;
 // X方向の判定範囲
 float TouchEnemy::GetTouchWidth()
 {
-    return 8.0f * 0.6f;
+    return CollisionSettings::TOUCH_ENEMY_WIDTH;
 }
 
-// Z方向の判定範囲
 float TouchEnemy::GetTouchDepth()
 {
-    return 4.0f;
+    return CollisionSettings::TOUCH_ENEMY_DEPTH;
 }
 
-// Y方向の判定範囲
 float TouchEnemy::GetTouchHeight()
 {
-    return 10.0f;
+    return CollisionSettings::TOUCH_ENEMY_HEIGHT;
 }
 
 // 接触判定

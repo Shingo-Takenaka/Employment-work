@@ -13,6 +13,7 @@
 #include "../Collision/EnemyAttack/EnemyAttackCollision.h"
 #include "../Collision/NinjaAttack/DashAttackCollision.h"
 #include "../Collision/Field/FieldCollision.h"
+#include "../Collision/Debug/CollisionDebug.h"
 
 class PlayScene
 {

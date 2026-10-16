@@ -1,7 +1,7 @@
 #include "AttackCollision.h"
-
 #include "../../Ninja/Ninja.h"
 #include "../../Enemy/EnemyBase/EnemyBase.h"
+#include "../CollisionSetting.h"
 
 #include <math.h>
 
@@ -23,11 +23,9 @@ bool PlayerAttackCollision::Check(const Ninja& ninja,const EnemyBase& enemy)
     VECTOR enemyPos = enemy.GetPosition();
 
     // PlayerAttack‚©‚çUŒ‚”ÍˆÍ‚ğæ“¾
-    float attackWidth = m_playerAttack.GetAttackWidth();
-
-    float attackDepth = m_playerAttack.GetAttackDepth();
-
-    float attackHeight = m_playerAttack.GetAttackHeight();
+    float attackWidth = CollisionSettings::PLAYER_ATTACK_WIDTH;
+    float attackDepth = CollisionSettings::PLAYER_ATTACK_DEPTH;
+    float attackHeight = CollisionSettings::PLAYER_ATTACK_HEIGHT;
 
     // X•ûŒü
     float minX;
@@ -61,7 +59,7 @@ bool PlayerAttackCollision::Check(const Ninja& ninja,const EnemyBase& enemy)
     }
 
     // Y•ûŒü
-    float attackCenterY = ninjaPos.y - 5.0f;
+    float attackCenterY = ninjaPos.y + CollisionSettings::PLAYER_ATTACK_CENTER_Y_OFFSET;
 
     float dy = fabsf(enemyPos.y - attackCenterY);
 

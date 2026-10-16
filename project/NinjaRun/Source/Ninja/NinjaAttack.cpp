@@ -1,12 +1,13 @@
 #include "NinjaAttack.h"
+#include "../Collision/CollisionSetting.h"
 #include <math.h>
 
 NinjaAttack::NinjaAttack()
 {
     // çUåÇîÕàÕ
-    m_attackWidth = 15.0f;
-    m_attackDepth = 6.0f;
-    m_attackHeight = 5.0f;
+    m_attackWidth = CollisionSettings::PLAYER_ATTACK_WIDTH;
+    m_attackDepth = CollisionSettings::PLAYER_ATTACK_DEPTH;
+    m_attackHeight = CollisionSettings::PLAYER_ATTACK_HEIGHT;
 
     // éËó†åï
     m_shootGraph = LoadGraph(
