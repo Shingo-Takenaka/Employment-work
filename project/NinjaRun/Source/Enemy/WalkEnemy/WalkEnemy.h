@@ -4,8 +4,12 @@
 
 #include "../EnemyBase/EnemyBase.h"
 #include "WalkEnemyAnimation.h"
+#include "../../Collision/NinjaAttack/AttackCollision.h"
+#include "../../Collision/NinjaAttack/DashAttackCollision.h"
 
 class Ninja;
+class PlayerAttackCollision;
+class DashAttackCollision;
 
 class WalkEnemy : public EnemyBase
 {
@@ -16,6 +20,8 @@ public:
 
     void Update(const Ninja& ninja) override;
     void Draw() override;
+    // Playerの通常攻撃・ダッシュ切り判定
+    void CheckPlayerAttack(const Ninja& ninja,PlayerAttackCollision& playerAttackCollision,DashAttackCollision& dashAttackCollision);
 
     void SetPosition(VECTOR pos);
 

@@ -71,3 +71,30 @@ void FieldCollision::DrawDebug(
         GetColor(255, 0, 0),
         GetColor(255, 0, 0));
 }
+
+void FieldCollision::ResolveWallCollision(Ninja& ninja,const Field& field,VECTOR oldNinjaPos)
+{
+    // •Ç‚É“ü‚Á‚½‚çˆÚ“®‘O‚ÌˆÊ’u‚É–ß‚·
+    ninja.SetPosition(oldNinjaPos);
+
+    // Ninja‚ª‹ó’†‚É‚¢‚éê‡
+    if (ninja.IsJump())
+    {
+        VECTOR ninjaPos = ninja.GetPosition();
+        VECTOR wallPos = field.GetWallPosition();
+
+        VECTOR wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
+
+        // •Ç‚ªNinja‚Ì‰E‘¤‚É‚ ‚éê‡
+        if (wallPos.x > ninjaPos.x)
+        {
+            wallKickDirection.x = -1.0f;
+        }
+        else
+        {
+            wallKickDirection.x = 1.0f;
+        }
+
+        ninja.SetWallContact(wallKickDirection);
+    }
+}

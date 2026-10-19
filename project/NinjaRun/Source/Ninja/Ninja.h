@@ -44,11 +44,7 @@ public:
     // 壁キックできる状態か
     bool CanWallKick() const;
 
-    // 壁に触れたので壁キック可能にする
-    void EnableWallKick(VECTOR direction);
-
-    // 壁キック
-    void WallKick();
+    void SetWallContact(VECTOR direction);
 
     float GetDashCutDirectionX() const;
     float GetDashCutDirectionZ() const;
@@ -137,19 +133,27 @@ private:
     // 重力
     float m_gravity;
 
-    // 壁キック関連
-
+    // =====壁キック関連=====
     // 壁キックできる状態か
     bool m_canWallKick;
 
+    // 壁っキックの強制移動中か
+    bool m_isWallKicking;
+    
     // 壁から離れる方向
     VECTOR m_wallKickDirection;
-
+    
     // 壁キック後に戻る地面のY座標
     float m_wallKickGroundY;
-
+    
     // 壁キック後の入力無効時間
     float m_wallKickInputTimer;
+
+    // キック方向の速度
+    float m_wallKickVelocityX;
+    float m_wallKickVelocityZ;
+
+    bool WallkickUpdate(const NinjaInputState& input);
 
     // 攻撃関連
 

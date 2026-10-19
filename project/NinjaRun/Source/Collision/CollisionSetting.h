@@ -22,7 +22,7 @@ namespace CollisionSettings
     constexpr float ENEMY_ATTACK_WIDTH = 3.0f;
     constexpr float ENEMY_ATTACK_HEIGHT = 5.0f;
 
-        // Žè— Œ•‚Ì“–‚½‚è”»’è
+    // Žè— Œ•‚Ì“–‚½‚è”»’è
     constexpr float SHURIKEN_WIDTH = 3.0f;
     constexpr float SHURIKEN_DEPTH = 6.0f;
     constexpr float SHURIKEN_HEIGHT = 6.0f;

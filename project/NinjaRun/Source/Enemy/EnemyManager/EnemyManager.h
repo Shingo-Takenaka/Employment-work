@@ -1,11 +1,10 @@
 #pragma once
 
 #include "DxLib.h"
-
-#include <vector>
-
 #include "../NormalEnemy/NormalEnemy.h"
 #include "../WalkEnemy/WalkEnemy.h"
+
+#include <vector>
 
 class Ninja;
 

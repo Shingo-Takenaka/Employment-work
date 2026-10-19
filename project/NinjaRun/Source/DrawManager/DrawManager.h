@@ -23,10 +23,7 @@ public:
     ~DrawManager();
 
     // “o˜^
-    void Add(
-        VECTOR position,
-        float sortValue,
-        std::function<void()> draw);
+    void Add(VECTOR position,float sortValue,std::function<void()> draw);
 
     // •`‰æ
     void Draw();

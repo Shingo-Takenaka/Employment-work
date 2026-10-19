@@ -1,9 +1,5 @@
 #include "NormalEnemy.h"
 
-#include "../../Ninja/Ninja.h"
-
-#include <math.h>
-
 NormalEnemy::NormalEnemy()
     : EnemyBase(1)
 {
@@ -100,6 +96,31 @@ void NormalEnemy::Draw()
 
     // 攻撃エフェクト
     m_attack.Draw(m_pos);
+}
+
+// Playerの通常攻撃・ダッシュ切り判定
+void NormalEnemy::CheckPlayerAttack(
+    const Ninja& ninja,
+    PlayerAttackCollision& playerAttackCollision,
+    DashAttackCollision& dashAttackCollision)
+{
+    // 死亡していたら判定しない
+    if (m_isDead)
+    {
+        return;
+    }
+
+    // 通常の近接攻撃
+    if (playerAttackCollision.Check(ninja, *this))
+    {
+        TakeDamage(1);
+    }
+
+    // ダッシュ切り
+    if (dashAttackCollision.Check(ninja, *this))
+    {
+        TakeDamage(1);
+    }
 }
 
 bool NormalEnemy::IsAttackActive() const

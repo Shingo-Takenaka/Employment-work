@@ -58,8 +58,7 @@ public:
 
 private:
     // アニメーション1種類読み込み
-    bool LoadAnimation(
-        WalkEnemySpriteAnimation& animation,
+    bool LoadAnimation(WalkEnemySpriteAnimation& animation,
         const char* fileName,
         int frameNum,
         int width,

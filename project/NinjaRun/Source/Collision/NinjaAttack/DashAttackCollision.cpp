@@ -20,9 +20,7 @@ void DashAttackCollision::Update(const Ninja& ninja)
     }
 }
 
-bool DashAttackCollision::Check(
-    const Ninja& ninja,
-    const EnemyBase& enemy)
+bool DashAttackCollision::Check(const Ninja& ninja,const EnemyBase& enemy)
 {
     if (!ninja.IsDashCut() || enemy.IsDead())
     {
@@ -46,14 +44,11 @@ bool DashAttackCollision::Check(
     float dx = enemyPos.x - ninjaPos.x;
     float dz = enemyPos.z - ninjaPos.z;
 
-    float forwardDistance =
-        dx * directionX + dz * directionZ;
+    float forwardDistance = dx * directionX + dz * directionZ;
 
-    float sideDistance =
-        fabsf(dx * directionZ - dz * directionX);
+    float sideDistance = fabsf(dx * directionZ - dz * directionX);
 
-    if (forwardDistance < 0.0f ||
-        forwardDistance > m_attackWidth)
+    if (forwardDistance < 0.0f || forwardDistance > m_attackWidth)
     {
         return false;
     }

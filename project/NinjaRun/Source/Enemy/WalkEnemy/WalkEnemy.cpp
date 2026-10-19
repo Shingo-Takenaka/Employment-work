@@ -80,10 +80,29 @@ void WalkEnemy::Draw()
     }
 
     // 敵本体
-    m_animation.DrawAnimation(
-        m_pos,
-        m_size,
-        m_isReverseX);
+    m_animation.DrawAnimation(m_pos,m_size,m_isReverseX);
+}
+
+// Playerの通常攻撃・ダッシュ切り判定
+void WalkEnemy::CheckPlayerAttack(const Ninja& ninja,PlayerAttackCollision& playerAttackCollision,DashAttackCollision& dashAttackCollision)
+{
+    // 死亡していたら判定しない
+    if (m_isDead)
+    {
+        return;
+    }
+
+    // 通常の近接攻撃
+    if (playerAttackCollision.Check(ninja, *this))
+    {
+        TakeDamage(1);
+    }
+
+    // ダッシュ切り
+    if (dashAttackCollision.Check(ninja, *this))
+    {
+        TakeDamage(1);
+    }
 }
 
 void WalkEnemy::SetPosition(VECTOR pos)

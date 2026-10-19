@@ -13,13 +13,11 @@ namespace
 
     // Warning.png
     // 1366 Å~ 13
-    const float WARNING_ASPECT =
-        13.0f / 1366.0f;
+    const float WARNING_ASPECT = 13.0f / 1366.0f;
 
     // Beam.png
     // 1103 Å~ 102
-    const float BEAM_ASPECT =
-        102.0f / 1103.0f;
+    const float BEAM_ASPECT = 102.0f / 1103.0f;
 
     // çUåÇÇÃî≠éÀà íu
     const float ATTACK_HEIGHT = 3.0f;
@@ -28,24 +26,14 @@ namespace
 NormalEnemyAttack::NormalEnemyAttack()
 {
     m_state = AttackState::NONE;
-
     m_isWarningVisible = false;
-
     m_blinkTimer = 0;
-
     m_warningGraph = -1;
     m_beamGraph = -1;
+    m_attackTargetPos = VGet(0.0f, 0.0f, 0.0f);
 
-    m_attackTargetPos =
-        VGet(0.0f, 0.0f, 0.0f);
-
-    m_warningGraph =
-        LoadGraph(
-            "Data/Enemy/NormalEnemy/Warning2.png");
-
-    m_beamGraph =
-        LoadGraph(
-            "Data/Enemy/NormalEnemy/Beam.png");
+    m_warningGraph = LoadGraph("Data/Enemy/NormalEnemy/Warning2.png");
+    m_beamGraph = LoadGraph("Data/Enemy/NormalEnemy/Beam.png");
 }
 
 NormalEnemyAttack::~NormalEnemyAttack()
@@ -61,10 +49,7 @@ NormalEnemyAttack::~NormalEnemyAttack()
     }
 }
 
-void NormalEnemyAttack::Update(
-    VECTOR enemyPos,
-    VECTOR playerPos,
-    int animationFrame)
+void NormalEnemyAttack::Update(VECTOR enemyPos, VECTOR playerPos, int animationFrame)
 {
     // SHOOTÇÃ2ñáñ⁄
     if (animationFrame == 1)
@@ -73,31 +58,22 @@ void NormalEnemyAttack::Update(
         if (m_state != AttackState::WARNING)
         {
             // Ç±ÇÃèuä‘ÇÃPlayerà íuÇãLò^
-            m_attackTargetPos =
-                playerPos;
+            m_attackTargetPos = playerPos;
 
             // WarningäJén
-            m_state =
-                AttackState::WARNING;
-
-            m_isWarningVisible =
-                true;
-
-            m_blinkTimer =
-                0;
+            m_state = AttackState::WARNING;
+            m_isWarningVisible = true;
+            m_blinkTimer = 0;
         }
         else
         {
             // Warningì_ñ≈
             m_blinkTimer++;
 
-            if (m_blinkTimer >=
-                WARNING_BLINK_INTERVAL)
+            if (m_blinkTimer >= WARNING_BLINK_INTERVAL)
             {
                 m_blinkTimer = 0;
-
-                m_isWarningVisible =
-                    !m_isWarningVisible;
+                m_isWarningVisible = !m_isWarningVisible;
             }
         }
 
@@ -108,25 +84,17 @@ void NormalEnemyAttack::Update(
     if (animationFrame == 2)
     {
         // BeamäJén
-        m_state =
-            AttackState::BEAM;
-
+        m_state = AttackState::BEAM;
         return;
     }
 
     // ÇªÇÍà»äOÇÃÉtÉåÅ[ÉÄ
-    m_state =
-        AttackState::NONE;
-
-    m_isWarningVisible =
-        false;
-
-    m_blinkTimer =
-        0;
+    m_state = AttackState::NONE;
+    m_isWarningVisible = false;
+    m_blinkTimer = 0;
 }
 
-void NormalEnemyAttack::Draw(
-    VECTOR enemyPos)
+void NormalEnemyAttack::Draw(VECTOR enemyPos)
 {
     // çUåÇÇµÇƒÇ¢Ç»Ç¢
     if (m_state == AttackState::NONE)
@@ -135,25 +103,15 @@ void NormalEnemyAttack::Draw(
     }
 
     // WarningÇÃì_ñ≈íÜ
-    if (m_state == AttackState::WARNING &&
-        !m_isWarningVisible)
+    if (m_state == AttackState::WARNING && !m_isWarningVisible)
     {
         return;
     }
 
     // çUåÇï˚å¸
-    float dx =
-        m_attackTargetPos.x -
-        enemyPos.x;
-
-    float dz =
-        m_attackTargetPos.z -
-        enemyPos.z;
-
-    float length =
-        sqrtf(
-            dx * dx +
-            dz * dz);
+    float dx = m_attackTargetPos.x - enemyPos.x;
+    float dz = m_attackTargetPos.z - enemyPos.z;
+    float length = sqrtf(dx * dx + dz * dz);
 
     if (length <= 0.001f)
     {
@@ -165,11 +123,8 @@ void NormalEnemyAttack::Draw(
     dz /= length;
 
     // çUåÇäJénà íu
-    VECTOR start =
-        enemyPos;
-
-    start.y +=
-        ATTACK_HEIGHT;
+    VECTOR start = enemyPos;
+    start.y += ATTACK_HEIGHT;
 
     // égópÇ∑ÇÈíl
     float attackLength;
@@ -183,14 +138,9 @@ void NormalEnemyAttack::Draw(
             return;
         }
 
-        attackLength =
-            WARNING_LENGTH;
-
-        imageAspect =
-            WARNING_ASPECT;
-
-        graph =
-            m_warningGraph;
+        attackLength = WARNING_LENGTH;
+        imageAspect = WARNING_ASPECT;
+        graph = m_warningGraph;
     }
     else
     {
@@ -199,64 +149,32 @@ void NormalEnemyAttack::Draw(
             return;
         }
 
-        attackLength =
-            BEAM_LENGTH;
-
-        imageAspect =
-            BEAM_ASPECT;
-
-        graph =
-            m_beamGraph;
+        attackLength = BEAM_LENGTH;
+        imageAspect = BEAM_ASPECT;
+        graph = m_beamGraph;
     }
 
     // çUåÇèIóπà íu
-    VECTOR target =
-        start;
+    VECTOR target = start;
+    target.x += dx * attackLength;
+    target.z += dz * attackLength;
 
-    target.x +=
-        dx * attackLength;
-
-    target.z +=
-        dz * attackLength;
-
-    DrawAttackImage(
-        graph,
-        start,
-        target,
-        imageAspect);
+    DrawAttackImage(graph, start, target, imageAspect);
 }
 
 void NormalEnemyAttack::Reset()
 {
-    m_state =
-        AttackState::NONE;
-
-    m_isWarningVisible =
-        false;
-
-    m_blinkTimer =
-        0;
+    m_state = AttackState::NONE;
+    m_isWarningVisible = false;
+    m_blinkTimer = 0;
 }
 
-void NormalEnemyAttack::DrawAttackImage(
-    int graph,
-    VECTOR start,
-    VECTOR target,
-    float imageAspect)
+void NormalEnemyAttack::DrawAttackImage(int graph, VECTOR start, VECTOR target, float imageAspect)
 {
     // XZïΩñ è„Ç≈ÇÃçUåÇï˚å¸
-    float dx =
-        target.x -
-        start.x;
-
-    float dz =
-        target.z -
-        start.z;
-
-    float length =
-        sqrtf(
-            dx * dx +
-            dz * dz);
+    float dx = target.x - start.x;
+    float dz = target.z - start.z;
+    float length = sqrtf(dx * dx + dz * dz);
 
     if (length <= 0.001f)
     {
@@ -264,89 +182,36 @@ void NormalEnemyAttack::DrawAttackImage(
     }
 
     // çUåÇï˚å¸Çê≥ãKâª
-    float dirX =
-        dx / length;
-
-    float dirZ =
-        dz / length;
+    float dirX = dx / length;
+    float dirZ = dz / length;
 
     // âÊëúÇÃçÇÇ≥
-    float imageHeight =
-        length * imageAspect;
-
-    float halfHeight =
-        imageHeight * 0.5f;
+    float imageHeight = length * imageAspect;
+    float halfHeight = imageHeight * 0.5f;
 
     // çUåÇï˚å¸Ç…ëŒÇµÇƒâ°å¸Ç´ÇÃï˚å¸
     // XZïΩñ è„Ç≈90ìxâÒì]Ç≥ÇπÇÈ
-    VECTOR side =
-        VGet(
-            -dirZ,
-            0.0f,
-            dirX);
+    VECTOR side = VGet(-dirZ, 0.0f, dirX);
 
     // è\éöå^Ç…Ç∑ÇÈÇΩÇﬂÇÃècï˚å¸
-    VECTOR up =
-        VGet(
-            0.0f,
-            1.0f,
-            0.0f);
+    VECTOR up = VGet(0.0f, 1.0f, 0.0f);
 
     // 1ñáñ⁄ÇÃÉ|ÉäÉSÉì
     // çUåÇï˚å¸ Å~ è„ï˚å¸
-    VECTOR p1 =
-        VGet(
-            start.x,
-            start.y,
-            start.z);
+    VECTOR p1 = VGet(start.x, start.y, start.z);
+    VECTOR p2 = VGet(target.x, target.y, target.z);
 
-    VECTOR p2 =
-        VGet(
-            target.x,
-            target.y,
-            target.z);
-
-    VECTOR topStart =
-        VAdd(
-            p1,
-            VScale(up, halfHeight));
-
-    VECTOR bottomStart =
-        VSub(
-            p1,
-            VScale(up, halfHeight));
-
-    VECTOR topTarget =
-        VAdd(
-            p2,
-            VScale(up, halfHeight));
-
-    VECTOR bottomTarget =
-        VSub(
-            p2,
-            VScale(up, halfHeight));
+    VECTOR topStart = VAdd(p1, VScale(up, halfHeight));
+    VECTOR bottomStart = VSub(p1, VScale(up, halfHeight));
+    VECTOR topTarget = VAdd(p2, VScale(up, halfHeight));
+    VECTOR bottomTarget = VSub(p2, VScale(up, halfHeight));
 
     // 2ñáñ⁄ÇÃÉ|ÉäÉSÉì
     // çUåÇï˚å¸ Å~ â°ï˚å¸
-    VECTOR sideStartPlus =
-        VAdd(
-            p1,
-            VScale(side, halfHeight));
-
-    VECTOR sideStartMinus =
-        VSub(
-            p1,
-            VScale(side, halfHeight));
-
-    VECTOR sideTargetPlus =
-        VAdd(
-            p2,
-            VScale(side, halfHeight));
-
-    VECTOR sideTargetMinus =
-        VSub(
-            p2,
-            VScale(side, halfHeight));
+    VECTOR sideStartPlus = VAdd(p1, VScale(side, halfHeight));
+    VECTOR sideStartMinus = VSub(p1, VScale(side, halfHeight));
+    VECTOR sideTargetPlus = VAdd(p2, VScale(side, halfHeight));
+    VECTOR sideTargetMinus = VSub(p2, VScale(side, halfHeight));
 
     // ÉâÉCÉeÉBÉìÉOÇÃâeãøÇéÛÇØÇ»Ç¢
     SetUseLighting(FALSE);
@@ -357,124 +222,68 @@ void NormalEnemyAttack::DrawAttackImage(
     // 1ñáñ⁄
     VERTEX3D vertex1[4];
 
-    vertex1[0].pos =
-        topStart;
-    vertex1[0].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex1[0].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex1[0].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex1[0].u =
-        0.0f;
-    vertex1[0].v =
-        0.0f;
+    vertex1[0].pos = topStart;
+    vertex1[0].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex1[0].dif = GetColorU8(255, 255, 255, 255);
+    vertex1[0].spc = GetColorU8(0, 0, 0, 0);
+    vertex1[0].u = 0.0f;
+    vertex1[0].v = 0.0f;
 
-    vertex1[1].pos =
-        topTarget;
-    vertex1[1].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex1[1].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex1[1].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex1[1].u =
-        1.0f;
-    vertex1[1].v =
-        0.0f;
+    vertex1[1].pos = topTarget;
+    vertex1[1].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex1[1].dif = GetColorU8(255, 255, 255, 255);
+    vertex1[1].spc = GetColorU8(0, 0, 0, 0);
+    vertex1[1].u = 1.0f;
+    vertex1[1].v = 0.0f;
 
-    vertex1[2].pos =
-        bottomTarget;
-    vertex1[2].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex1[2].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex1[2].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex1[2].u =
-        1.0f;
-    vertex1[2].v =
-        1.0f;
+    vertex1[2].pos = bottomTarget;
+    vertex1[2].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex1[2].dif = GetColorU8(255, 255, 255, 255);
+    vertex1[2].spc = GetColorU8(0, 0, 0, 0);
+    vertex1[2].u = 1.0f;
+    vertex1[2].v = 1.0f;
 
-    vertex1[3].pos =
-        bottomStart;
-    vertex1[3].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex1[3].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex1[3].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex1[3].u =
-        0.0f;
-    vertex1[3].v =
-        1.0f;
+    vertex1[3].pos = bottomStart;
+    vertex1[3].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex1[3].dif = GetColorU8(255, 255, 255, 255);
+    vertex1[3].spc = GetColorU8(0, 0, 0, 0);
+    vertex1[3].u = 0.0f;
+    vertex1[3].v = 1.0f;
 
-    DrawPolygon3D(
-        vertex1,
-        4,
-        graph,
-        TRUE);
+    DrawPolygon3D(vertex1, 4, graph, TRUE);
 
     // 2ñáñ⁄
     VERTEX3D vertex2[4];
 
-    vertex2[0].pos =
-        sideStartPlus;
-    vertex2[0].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex2[0].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex2[0].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex2[0].u =
-        0.0f;
-    vertex2[0].v =
-        0.0f;
+    vertex2[0].pos = sideStartPlus;
+    vertex2[0].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex2[0].dif = GetColorU8(255, 255, 255, 255);
+    vertex2[0].spc = GetColorU8(0, 0, 0, 0);
+    vertex2[0].u = 0.0f;
+    vertex2[0].v = 0.0f;
 
-    vertex2[1].pos =
-        sideTargetPlus;
-    vertex2[1].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex2[1].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex2[1].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex2[1].u =
-        1.0f;
-    vertex2[1].v =
-        0.0f;
+    vertex2[1].pos = sideTargetPlus;
+    vertex2[1].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex2[1].dif = GetColorU8(255, 255, 255, 255);
+    vertex2[1].spc = GetColorU8(0, 0, 0, 0);
+    vertex2[1].u = 1.0f;
+    vertex2[1].v = 0.0f;
 
-    vertex2[2].pos =
-        sideTargetMinus;
-    vertex2[2].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex2[2].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex2[2].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex2[2].u =
-        1.0f;
-    vertex2[2].v =
-        1.0f;
+    vertex2[2].pos = sideTargetMinus;
+    vertex2[2].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex2[2].dif = GetColorU8(255, 255, 255, 255);
+    vertex2[2].spc = GetColorU8(0, 0, 0, 0);
+    vertex2[2].u = 1.0f;
+    vertex2[2].v = 1.0f;
 
-    vertex2[3].pos =
-        sideStartMinus;
-    vertex2[3].norm =
-        VGet(0.0f, 1.0f, 0.0f);
-    vertex2[3].dif =
-        GetColorU8(255, 255, 255, 255);
-    vertex2[3].spc =
-        GetColorU8(0, 0, 0, 0);
-    vertex2[3].u =
-        0.0f;
-    vertex2[3].v =
-        1.0f;
+    vertex2[3].pos = sideStartMinus;
+    vertex2[3].norm = VGet(0.0f, 1.0f, 0.0f);
+    vertex2[3].dif = GetColorU8(255, 255, 255, 255);
+    vertex2[3].spc = GetColorU8(0, 0, 0, 0);
+    vertex2[3].u = 0.0f;
+    vertex2[3].v = 1.0f;
 
-    DrawPolygon3D(
-        vertex2,
-        4,
-        graph,
-        TRUE);
+    DrawPolygon3D(vertex2, 4, graph, TRUE);
 
     // ÉâÉCÉeÉBÉìÉOÇå≥Ç…ñﬂÇ∑
     SetUseLighting(TRUE);

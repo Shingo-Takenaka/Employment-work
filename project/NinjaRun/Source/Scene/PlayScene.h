@@ -36,6 +36,7 @@ private:
     EnemyManager m_enemyManager;
 
     DashAttackCollision m_dashAttackCollision;
+    FieldCollision m_fieldCollision;
 
     bool m_isTouchEnemy;
 

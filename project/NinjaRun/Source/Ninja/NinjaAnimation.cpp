@@ -62,7 +62,7 @@ bool NinjaAnimation::LoadAnimations()
     result &= LoadAnimation(
         m_animation[(int)NinjaAnim::DASH_SLASH],
         "Data/Ninja/Attack/DashSlash/DashSlash.png",
-        6, 40, 32, 5);
+        6, 40, 32, 3);
 
     return result;
 }

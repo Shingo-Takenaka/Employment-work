@@ -10,10 +10,7 @@ DrawManager::~DrawManager()
 {
 }
 
-void DrawManager::Add(
-    VECTOR position,
-    float sortValue,
-    std::function<void()> draw)
+void DrawManager::Add(VECTOR position,float sortValue,std::function<void()> draw)
 {
     DrawObject object;
 
@@ -32,13 +29,13 @@ void DrawManager::Clear()
 void DrawManager::Draw()
 {
     // Žè‘O‚É‚È‚é‚à‚Ì‚Ù‚ÇŒã‚Å•`‰æ‚·‚é
-    std::sort(
-        m_drawList.begin(),
-        m_drawList.end(),
-        [](const DrawObject& a, const DrawObject& b)
+    std::sort
+    (
+        m_drawList.begin(), m_drawList.end(),[](const DrawObject& a, const DrawObject& b)
         {
             return a.sortValue > b.sortValue;
-        });
+        }
+    );
 
     for (auto& object : m_drawList)
     {

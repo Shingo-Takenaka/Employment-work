@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
-    <ClCompile Include="Source\Collision\CollisionSetting.cpp" />
     <ClCompile Include="Source\Collision\Debug\CollisionDebug.cpp" />
     <ClCompile Include="Source\Collision\EnemyAttack\EnemyAttackCollision.cpp" />
     <ClCompile Include="Source\Collision\Field\FieldCollision.cpp" />

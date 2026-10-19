@@ -20,78 +20,32 @@ void PlayScene::Update()
     m_dashAttackCollision.Update(m_ninja);
 
     // Wallとの当たり判定
-    if (FieldCollision::CheckWall(m_ninja, m_field))
+    // 壁との当たり判定
+    if (m_fieldCollision.CheckWall(m_ninja, m_field))
     {
-        // 壁に入ったら移動前の位置に戻す
-        m_ninja.SetPosition(oldNinjaPos);
-
-        // Ninjaが空中にいる場合
-        if (m_ninja.IsJump())
-        {
-            VECTOR ninjaPos = m_ninja.GetPosition();
-            VECTOR wallPos = m_field.GetWallPosition();
-
-            VECTOR wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
-
-            // 壁がNinjaの右側にある場合
-            if (wallPos.x > ninjaPos.x)
-            {
-                wallKickDirection.x = -1.0f;
-            }
-            else
-            {
-                wallKickDirection.x = 1.0f;
-            }
-
-            // 壁キック可能状態にする
-            m_ninja.EnableWallKick(wallKickDirection);
-        }
+        m_fieldCollision.ResolveWallCollision(m_ninja,m_field,oldNinjaPos);
     }
 
-    // 敵一覧を取得
+    // 敵を取得
     auto& normalEnemies = m_enemyManager.GetNormalEnemies();
     auto& walkEnemies = m_enemyManager.GetWalkEnemies();
 
     // NormalEnemyへの通常攻撃とダッシュ切り
     for (auto& enemy : normalEnemies)
     {
-        if (enemy.IsDead())
-        {
-            continue;
-        }
-
-        // 通常の近接攻撃
-        if (m_playerAttackCollision.Check(m_ninja, enemy))
-        {
-            enemy.TakeDamage(1);
-        }
-
-        // ダッシュ切り
-        if (m_dashAttackCollision.Check(m_ninja, enemy))
-        {
-            enemy.TakeDamage(1);
-        }
+        enemy.CheckPlayerAttack(
+            m_ninja,
+            m_playerAttackCollision,
+            m_dashAttackCollision);
     }
 
     // WalkEnemyへの通常攻撃とダッシュ切り
     for (auto& enemy : walkEnemies)
     {
-        if (enemy.IsDead())
-        {
-            continue;
-        }
-
-        // 通常の近接攻撃
-        if (m_playerAttackCollision.Check(m_ninja, enemy))
-        {
-            enemy.TakeDamage(1);
-        }
-
-        // ダッシュ切り
-        if (m_dashAttackCollision.Check(m_ninja, enemy))
-        {
-            enemy.TakeDamage(1);
-        }
+        enemy.CheckPlayerAttack(
+            m_ninja,
+            m_playerAttackCollision,
+            m_dashAttackCollision);
     }
 
     // 敵更新
@@ -232,15 +186,14 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
-    // 地面を描画
+    // 地面
     m_field.Draw();
 
     // 描画リストを空にする
     m_drawManager.Clear();
 
-    // Player登録
+    // Player
     VECTOR playerPos = m_ninja.GetPosition();
-
     m_drawManager.Add(
         playerPos,
         playerPos.z,
@@ -249,7 +202,7 @@ void PlayScene::Draw()
             m_ninja.Draw();
         });
 
-    // 手裏剣登録
+    // 手裏剣の描画
     if (m_playerAttack.IsShoot())
     {
         m_drawManager.Add(
@@ -261,9 +214,10 @@ void PlayScene::Draw()
             });
     }
 
-    // NormalEnemy登録
+    // NormalEnemy
     auto& normalEnemies = m_enemyManager.GetNormalEnemies();
 
+    // NormalEnemyの描画処理を追加
     for (auto& enemy : normalEnemies)
     {
         if (enemy.IsDead())
@@ -283,9 +237,10 @@ void PlayScene::Draw()
             });
     }
 
-    // WalkEnemy登録
+    // WalkEnemy
     auto& walkEnemies = m_enemyManager.GetWalkEnemies();
 
+    // WalkEnemyの描画処理を追加
     for (auto& enemy : walkEnemies)
     {
         if (enemy.IsDead())
@@ -296,19 +251,22 @@ void PlayScene::Draw()
         VECTOR enemyPos = enemy.GetPosition();
         WalkEnemy* enemyPtr = &enemy;
 
-        m_drawManager.Add(
-            enemyPos,
-            enemyPos.z,
-            [enemyPtr]()
+        m_drawManager.Add
+        (
+            enemyPos,enemyPos.z,[enemyPtr]()
             {
                 enemyPtr->Draw();
-            });
+            }
+        );
     }
 
-    // ソートしてキャラクターと手裏剣を描画
+    // ソートして描画
     m_drawManager.Draw();
 
-    //// デバッグ表示
+    // =====デバッグ表示=====
+    // Ctrl+K → Ctrl+C で選択した部分のコメントアウト
+    // Ctrl+K → Ctrl+U で選択した部分のコメントアウト解除
+    
     //// Playerの接触判定範囲
     //CollisionDebug::DrawPlayerBody(playerPos);
 
@@ -355,15 +313,14 @@ void PlayScene::Draw()
     //for (auto& enemy : walkEnemies)
     //{
     //    if (enemy.IsDead())
-    //    {
+    //   {
     //        continue;
     //    }
 
     //    VECTOR enemyPos = enemy.GetPosition();
 
-    //    CollisionDebug::DrawEnemyBody(enemyPos);
+    //   CollisionDebug::DrawEnemyBody(enemyPos);
     //}
-
     // Playerの座標
     DrawFormatString(
         10, 10,
@@ -372,4 +329,5 @@ void PlayScene::Draw()
         playerPos.x,
         playerPos.y,
         playerPos.z);
+    //==========
 }

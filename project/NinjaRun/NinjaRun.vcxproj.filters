@@ -135,9 +135,6 @@
     <ClCompile Include="Source\Collision\TouchEnemy\TouchEnemy.cpp">
       <Filter>Source\Collision\TouchEnemy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collision\CollisionSetting.cpp">
-      <Filter>Source\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Collision\Debug\CollisionDebug.cpp">
       <Filter>Source\Collision\Debug</Filter>
     </ClCompile>

@@ -16,13 +16,9 @@ public:
     NormalEnemyAttack();
     ~NormalEnemyAttack();
 
-    void Update(
-        VECTOR enemyPos,
-        VECTOR playerPos,
-        int animationFrame);
+    void Update(VECTOR enemyPos,VECTOR playerPos,int animationFrame);
 
-    void Draw(
-        VECTOR enemyPos);
+    void Draw(VECTOR enemyPos);
 
     void Reset();
 
@@ -34,11 +30,7 @@ public:
 
 private:
 
-    void DrawAttackImage(
-        int graph,
-        VECTOR start,
-        VECTOR target,
-        float imageAspect);
+    void DrawAttackImage(int graph,VECTOR start,VECTOR target,float imageAspect);
 
 private:
 

@@ -10,17 +10,15 @@ const float KNOCKBACK_STRENGTH = 0.5f;
 // ノックバックして動けなくなる時間（秒）
 const float KNOCKBACK_DURATION = 0.5f;
 
-// X方向の判定範囲
+//判定範囲
 float TouchEnemy::GetTouchWidth()
 {
     return CollisionSettings::TOUCH_ENEMY_WIDTH;
 }
-
 float TouchEnemy::GetTouchDepth()
 {
     return CollisionSettings::TOUCH_ENEMY_DEPTH;
 }
-
 float TouchEnemy::GetTouchHeight()
 {
     return CollisionSettings::TOUCH_ENEMY_HEIGHT;
@@ -35,32 +33,17 @@ bool TouchEnemy::Check(const Ninja& ninja, const EnemyBase& enemy)
     VECTOR enemyPos = enemyRef.GetPosition();
 
     // Playerの現在座標
-    VECTOR ninjaPos =
-        ninja.GetPosition();
+    VECTOR ninjaPos = ninja.GetPosition();
 
-    // EnemyからPlayerまでのX方向の距離
-    float dx =
-        fabsf(ninjaPos.x - enemyPos.x);
+    // EnemyからPlayerまでの距離
+    float dx = fabsf(ninjaPos.x - enemyPos.x);
+    float dy = fabsf(ninjaPos.y - enemyPos.y);
+    float dz = fabsf(ninjaPos.z - enemyPos.z);
 
-    // EnemyからPlayerまでのY方向の距離
-    float dy =
-        fabsf(ninjaPos.y - enemyPos.y);
-
-    // EnemyからPlayerまでのZ方向の距離
-    float dz =
-        fabsf(ninjaPos.z - enemyPos.z);
-
-    // Enemyを中心にしたX方向の判定範囲
-    const float width =
-        GetTouchWidth();
-
-    // Enemyを中心にしたY方向の判定範囲
-    const float height =
-        GetTouchHeight();
-
-    // Enemyを中心にしたZ方向の判定範囲
-    const float depth =
-        GetTouchDepth();
+    // Enemyを中心にした判定範囲
+    const float width = GetTouchWidth();
+    const float height = GetTouchHeight();
+    const float depth = GetTouchDepth();
 
     return
         dx <= width &&
@@ -69,35 +52,29 @@ bool TouchEnemy::Check(const Ninja& ninja, const EnemyBase& enemy)
 }
 
 // ノックバック処理
-void TouchEnemy::Apply(
-    Ninja& ninja,
-    const EnemyBase& enemy)
+void TouchEnemy::Apply(Ninja& ninja,const EnemyBase& enemy)
 {
     // 現在のEnemyの座標を基準にする
-    VECTOR enemyPos =
-        enemy.GetPosition();
+    VECTOR enemyPos = enemy.GetPosition();
 
-    VECTOR ninjaPos =
-        ninja.GetPosition();
+    VECTOR ninjaPos = ninja.GetPosition();
 
     // EnemyからPlayerへ向かう方向
-    VECTOR direction =
-        VSub(ninjaPos, enemyPos);
+    VECTOR direction = VSub(ninjaPos, enemyPos);
 
     // X・Z方向だけ使用する
     direction.y = 0.0f;
 
     // EnemyからPlayerまでの距離
-    float length =
-        sqrtf(
-            direction.x * direction.x +
-            direction.z * direction.z);
+    float length = sqrtf
+    (
+        direction.x * direction.x + direction.z * direction.z
+    );
 
     // 同じ位置だった場合
     if (length <= 0.001f)
     {
-        direction =
-            VGet(1.0f, 0.0f, 0.0f);
+        direction = VGet(1.0f, 0.0f, 0.0f);
     }
     else
     {
@@ -106,8 +83,5 @@ void TouchEnemy::Apply(
         direction.z /= length;
     }
 
-    ninja.ApplyKnockback(
-        direction,
-        KNOCKBACK_STRENGTH,
-        KNOCKBACK_DURATION);
+    ninja.ApplyKnockback(direction,KNOCKBACK_STRENGTH,KNOCKBACK_DURATION);
 }

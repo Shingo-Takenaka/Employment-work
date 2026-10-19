@@ -9,10 +9,7 @@ ShootCollision::ShootCollision()
 {
 }
 
-bool ShootCollision::Check(
-    const NinjaAttack& ninjaAttack,
-    int shootIndex,
-    const EnemyBase& enemy)
+bool ShootCollision::Check(const NinjaAttack& ninjaAttack,int shootIndex,const EnemyBase& enemy)
 {
     if (enemy.IsDead())
     {
