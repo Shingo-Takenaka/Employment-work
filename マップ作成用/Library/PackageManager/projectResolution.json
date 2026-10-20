@@ -28,6 +28,16 @@
       "source": "builtin",
       "testable": false
     },
+    "com.unity.formats.fbx@5.1.6": {
+      "name": "com.unity.formats.fbx",
+      "displayName": "FBX Exporter",
+      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.formats.fbx@9f10493e557a",
+      "fingerprint": "9f10493e557a4ea186a59ed35b72aed5cc8ab220",
+      "editorCompatibility": "2020.3.0a1",
+      "version": "5.1.6",
+      "source": "registry",
+      "testable": false
+    },
     "com.unity.inputsystem@1.19.0": {
       "name": "com.unity.inputsystem",
       "displayName": "Input System",
@@ -364,6 +374,16 @@
       "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.hierarchycore",
       "version": "1.0.0",
       "source": "builtin",
+      "testable": false
+    },
+    "com.autodesk.fbx@5.1.3": {
+      "name": "com.autodesk.fbx",
+      "displayName": "Autodesk FBX SDK for Unity",
+      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.autodesk.fbx@90432ec06ab5",
+      "fingerprint": "90432ec06ab57dc1e7d839ed8812eabac81e1e9f",
+      "editorCompatibility": "2020.3.0a1",
+      "version": "5.1.3",
+      "source": "registry",
       "testable": false
     },
     "com.unity.ide.visualstudio@2.0.26": {

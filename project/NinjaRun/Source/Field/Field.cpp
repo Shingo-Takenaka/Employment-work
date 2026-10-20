@@ -3,7 +3,7 @@
 Field::Field()
 {
     // フィールド
-    m_model = MV1LoadModel("Data/Field/TestFieldHwite.x");
+    m_model = MV1LoadModel("Data/Field/Map.x");
 
     // 壁
     m_wall = MV1LoadModel("Data/Field/Wall.x");
