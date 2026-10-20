@@ -4,14 +4,19 @@ Field::Field()
 {
     // フィールド
     m_model = MV1LoadModel("Data/Field/test/Map.x");
+    //m_model = MV1LoadModel("Data/Field/test/TestFieldHwite.x");
 
     // 壁
     m_wall = MV1LoadModel("Data/Field/test/Wall.x");
 
     // フィールドの位置・回転・大きさ
-    m_fieldPos = VGet(0, 0, 0);
+    m_fieldPos = VGet(10, 10, -50);
     m_fieldRot = VGet(0, 0, 0);
-    m_fieldScale = VGet(1, 1, 1);
+    m_fieldScale = VGet(0.1, 0.1, 0.1);
+
+    /*m_fieldPos = VGet(0, 0, 0);
+    m_fieldRot = VGet(0, 0, 0);
+    m_fieldScale = VGet(1, 1, 1);*/
 
     // 壁の位置・回転・大きさ
     m_wallPos = VGet(-60, 30, 0);
