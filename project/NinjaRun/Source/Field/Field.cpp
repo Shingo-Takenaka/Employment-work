@@ -3,10 +3,10 @@
 Field::Field()
 {
     // フィールド
-    m_model = MV1LoadModel("Data/Field/Map.x");
+    m_model = MV1LoadModel("Data/Field/test/Map.x");
 
     // 壁
-    m_wall = MV1LoadModel("Data/Field/Wall.x");
+    m_wall = MV1LoadModel("Data/Field/test/Wall.x");
 
     // フィールドの位置・回転・大きさ
     m_fieldPos = VGet(0, 0, 0);
