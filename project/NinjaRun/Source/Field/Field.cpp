@@ -10,9 +10,9 @@ Field::Field()
     m_wall = MV1LoadModel("Data/Field/test/Wall.x");
 
     // フィールドの位置・回転・大きさ
-    m_fieldPos = VGet(10, 10, -50);
+    m_fieldPos = VGet(0, 0, 0);
     m_fieldRot = VGet(0, 0, 0);
-    m_fieldScale = VGet(0.1, 0.1, 0.1);
+    m_fieldScale = VGet(0.25, 0.25, 0.25);
 
     /*m_fieldPos = VGet(0, 0, 0);
     m_fieldRot = VGet(0, 0, 0);
@@ -40,11 +40,11 @@ void Field::Draw()
     MV1DrawModel(m_model);
 
     // 壁
-    MV1SetPosition(m_wall, m_wallPos);
+    /*MV1SetPosition(m_wall, m_wallPos);
     MV1SetRotationXYZ(m_wall, m_wallRot);
     MV1SetScale(m_wall, m_wallScale);
 
-    MV1DrawModel(m_wall);
+    MV1DrawModel(m_wall);*/
 }
 
 VECTOR Field::GetWallPosition() const

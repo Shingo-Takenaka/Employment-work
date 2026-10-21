@@ -8,8 +8,11 @@ namespace
     const int WARNING_BLINK_INTERVAL = 7;
 
     // çUåÇÇÃí∑Ç≥
-    const float WARNING_LENGTH = 50.0f;
-    const float BEAM_LENGTH = 50.0f;
+    /*const float WARNING_LENGTH = 50.0f;
+    const float BEAM_LENGTH = 50.0f;*/
+
+    const float WARNING_LENGTH = 0.0f;
+    const float BEAM_LENGTH = 0.0f;
 
     // Warning.png
     // 1366 Å~ 13

@@ -19,7 +19,11 @@ public:
 
 private:
     // •Ç‚Ì“–‚½‚è”»’èƒTƒCƒY
-    static constexpr float WALL_WIDTH = 5.0f;
-    static constexpr float WALL_HEIGHT = 200.0f;
-    static constexpr float WALL_DEPTH = 100.0f;
+    /*static constexpr float WALL_WIDTH = 5.0f;
+    static constexpr float WALL_HEIGHT = 60.0f;
+    static constexpr float WALL_DEPTH = 1.0f;*/
+
+    static constexpr float WALL_WIDTH = 0.0f;
+    static constexpr float WALL_HEIGHT = 0.0f;
+    static constexpr float WALL_DEPTH = 0.0f;
 };

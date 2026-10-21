@@ -10,8 +10,8 @@ EnemyManager::EnemyManager()
     m_walkEnemies.reserve(10);
 
     // NormalEnemyPos
-    AddNormalEnemy(VGet(40.0f, 0.0f, 50.0f));
-    AddNormalEnemy(VGet(80.0f, 0.0f, 50.0f));
+    AddNormalEnemy(VGet(20.0f, 0.0f, 90.0f));
+    AddNormalEnemy(VGet(-20.0f, 0.0f, 90.0f));
 
     // WalkEnemyPos
     AddWalkEnemy(VGet(50.0f, 0.0f, 100.0f));
