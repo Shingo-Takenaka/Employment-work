@@ -33,6 +33,8 @@ class NinjaInput
 public:
     NinjaInput();
 
+    bool IsMove() const { return m_state.isMove; }
+
     // “ü—Í‚ðŽæ“¾‚·‚é
     void Update();
 

@@ -20,14 +20,13 @@ const float Ninja::WALL_KICK_SPEED = 1.0f;
 Ninja::Ninja()
 {
     // 基本設定
-    m_pos = VGet(0.0f, 0.0f, 0.0f);
+    m_pos = VGet(0.0f, 0.0f, 0.0f);//消すかも
     m_moveSpeed = 0.5f;
     m_size = 10.0f;
 
-    // アニメーション読み込み
-    m_ninjaAnimation.LoadAnimations();
+    m_ninjaAnimation.SetNinja(this);
 
-    // 向き
+    // 向き(このfalseは右向き)
     m_isReverseX = false;
 
     // 最後に移動した方向
@@ -90,6 +89,25 @@ Ninja::Ninja()
 
 Ninja::~Ninja()
 {
+}
+
+void Ninja::Init()
+{
+    /*
+    
+    m_Ninjapos = VGet(0.0, 0.0, 0.0);
+    
+    */
+}
+
+void Ninja::Start()
+{
+}
+
+void Ninja::Load()
+{
+    // アニメーション読み込み
+    m_ninjaAnimation.LoadAnimations();
 }
 
 void Ninja::Update()
@@ -761,56 +779,6 @@ void Ninja::ApplyKnockback(
     // ダッシュを解除
     m_isDash = false;
     m_dashTimer = 0.0f;
-}
-
-bool Ninja::IsKnockback() const
-{
-    return m_isKnockback;
-}
-
-bool Ninja::IsDash() const
-{
-    return m_isDash;
-}
-
-bool Ninja::IsSlash() const
-{
-    return m_isSlash;
-}
-
-bool Ninja::IsReverseX() const
-{
-    return m_isReverseX;
-}
-
-bool Ninja::IsShoot() const
-{
-    return m_isShoot;
-}
-
-bool Ninja::IsShootStart() const
-{
-    return m_isShootStart;
-}
-
-int Ninja::GetShootDirection() const
-{
-    return m_lastShootDirection;
-}
-
-bool Ninja::IsJump() const
-{
-    return m_isJump;
-}
-
-bool Ninja::CanWallKick() const
-{
-    return m_canWallKick;
-}
-
-bool Ninja::IsDashCut() const
-{
-    return m_ninjaAttack.IsDashCutActive();
 }
 
 float Ninja::GetDashCutDirectionX() const

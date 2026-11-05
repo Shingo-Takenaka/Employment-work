@@ -1,4 +1,5 @@
 #include "NinjaAnimation.h"
+#include "Ninja.h"
 
 NinjaAnimation::NinjaAnimation()
 {
@@ -178,11 +179,11 @@ void NinjaAnimation::Update(
             }
         }
     }
-    else if (isDash)
+    else if (m_Ninja->IsDash())
     {
         ChangeAnimation(NinjaAnim::DASH);
     }
-    else if (isMove)
+    else if (m_Ninja->IsMove())
     {
         ChangeAnimation(NinjaAnim::WALK);
     }

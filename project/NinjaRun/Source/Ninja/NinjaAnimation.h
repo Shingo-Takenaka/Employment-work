@@ -3,6 +3,8 @@
 #include "DxLib.h"
 #include "../Animation/Animation.h"
 
+class Ninja;
+
 enum class NinjaAnim
 {
     WAIT,
@@ -50,6 +52,9 @@ public:
         float size,
         bool isReverseX);
 
+
+    void SetNinja(Ninja* ninja) { m_Ninja = ninja; }
+
 private:
     bool LoadAnimation(
         SpriteAnimation& animation,
@@ -60,6 +65,8 @@ private:
         int interval);
 
     void ChangeAnimation(NinjaAnim animation);
+
+    Ninja* m_Ninja;
 
     SpriteAnimation m_animation[(int)NinjaAnim::MAX];
 

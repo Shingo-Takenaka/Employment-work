@@ -11,6 +11,9 @@ public:
     Ninja();
     ~Ninja();
 
+    void Init();
+    void Start();
+    void Load();
     void Update();
     void Draw();
 
@@ -20,29 +23,19 @@ public:
     // 敵からのノックバック
     void ApplyKnockback(VECTOR direction, float strength, float duration);
 
-    // ノックバック中か
-    bool IsKnockback() const;
+    //アクセサ
+    bool IsKnockback() const { return m_isKnockback; }
+    bool IsDash() const{ return m_isDash; }
+    bool IsSlash() const{ return m_isSlash; }
+    bool IsReverseX() const{ return m_isReverseX; }
+    bool IsShoot() const{ return m_isShoot; }
+    bool IsShootStart() const{ return m_isShootStart; }
+    int GetShootDirection() const { return m_lastShootDirection; }
+    bool IsJump() const{ return m_isJump; }
+    bool CanWallKick() const{ return m_canWallKick; }
+    bool IsDashCut() const{ return m_ninjaAttack.IsDashCutActive(); }
+    bool IsMove() const { return m_input.IsMove(); }
 
-    bool IsSlash() const;
-    bool IsShoot() const;
-    bool IsReverseX() const;
-
-    // 手裏剣を投げたタイミング
-    bool IsShootStart() const;
-
-    int GetShootDirection() const;
-
-    // ダッシュ中
-    bool IsDash() const;
-
-    // ジャンプ中
-    bool IsJump() const;
-
-    // ダッシュ斬り中
-    bool IsDashCut() const;
-
-    // 壁キックできる状態か
-    bool CanWallKick() const;
 
     void SetWallContact(VECTOR direction);
 
