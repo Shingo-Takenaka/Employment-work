@@ -72,6 +72,7 @@
     <ClInclude Include="Source\Ninja\NinjaAttack.h" />
     <ClInclude Include="Source\Ninja\NinjaInput.h" />
     <ClInclude Include="Source\Scene\PlayScene.h" />
+    <ClInclude Include="Source\Scene\SceneBase.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

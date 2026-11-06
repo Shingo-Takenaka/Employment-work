@@ -30,11 +30,12 @@ public:
     bool IsReverseX() const{ return m_isReverseX; }
     bool IsShoot() const{ return m_isShoot; }
     bool IsShootStart() const{ return m_isShootStart; }
-    int GetShootDirection() const { return m_lastShootDirection; }
     bool IsJump() const{ return m_isJump; }
     bool CanWallKick() const{ return m_canWallKick; }
     bool IsDashCut() const{ return m_ninjaAttack.IsDashCutActive(); }
     bool IsMove() const { return m_input.IsMove(); }
+
+    int GetShootDirection() const { return m_lastShootDirection; }
 
 
     void SetWallContact(VECTOR direction);

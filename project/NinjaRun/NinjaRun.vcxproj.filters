@@ -218,5 +218,8 @@
     <ClInclude Include="Source\Collision\Debug\CollisionDebug.h">
       <Filter>Source\Collision\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\SceneBase.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
