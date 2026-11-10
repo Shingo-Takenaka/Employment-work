@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "SceneBase.h"
+#include "../Ninja/Ninja.h"
 
 enum class SceneType
 {
@@ -37,6 +38,21 @@ public:
     void ChangeScene(SceneType nextScene);
 
 private:
+    // 次のシーンを生成
+    std::unique_ptr<SceneBase> CreateScene(SceneType sceneType);
+
+    // シーンの切り替えを実行
+    void ApplySceneChange();
+
+    // 現在のシーン
     std::unique_ptr<SceneBase> m_currentScene;
-    std::unique_ptr<SceneBase> m_nextScene;
+
+    // 遷移先のシーン
+    SceneType m_nextSceneType;
+
+    // シーン切り替え要求
+    bool m_hasSceneChangeRequest;
+
+    //ステージ間で引き継ぐNinjaの情報
+    PlayerData m_playerData;
 };

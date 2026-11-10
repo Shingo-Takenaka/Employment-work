@@ -5,6 +5,14 @@
 #include "NinjaInput.h"
 #include "NinjaAttack.h"
 
+struct PlayerData
+{
+    //ここにはプレイ中変更されるであろう数値だけを書く
+    int MaxHP = 10;
+    int NowHP = 10;
+    int AttackPower = 1;
+};
+
 class Ninja
 {
 public:
@@ -43,7 +51,11 @@ public:
     float GetDashCutDirectionX() const;
     float GetDashCutDirectionZ() const;
 
+    PlayerData GetData() const;
+    void SetData(const PlayerData& data);
+
 private:
+
     // ダッシュ関連の定数
     static const float DASH_ACCEL_SPEED;
     static const float DASH_L_ONLY_TIME;
@@ -53,7 +65,6 @@ private:
     // 壁キック関連の定数
     static const float WALL_KICK_MOVE_TIME;
     static const float WALL_KICK_SPEED;
-
     static const float DASH_COOLDOWN;
 
     // ダッシュ処理
@@ -74,40 +85,32 @@ private:
     // 入力管理
     NinjaInput m_input;
 
-    // 移動関連
-
+    //=====移動関連=====
     // 最後に移動した方向
     float m_lastMoveDirectionX;
     float m_lastMoveDirectionZ;
 
-    // 移動速度
     float m_moveSpeed;
 
     // 左右反転
     bool m_isReverseX;
 
-    // ダッシュ関連
-
+    //=====ダッシュ関連=====
     // ダッシュ方向
     float m_dashDirectionX;
     float m_dashDirectionZ;
 
-    // ダッシュ中か
     bool m_isDash;
 
     // WASDを押し始めてからの経過時間
     float m_dashTimer;
 
-    // ダッシュ速度
     float m_dashSpeed;
 
     // Lのみで加速している時間
     float m_dashAccelTimer;
 
-    // ダッシュのクールタイム中か
     bool m_isDashCooldown;
-
-    // クールタイムの残り時間
     float m_dashCooldownTimer;
 
     // 移動方向を記憶する関数

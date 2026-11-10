@@ -58,6 +58,9 @@
     <Filter Include="Source\Collision\Debug">
       <UniqueIdentifier>{cfa603bc-719f-4147-9f65-d1a3ed667fa5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Scene\TitleScene">
+      <UniqueIdentifier>{3601a87f-15fc-498c-a7a9-a0f51c1ae969}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Camera\Camera.cpp">
@@ -137,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\Debug\CollisionDebug.cpp">
       <Filter>Source\Collision\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\TitleScene\TitleScene.cpp">
+      <Filter>Source\Scene\TitleScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scene\SceneBase.h">
       <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\TitleScene\TitleScene.h">
+      <Filter>Source\Scene\TitleScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
