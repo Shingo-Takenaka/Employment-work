@@ -28,9 +28,6 @@ public:
     VECTOR GetPosition() const;
     void SetPosition(VECTOR pos);
 
-    // 敵からのノックバック
-    void ApplyKnockback(VECTOR direction, float strength, float duration);
-
     //アクセサ
     bool IsKnockback() const { return m_isKnockback; }
     bool IsDash() const{ return m_isDash; }
@@ -43,34 +40,25 @@ public:
     bool IsDashCut() const{ return m_ninjaAttack.IsDashCutActive(); }
     bool IsMove() const { return m_input.IsMove(); }
 
-    int GetShootDirection() const { return m_lastShootDirection; }
-
-
+    //壁の接触
     void SetWallContact(VECTOR direction);
 
+    //攻撃方向
+    int GetShootDirection() const { return m_lastShootDirection; }
     float GetDashCutDirectionX() const;
     float GetDashCutDirectionZ() const;
 
+    //ノックバック
+    void ApplyKnockback(VECTOR direction, float strength, float duration);
+
+    //ステータス
     PlayerData GetData() const;
     void SetData(const PlayerData& data);
 
 private:
+    //入力関連
+    NinjaInput m_input;
 
-    // ダッシュ関連の定数
-    static const float DASH_ACCEL_SPEED;
-    static const float DASH_L_ONLY_TIME;
-    static const float DASH_STATE_TIME;
-    static const float DASH_SPEED;
-
-    // 壁キック関連の定数
-    static const float WALL_KICK_MOVE_TIME;
-    static const float WALL_KICK_SPEED;
-    static const float DASH_COOLDOWN;
-
-    // ダッシュ処理
-    void UpdateDash();
-
-    // 入力関連
     int m_lastHorizontalInput;
     int m_lastVerticalInput;
 
@@ -78,118 +66,85 @@ private:
     bool m_prevD;
     bool m_prevW;
     bool m_prevS;
-
-    // Lキーの前フレーム状態
     bool m_prevDash;
 
-    // 入力管理
-    NinjaInput m_input;
+    //座標・基本情報
+    VECTOR m_pos;
+    float m_size;
 
-    //=====移動関連=====
-    // 最後に移動した方向
+    //移動関連
+    float m_moveSpeed;
+
     float m_lastMoveDirectionX;
     float m_lastMoveDirectionZ;
 
-    float m_moveSpeed;
-
-    // 左右反転
     bool m_isReverseX;
 
-    //=====ダッシュ関連=====
-    // ダッシュ方向
+    void RememberMoveDirection(float moveX, float moveZ);
+
+    //ダッシュ関連
+    static const float DASH_ACCEL_SPEED;
+    static const float DASH_L_ONLY_TIME;
+    static const float DASH_STATE_TIME;
+    static const float DASH_SPEED;
+    static const float DASH_COOLDOWN;
+
     float m_dashDirectionX;
     float m_dashDirectionZ;
 
     bool m_isDash;
 
-    // WASDを押し始めてからの経過時間
     float m_dashTimer;
-
     float m_dashSpeed;
-
-    // Lのみで加速している時間
     float m_dashAccelTimer;
 
     bool m_isDashCooldown;
     float m_dashCooldownTimer;
 
-    // 移動方向を記憶する関数
-    void RememberMoveDirection(float moveX, float moveZ);
+    void UpdateDash();
 
-    // ジャンプ関連
-
-    // ジャンプ中
+    //ジャンプ関連
     bool m_isJump;
 
-    // ジャンプ開始時の高さ
     float m_groundY;
-
-    // ジャンプ速度
     float m_jumpSpeed;
-
-    // 重力
     float m_gravity;
 
-    // =====壁キック関連=====
-    // 壁キックできる状態か
-    bool m_canWallKick;
+    //壁キック関連
+    static const float WALL_KICK_MOVE_TIME;
+    static const float WALL_KICK_SPEED;
 
-    // 壁っキックの強制移動中か
+    bool m_canWallKick;
     bool m_isWallKicking;
-    
-    // 壁から離れる方向
+
     VECTOR m_wallKickDirection;
-    
-    // 壁キック後に戻る地面のY座標
+
     float m_wallKickGroundY;
-    
-    // 壁キック後の入力無効時間
     float m_wallKickInputTimer;
 
-    // キック方向の速度
     float m_wallKickVelocityX;
     float m_wallKickVelocityZ;
 
     bool WallkickUpdate(const NinjaInputState& input);
 
-    // 攻撃関連
-
-    // 袈裟斬り中
+    //攻撃関連
     bool m_isSlash;
-
-    // ガード中
     bool m_isGuard;
-
-    // 手裏剣中
     bool m_isShoot;
-
-    // 手裏剣を投げたタイミング
     bool m_isShootStart;
 
-    // 手裏剣を投げる方向
     int m_lastShootDirection;
 
-    // ダッシュ斬り管理
     NinjaAttack m_ninjaAttack;
 
-    // プレイヤー情報
-    VECTOR m_pos;
-
-    float m_size;
-
+    //アニメーション関連
     NinjaAnimation m_ninjaAnimation;
 
-    // ノックバック関連
-
-    // ノックバック中
+    //ノックバック関連
     bool m_isKnockback;
 
-    // ノックバック方向
     VECTOR m_knockbackDirection;
 
-    // ノックバック強度
     float m_knockbackStrength;
-
-    // ノックバック残り時間
     float m_knockbackTimer;
 };

@@ -1,5 +1,7 @@
+
 #pragma once
 
+#include "../Scene/SceneBase.h"
 #include "../DrawManager/DrawManager.h"
 #include "../Camera/Camera.h"
 #include "../Field/Field.h"
@@ -15,18 +17,19 @@
 #include "../Collision/Field/FieldCollision.h"
 #include "../Collision/Debug/CollisionDebug.h"
 
-class PlayScene
+class PlayScene : public SceneBase
 {
 public:
-
     PlayScene();
-    ~PlayScene();
+    ~PlayScene() override;
 
-    void Update();
-    void Draw();
+    void Init() override;
+    void Load() override;
+    void Start() override;
+    void Update() override;
+    void Draw() override;
 
 private:
-
     Camera m_camera;
 
     Field m_field;

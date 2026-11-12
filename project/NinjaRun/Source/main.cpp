@@ -42,6 +42,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
     SceneManager sceneManager;
 
+    sceneManager.Init();
+
     // 60FPS固定用
     const LONGLONG frameTime = 1000000 / 60; // 1フレーム = 約16666マイクロ秒
     LONGLONG nextFrameTime = GetNowHiPerformanceCount() + frameTime;

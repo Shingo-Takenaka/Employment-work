@@ -9,6 +9,21 @@ PlayScene::~PlayScene()
 {
 }
 
+void PlayScene::Init()
+{
+    m_ninja.Init();
+}
+
+void PlayScene::Load()
+{
+    m_ninja.Load();
+}
+
+void PlayScene::Start()
+{
+    m_ninja.Start();
+}
+
 void PlayScene::Update()
 {
     // Ninja‚ÌˆÚ“®‘O‚ÌˆÊ’u‚ð•Û‘¶

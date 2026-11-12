@@ -19,72 +19,78 @@ const float Ninja::WALL_KICK_SPEED = 1.0f;
 
 Ninja::Ninja()
 {
-    // 基本設定
-    m_pos = VGet(0.0f, 0.0f, 0.0f);//消すかも
-    m_moveSpeed = 0.5f;
-    m_size = 10.0f;
-
-    m_ninjaAnimation.SetNinja(this);
-
-    // 向き(このfalseは右向き)
-    m_isReverseX = false;
-
-    // 最後に移動した方向
-    m_lastMoveDirectionX = 1.0f;
-    m_lastMoveDirectionZ = 0.0f;
-
+    // 入力関連
     m_lastHorizontalInput = 0;
     m_lastVerticalInput = 0;
+
     m_prevA = false;
     m_prevD = false;
     m_prevW = false;
     m_prevS = false;
-
     m_prevDash = false;
 
-    // ダッシュ方向
+    // 座標・基本情報
+    m_pos = VGet(0.0f, 0.0f, 0.0f);
+    m_size = 10.0f;
+
+    // 移動関連
+    m_moveSpeed = 0.5f;
+
+    m_lastMoveDirectionX = 1.0f;
+    m_lastMoveDirectionZ = 0.0f;
+
+    m_isReverseX = false;
+
+    // ダッシュ関連
     m_dashDirectionX = 1.0f;
     m_dashDirectionZ = 0.0f;
 
-    // ダッシュ
     m_isDash = false;
+
     m_dashTimer = 0.0f;
     m_dashSpeed = DASH_ACCEL_SPEED;
     m_dashAccelTimer = 0.0f;
+
     m_isDashCooldown = false;
     m_dashCooldownTimer = 0.0f;
 
-    // ジャンプ
+    // ジャンプ関連
     m_isJump = false;
+
     m_groundY = m_pos.y;
     m_jumpSpeed = 0.0f;
     m_gravity = 0.05f;
 
-    // 壁キック
+    // 壁キック関連
     m_canWallKick = false;
     m_isWallKicking = false;
+
     m_wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
+
     m_wallKickGroundY = m_pos.y;
     m_wallKickInputTimer = 0.0f;
+
     m_wallKickVelocityX = 0.0f;
     m_wallKickVelocityZ = 0.0f;
 
-    // 攻撃
+    // 攻撃関連
     m_isSlash = false;
+    m_isGuard = false;
     m_isShoot = false;
     m_isShootStart = false;
 
-    // ガード
-    m_isGuard = false;
+    m_lastShootDirection = 0;
 
-    // ノックバック
+    // アニメーション関連
+    m_ninjaAnimation.SetNinja(this);
+
+    // ノックバック関連
     m_isKnockback = false;
+
     m_knockbackDirection = VGet(0.0f, 0.0f, 0.0f);
+
     m_knockbackStrength = 0.0f;
     m_knockbackTimer = 0.0f;
-
-    // 手裏剣の方向
-    m_lastShootDirection = 0;
 }
 
 Ninja::~Ninja()

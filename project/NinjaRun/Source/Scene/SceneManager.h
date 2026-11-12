@@ -2,7 +2,7 @@
 
 #include <memory>
 #include "SceneBase.h"
-#include "../Ninja/Ninja.h"
+//#include "../Ninja/Ninja.h"
 
 enum class SceneType
 {
@@ -54,5 +54,5 @@ private:
     bool m_hasSceneChangeRequest;
 
     //ステージ間で引き継ぐNinjaの情報
-    PlayerData m_playerData;
+    //PlayerData m_playerData;
 };
