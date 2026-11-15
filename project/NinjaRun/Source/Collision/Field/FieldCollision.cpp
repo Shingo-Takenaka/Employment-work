@@ -1,100 +1,99 @@
+
 #include "FieldCollision.h"
 
 #include "../../Ninja/Ninja.h"
 #include "../../Field/Field.h"
 
-bool FieldCollision::CheckWall(const Ninja& ninja, const Field& field)
+bool FieldCollision::CheckGround(
+    const Ninja& ninja,
+    const Field& field,
+    float& groundY)
 {
+    int modelHandle = field.GetModelHandle();
+
+    if (modelHandle < 0)
+    {
+        return false;
+    }
+
     VECTOR ninjaPos = ninja.GetPosition();
-    VECTOR wallPos = field.GetWallPosition();
 
-    float halfWidth = WALL_WIDTH * 0.5f;
-    float halfHeight = WALL_HEIGHT * 0.5f;
-    float halfDepth = WALL_DEPTH * 0.5f;
+    VECTOR startPos = VGet(
+        ninjaPos.x,
+        ninjaPos.y + 10.0f,
+        ninjaPos.z);
 
-    // X方向の判定
-    if (ninjaPos.x < wallPos.x - halfWidth)
+    VECTOR endPos = VGet(
+        ninjaPos.x,
+        ninjaPos.y - 20.0f,
+        ninjaPos.z);
+
+    MV1_COLL_RESULT_POLY result =
+        MV1CollCheck_Line(
+            modelHandle,
+            -1,
+            startPos,
+            endPos);
+
+    if (result.HitFlag == 0)
     {
         return false;
     }
 
-    if (ninjaPos.x > wallPos.x + halfWidth)
+    // 地面として扱える傾斜か確認
+    if (result.Normal.y < MIN_GROUND_NORMAL_Y)
     {
         return false;
     }
 
-    // Y方向の判定
-    if (ninjaPos.y < wallPos.y - halfHeight)
-    {
-        return false;
-    }
-
-    if (ninjaPos.y > wallPos.y + halfHeight)
-    {
-        return false;
-    }
-
-    // Z方向の判定
-    if (ninjaPos.z < wallPos.z - halfDepth)
-    {
-        return false;
-    }
-
-    if (ninjaPos.z > wallPos.z + halfDepth)
-    {
-        return false;
-    }
+    groundY = result.HitPosition.y;
 
     return true;
+}
+
+void FieldCollision::ResolveGroundCollision(
+    Ninja& ninja,
+    const Field& field,
+    VECTOR oldNinjaPos)
+{
+    float groundY = 0.0f;
+
+    if (!CheckGround(ninja, field, groundY))
+    {
+        ninja.SetAirborne();
+        return;
+    }
+
+    VECTOR ninjaPos = ninja.GetPosition();
+
+    // 接地中の坂道追従
+    if (ninja.IsGrounded())
+    {
+        float heightDifference = groundY - ninjaPos.y;
+
+        if (heightDifference <= GROUND_STEP_HEIGHT &&
+            heightDifference >= -GROUND_STEP_HEIGHT)
+        {
+            ninja.ResolveGroundCollision(groundY);
+            return;
+        }
+
+        ninja.SetAirborne();
+        return;
+    }
+
+    // 空中からの着地
+    // 移動前の足元が地面以上で、
+    // 移動後の足元が地面以下の場合
+    if (oldNinjaPos.y >= groundY &&
+        ninjaPos.y <= groundY)
+    {
+        ninja.ResolveGroundCollision(groundY);
+    }
 }
 
 void FieldCollision::DrawDebug(
     const Field& field)
 {
-    VECTOR wallPos = field.GetWallPosition();
-
-    float halfWidth = WALL_WIDTH * 0.5f;
-    float halfHeight = WALL_HEIGHT * 0.5f;
-    float halfDepth = WALL_DEPTH * 0.5f;
-
-    VECTOR pos1 = VGet(
-        wallPos.x - halfWidth,
-        wallPos.y - halfHeight,
-        wallPos.z - halfDepth);
-
-    VECTOR pos2 = VGet(
-        wallPos.x + halfWidth,
-        wallPos.y + halfHeight,
-        wallPos.z + halfDepth);
-
-    DrawCube3D(pos1,pos2, 0,
-        GetColor(255, 0, 0),
-        GetColor(255, 0, 0));
-}
-
-void FieldCollision::ResolveWallCollision(Ninja& ninja,const Field& field,VECTOR oldNinjaPos)
-{
-    // 壁に入ったら移動前の位置に戻す
-    ninja.SetPosition(oldNinjaPos);
-
-    // Ninjaが空中にいる場合
-    if (ninja.IsJump())
-    {
-        VECTOR ninjaPos = ninja.GetPosition();
-        VECTOR wallPos = field.GetWallPosition();
-
-        VECTOR wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
-
-        // 壁がNinjaの右側にある場合
-        if (wallPos.x > ninjaPos.x)
-        {
-            wallKickDirection.x = -1.0f;
-        }
-        else
-        {
-            wallKickDirection.x = 1.0f;
-        }
-
-        ninja.SetWallContact(wallKickDirection);
-    }
+    // 現段階ではデバッグ描画なし
 }

@@ -34,12 +34,10 @@ void PlayScene::Update()
     // ダッシュ切りの当たり判定を更新
     m_dashAttackCollision.Update(m_ninja);
 
-    // Wallとの当たり判定
-    // 壁との当たり判定
-    if (m_fieldCollision.CheckWall(m_ninja, m_field))
-    {
-        m_fieldCollision.ResolveWallCollision(m_ninja,m_field,oldNinjaPos);
-    }
+    float groundY = 0.0f;
+
+    m_fieldCollision.ResolveGroundCollision( m_ninja,m_field, oldNinjaPos);
+
 
     // 敵を取得
     auto& normalEnemies = m_enemyManager.GetNormalEnemies();
@@ -345,4 +343,18 @@ void PlayScene::Draw()
         playerPos.y,
         playerPos.z);
     //==========
+
+    float groundY = 0.0f;
+
+    bool isGrounded = m_fieldCollision.CheckGround(
+        m_ninja,
+        m_field,
+        groundY);
+
+    DrawFormatString(
+        10, 30,
+        GetColor(255, 255, 255),
+        "Ground: %s  Y: %.2f",
+        isGrounded ? "Hit" : "None",
+        groundY);
 }

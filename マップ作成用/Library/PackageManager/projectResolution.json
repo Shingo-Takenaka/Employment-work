@@ -1,107 +1,38 @@
 {
   "context": {
-    "projectPath": "C:/竹中槙吾/Employment-work/マップ作成用/Packages",
+    "projectPath": "C:/学校復習とか/Employment-work/マップ作成用/Packages",
     "unityVersion": "6000.3.11f1"
   },
   "inputs": [
-    "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Packages\\manifest.json",
-    "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Packages\\packages-lock.json",
+    "C:\\学校復習とか\\Employment-work\\マップ作成用\\Packages\\manifest.json",
+    "C:\\学校復習とか\\Employment-work\\マップ作成用\\Packages\\packages-lock.json",
     "C:\\Program Files\\Unity\\Hub\\Editor\\6000.3.11f1\\Editor\\Data\\Resources\\PackageManager\\BuiltInPackages\\BuiltInPackagesCombined.sha1"
   ],
   "outputs": {
-    "com.unity.collab-proxy@2.11.4": {
-      "name": "com.unity.collab-proxy",
-      "displayName": "Unity Version Control",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.collab-proxy@a5329f833fa8",
-      "fingerprint": "a5329f833fa805a96ac8b0a1eb09dc64c076b032",
-      "editorCompatibility": "2021.3.0f1",
-      "version": "2.11.4",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.feature.development@1.0.2": {
-      "name": "com.unity.feature.development",
-      "displayName": "Engineering",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.feature.development@767aadbc6eb7",
-      "fingerprint": "767aadbc6eb72681a4ca807c8fa248e0230a0cef",
-      "version": "1.0.2",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.formats.fbx@5.1.6": {
+    "com.unity.formats.fbx@5.1.7": {
       "name": "com.unity.formats.fbx",
       "displayName": "FBX Exporter",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.formats.fbx@9f10493e557a",
-      "fingerprint": "9f10493e557a4ea186a59ed35b72aed5cc8ab220",
-      "editorCompatibility": "2020.3.0a1",
-      "version": "5.1.6",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.inputsystem@1.19.0": {
-      "name": "com.unity.inputsystem",
-      "displayName": "Input System",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.inputsystem@21a28c3a6c83",
-      "fingerprint": "21a28c3a6c83903a93cf15d7d0714b773c50fdf6",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "1.19.0",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.formats.fbx@bc7b3a2c1e1c",
+      "fingerprint": "bc7b3a2c1e1c69540bdaba12175e33857cf5463d",
+      "editorCompatibility": "6000.0.0a1",
+      "version": "5.1.7",
       "source": "registry",
       "testable": false
     },
     "com.unity.multiplayer.center@1.0.1": {
       "name": "com.unity.multiplayer.center",
       "displayName": "Multiplayer Center",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.multiplayer.center@f01f4ba8d00a",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.multiplayer.center@f01f4ba8d00a",
       "fingerprint": "f01f4ba8d00afa4e957bddf0fcd1612a564401ff",
       "editorCompatibility": "6000.0.0a1",
       "version": "1.0.1",
       "source": "builtin",
       "testable": false
     },
-    "com.unity.probuilder@6.0.9": {
-      "name": "com.unity.probuilder",
-      "displayName": "ProBuilder",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.probuilder@1f279ab829b7",
-      "fingerprint": "1f279ab829b7ed3bbe362a4beda666724eacffbf",
-      "editorCompatibility": "6000.0.0a1",
-      "version": "6.0.9",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.timeline@1.8.11": {
-      "name": "com.unity.timeline",
-      "displayName": "Timeline",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.timeline@bfd27f8016ff",
-      "fingerprint": "bfd27f8016ffda6a22579ffc468432a96b2cc5b6",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "1.8.11",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.ugui@2.0.0": {
-      "name": "com.unity.ugui",
-      "displayName": "uGUI",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.ugui@f17df9b1ab21",
-      "fingerprint": "f17df9b1ab21a9a2156e109eacf8dd2f65d03c8c",
-      "editorCompatibility": "2019.2.0a1",
-      "version": "2.0.0",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.visualscripting@1.9.10": {
-      "name": "com.unity.visualscripting",
-      "displayName": "Visual Scripting",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.visualscripting@eb6004dcc707",
-      "fingerprint": "eb6004dcc7073b805dbf1ea9006b7a915978a186",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.9.10",
-      "source": "registry",
-      "testable": false
-    },
     "com.unity.modules.accessibility@1.0.0": {
       "name": "com.unity.modules.accessibility",
       "displayName": "Accessibility",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.accessibility",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.accessibility",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -109,7 +40,7 @@
     "com.unity.modules.adaptiveperformance@1.0.0": {
       "name": "com.unity.modules.adaptiveperformance",
       "displayName": "Adaptive Performance",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.adaptiveperformance",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.adaptiveperformance",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -117,7 +48,7 @@
     "com.unity.modules.ai@1.0.0": {
       "name": "com.unity.modules.ai",
       "displayName": "AI",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.ai",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.ai",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -125,7 +56,7 @@
     "com.unity.modules.androidjni@1.0.0": {
       "name": "com.unity.modules.androidjni",
       "displayName": "Android JNI",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.androidjni",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.androidjni",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -133,7 +64,7 @@
     "com.unity.modules.animation@1.0.0": {
       "name": "com.unity.modules.animation",
       "displayName": "Animation",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.animation",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.animation",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -141,7 +72,7 @@
     "com.unity.modules.assetbundle@1.0.0": {
       "name": "com.unity.modules.assetbundle",
       "displayName": "Asset Bundle",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.assetbundle",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.assetbundle",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -149,7 +80,7 @@
     "com.unity.modules.audio@1.0.0": {
       "name": "com.unity.modules.audio",
       "displayName": "Audio",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.audio",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.audio",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -157,7 +88,7 @@
     "com.unity.modules.cloth@1.0.0": {
       "name": "com.unity.modules.cloth",
       "displayName": "Cloth",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.cloth",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.cloth",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -165,7 +96,7 @@
     "com.unity.modules.director@1.0.0": {
       "name": "com.unity.modules.director",
       "displayName": "Director",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.director",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.director",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -173,7 +104,7 @@
     "com.unity.modules.imageconversion@1.0.0": {
       "name": "com.unity.modules.imageconversion",
       "displayName": "Image Conversion",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.imageconversion",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.imageconversion",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -181,7 +112,7 @@
     "com.unity.modules.imgui@1.0.0": {
       "name": "com.unity.modules.imgui",
       "displayName": "IMGUI",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.imgui",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.imgui",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -189,7 +120,7 @@
     "com.unity.modules.jsonserialize@1.0.0": {
       "name": "com.unity.modules.jsonserialize",
       "displayName": "JSONSerialize",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.jsonserialize",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.jsonserialize",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -197,7 +128,7 @@
     "com.unity.modules.particlesystem@1.0.0": {
       "name": "com.unity.modules.particlesystem",
       "displayName": "Particle System",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.particlesystem",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.particlesystem",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -205,7 +136,7 @@
     "com.unity.modules.physics@1.0.0": {
       "name": "com.unity.modules.physics",
       "displayName": "Physics",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.physics",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.physics",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -213,7 +144,7 @@
     "com.unity.modules.physics2d@1.0.0": {
       "name": "com.unity.modules.physics2d",
       "displayName": "Physics 2D",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.physics2d",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.physics2d",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -221,7 +152,7 @@
     "com.unity.modules.screencapture@1.0.0": {
       "name": "com.unity.modules.screencapture",
       "displayName": "Screen Capture",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.screencapture",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.screencapture",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -229,7 +160,7 @@
     "com.unity.modules.terrain@1.0.0": {
       "name": "com.unity.modules.terrain",
       "displayName": "Terrain",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.terrain",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.terrain",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -237,7 +168,7 @@
     "com.unity.modules.terrainphysics@1.0.0": {
       "name": "com.unity.modules.terrainphysics",
       "displayName": "Terrain Physics",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.terrainphysics",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.terrainphysics",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -245,7 +176,7 @@
     "com.unity.modules.tilemap@1.0.0": {
       "name": "com.unity.modules.tilemap",
       "displayName": "Tilemap",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.tilemap",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.tilemap",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -253,7 +184,7 @@
     "com.unity.modules.ui@1.0.0": {
       "name": "com.unity.modules.ui",
       "displayName": "UI",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.ui",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.ui",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -261,7 +192,7 @@
     "com.unity.modules.uielements@1.0.0": {
       "name": "com.unity.modules.uielements",
       "displayName": "UIElements",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.uielements",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.uielements",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -269,7 +200,7 @@
     "com.unity.modules.umbra@1.0.0": {
       "name": "com.unity.modules.umbra",
       "displayName": "Umbra",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.umbra",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.umbra",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -277,7 +208,7 @@
     "com.unity.modules.unityanalytics@1.0.0": {
       "name": "com.unity.modules.unityanalytics",
       "displayName": "Unity Analytics",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unityanalytics",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unityanalytics",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -285,7 +216,7 @@
     "com.unity.modules.unitywebrequest@1.0.0": {
       "name": "com.unity.modules.unitywebrequest",
       "displayName": "Unity Web Request",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequest",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequest",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -293,7 +224,7 @@
     "com.unity.modules.unitywebrequestassetbundle@1.0.0": {
       "name": "com.unity.modules.unitywebrequestassetbundle",
       "displayName": "Unity Web Request Asset Bundle",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequestassetbundle",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequestassetbundle",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -301,7 +232,7 @@
     "com.unity.modules.unitywebrequestaudio@1.0.0": {
       "name": "com.unity.modules.unitywebrequestaudio",
       "displayName": "Unity Web Request Audio",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequestaudio",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequestaudio",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -309,7 +240,7 @@
     "com.unity.modules.unitywebrequesttexture@1.0.0": {
       "name": "com.unity.modules.unitywebrequesttexture",
       "displayName": "Unity Web Request Texture",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequesttexture",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequesttexture",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -317,7 +248,7 @@
     "com.unity.modules.unitywebrequestwww@1.0.0": {
       "name": "com.unity.modules.unitywebrequestwww",
       "displayName": "Unity Web Request WWW",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequestwww",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.unitywebrequestwww",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -325,7 +256,7 @@
     "com.unity.modules.vectorgraphics@1.0.0": {
       "name": "com.unity.modules.vectorgraphics",
       "displayName": "Vector Graphics",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.vectorgraphics",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.vectorgraphics",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -333,7 +264,7 @@
     "com.unity.modules.vehicles@1.0.0": {
       "name": "com.unity.modules.vehicles",
       "displayName": "Vehicles",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.vehicles",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.vehicles",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -341,7 +272,7 @@
     "com.unity.modules.video@1.0.0": {
       "name": "com.unity.modules.video",
       "displayName": "Video",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.video",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.video",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -349,7 +280,7 @@
     "com.unity.modules.vr@1.0.0": {
       "name": "com.unity.modules.vr",
       "displayName": "VR",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.vr",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.vr",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -357,7 +288,7 @@
     "com.unity.modules.wind@1.0.0": {
       "name": "com.unity.modules.wind",
       "displayName": "Wind",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.wind",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.wind",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -365,7 +296,7 @@
     "com.unity.modules.xr@1.0.0": {
       "name": "com.unity.modules.xr",
       "displayName": "XR",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.xr",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.xr",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -373,7 +304,7 @@
     "com.unity.modules.subsystems@1.0.0": {
       "name": "com.unity.modules.subsystems",
       "displayName": "Subsystems",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.subsystems",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.subsystems",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
@@ -381,178 +312,28 @@
     "com.unity.modules.hierarchycore@1.0.0": {
       "name": "com.unity.modules.hierarchycore",
       "displayName": "Hierarchy Core",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.hierarchycore",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.modules.hierarchycore",
       "version": "1.0.0",
       "source": "builtin",
       "testable": false
     },
-    "com.unity.shadergraph@17.3.0": {
-      "name": "com.unity.shadergraph",
-      "displayName": "Shader Graph",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.shadergraph@4eb612570652",
-      "fingerprint": "4eb612570652a926479a4b8b0683833c5b291097",
-      "editorCompatibility": "6000.3.0a1",
-      "version": "17.3.0",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.settings-manager@2.1.1": {
-      "name": "com.unity.settings-manager",
-      "displayName": "Settings Manager",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.settings-manager@0b8638c5ce86",
-      "fingerprint": "0b8638c5ce86009d785da17b17aaf629047f64ce",
-      "editorCompatibility": "2022.3.0a1",
-      "version": "2.1.1",
-      "source": "registry",
-      "testable": false
-    },
-    "com.autodesk.fbx@5.1.3": {
+    "com.autodesk.fbx@5.1.5": {
       "name": "com.autodesk.fbx",
       "displayName": "Autodesk FBX SDK for Unity",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.autodesk.fbx@90432ec06ab5",
-      "fingerprint": "90432ec06ab57dc1e7d839ed8812eabac81e1e9f",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.autodesk.fbx@447543dd085f",
+      "fingerprint": "447543dd085fd302c1891661abc0cc28f2297968",
       "editorCompatibility": "2020.3.0a1",
-      "version": "5.1.3",
+      "version": "5.1.5",
       "source": "registry",
       "testable": false
     },
-    "com.unity.ide.visualstudio@2.0.26": {
-      "name": "com.unity.ide.visualstudio",
-      "displayName": "Visual Studio Editor",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.ide.visualstudio@a99d56dec63f",
-      "fingerprint": "a99d56dec63ffb3a911a5a9bce9b77ba862a601c",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "2.0.26",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.ide.rider@3.0.39": {
-      "name": "com.unity.ide.rider",
-      "displayName": "JetBrains Rider Editor",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.ide.rider@4504839d03f7",
-      "fingerprint": "4504839d03f7a5a4495357084a0ffd6e439892cf",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "3.0.39",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.editorcoroutines@1.0.1": {
-      "name": "com.unity.editorcoroutines",
-      "displayName": "Editor Coroutines",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.editorcoroutines@54394ed3283c",
-      "fingerprint": "54394ed3283c1d492d6a80602b05b04bd0863f8b",
-      "editorCompatibility": "2018.1.0a1",
-      "version": "1.0.1",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.performance.profile-analyzer@1.3.2": {
-      "name": "com.unity.performance.profile-analyzer",
-      "displayName": "Profile Analyzer",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.performance.profile-analyzer@eaa01f9d35e9",
-      "fingerprint": "eaa01f9d35e9064e36ddeda084a9bf722ac65dc3",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.3.2",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.test-framework@1.6.0": {
-      "name": "com.unity.test-framework",
-      "displayName": "Test Framework",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.test-framework@0b7a23ab2e1d",
-      "fingerprint": "0b7a23ab2e1d74441a5afdffa63f417929756957",
-      "editorCompatibility": "6000.0.44f1",
-      "version": "1.6.0",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.testtools.codecoverage@1.3.0": {
-      "name": "com.unity.testtools.codecoverage",
-      "displayName": "Code Coverage",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.testtools.codecoverage@19a841221620",
-      "fingerprint": "19a8412216200955baa50132d98cb9fe4770e401",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.3.0",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.render-pipelines.core@17.3.0": {
-      "name": "com.unity.render-pipelines.core",
-      "displayName": "Scriptable Render Pipeline Core",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.render-pipelines.core@84bf82d10e47",
-      "fingerprint": "84bf82d10e47fe9c6952143a444af22c06dd44d8",
-      "editorCompatibility": "6000.3.0a1",
-      "version": "17.3.0",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.searcher@4.9.4": {
-      "name": "com.unity.searcher",
-      "displayName": "Searcher",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.searcher@d45a78918735",
-      "fingerprint": "d45a78918735dd5b1de2247c6e3567c60aa24115",
-      "editorCompatibility": "2019.1.0a1",
-      "version": "4.9.4",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.ext.nunit@2.0.5": {
-      "name": "com.unity.ext.nunit",
-      "displayName": "Custom NUnit",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.ext.nunit@d8c07649098d",
-      "fingerprint": "d8c07649098d3936da4c8ab500960c1776b44592",
-      "editorCompatibility": "2019.4.0a1",
-      "version": "2.0.5",
-      "source": "builtin",
-      "testable": false
-    },
-    "com.unity.burst@1.8.28": {
-      "name": "com.unity.burst",
-      "displayName": "Burst",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.burst@07790c2d06d9",
-      "fingerprint": "07790c2d06d99e35fe39459bd582a965d07700c4",
+    "com.unity.timeline@1.8.11": {
+      "name": "com.unity.timeline",
+      "displayName": "Timeline",
+      "resolvedPath": "C:\\学校復習とか\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.timeline@bfd27f8016ff",
+      "fingerprint": "bfd27f8016ffda6a22579ffc468432a96b2cc5b6",
       "editorCompatibility": "2022.3.0a1",
-      "version": "1.8.28",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.mathematics@1.3.3": {
-      "name": "com.unity.mathematics",
-      "displayName": "Mathematics",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.mathematics@19a9377c4ffa",
-      "fingerprint": "19a9377c4ffa59370edad3e6a34e4445529badde",
-      "editorCompatibility": "2021.3.0a1",
-      "version": "1.3.3",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.collections@2.6.2": {
-      "name": "com.unity.collections",
-      "displayName": "Collections",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.collections@aea9d3bd5e19",
-      "fingerprint": "aea9d3bd5e19f2a90fc3a39919974a5f3613a159",
-      "editorCompatibility": "2022.3.20f1",
-      "version": "2.6.2",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.nuget.mono-cecil@1.11.6": {
-      "name": "com.unity.nuget.mono-cecil",
-      "displayName": "Mono Cecil",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.nuget.mono-cecil@ecb9724e46ff",
-      "fingerprint": "ecb9724e46fff855c46a4f37f0a3377a3cfffc06",
-      "editorCompatibility": "2019.4.0a1",
-      "version": "1.11.6",
-      "source": "registry",
-      "testable": false
-    },
-    "com.unity.test-framework.performance@3.2.0": {
-      "name": "com.unity.test-framework.performance",
-      "displayName": "Performance testing API",
-      "resolvedPath": "C:\\竹中槙吾\\Employment-work\\マップ作成用\\Library\\PackageCache\\com.unity.test-framework.performance@0840f58e4562",
-      "fingerprint": "0840f58e45624f7677679a0f8b6a5137689e607f",
-      "editorCompatibility": "2020.3.0a1",
-      "version": "3.2.0",
+      "version": "1.8.11",
       "source": "registry",
       "testable": false
     }

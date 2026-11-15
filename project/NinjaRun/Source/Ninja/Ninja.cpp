@@ -54,10 +54,10 @@ Ninja::Ninja()
     m_isDashCooldown = false;
     m_dashCooldownTimer = 0.0f;
 
-    // ジャンプ関連
+    // ジャンプ・落下関連
     m_isJump = false;
+    m_isGrounded = false;
 
-    m_groundY = m_pos.y;
     m_jumpSpeed = 0.0f;
     m_gravity = 0.05f;
 
@@ -67,7 +67,6 @@ Ninja::Ninja()
 
     m_wallKickDirection = VGet(0.0f, 0.0f, 0.0f);
 
-    m_wallKickGroundY = m_pos.y;
     m_wallKickInputTimer = 0.0f;
 
     m_wallKickVelocityX = 0.0f;
@@ -116,15 +115,18 @@ void Ninja::Load()
     m_ninjaAnimation.LoadAnimations();
 }
 
+
 void Ninja::Update()
 {
-    // 手裏剣を投げたタイミングを毎フレームリセット
+    // 手裏剣の発射タイミングをリセット
     m_isShootStart = false;
 
-    // ダッシュのクールタイムを更新
+    const float deltaTime = 1.0f / 60.0f;
+
+    // ダッシュのクールタイム
     if (m_isDashCooldown)
     {
-        m_dashCooldownTimer -= 1.0f / 60.0f;
+        m_dashCooldownTimer -= deltaTime;
 
         if (m_dashCooldownTimer <= 0.0f)
         {
@@ -133,27 +135,19 @@ void Ninja::Update()
         }
     }
 
-    // 壁キック後の時間を減らす
-    if (m_wallKickInputTimer > 0.0f)
-    {
-        m_wallKickInputTimer -= 1.0f / 60.0f;
-
-        if (m_wallKickInputTimer < 0.0f)
-        {
-            m_wallKickInputTimer = 0.0f;
-        }
-    }
-
-    // ノックバック中なら通常操作を行わない
+    // ノックバック
     if (m_isKnockback)
     {
         m_isDash = false;
         m_dashTimer = 0.0f;
 
-        m_pos.x += m_knockbackDirection.x * m_knockbackStrength;
-        m_pos.z += m_knockbackDirection.z * m_knockbackStrength;
+        m_pos.x +=
+            m_knockbackDirection.x * m_knockbackStrength;
 
-        m_knockbackTimer -= 1.0f / 60.0f;
+        m_pos.z +=
+            m_knockbackDirection.z * m_knockbackStrength;
+
+        m_knockbackTimer -= deltaTime;
 
         if (m_knockbackTimer <= 0.0f)
         {
@@ -161,6 +155,9 @@ void Ninja::Update()
             m_isKnockback = false;
             m_knockbackStrength = 0.0f;
         }
+
+        // ノックバック中も重力を適用
+        UpdateVerticalMovement();
 
         m_ninjaAnimation.Update(
             false,
@@ -178,7 +175,6 @@ void Ninja::Update()
     // 入力更新
     m_input.Update();
 
-    // 入力情報を取得
     const NinjaInputState& input = m_input.GetState();
 
     // ガード終了
@@ -189,7 +185,7 @@ void Ninja::Update()
 
     // ガード開始
     if (input.guard &&
-        !m_isJump &&
+        m_isGrounded &&
         !m_isSlash &&
         !m_isShoot &&
         !m_isGuard)
@@ -219,21 +215,25 @@ void Ninja::Update()
         m_isShootStart = true;
     }
 
-    // Jキーでダッシュ斬りを開始
+    // ダッシュ斬り開始
     if (input.dashCut)
     {
         float directionX = m_lastMoveDirectionX;
         float directionZ = m_lastMoveDirectionZ;
 
-        // 移動入力があれば、その方向を優先する
         if (input.isMove)
         {
             directionX = input.moveX;
             directionZ = input.moveZ;
         }
 
-        m_ninjaAttack.StartDashCut(directionX, directionZ);
+        m_ninjaAttack.StartDashCut(
+            directionX,
+            directionZ);
     }
+
+    bool isMoving = false;
+    bool isDashCutMoving = false;
 
     // ダッシュ斬り中
     if (m_ninjaAttack.IsDashCutActive())
@@ -242,199 +242,86 @@ void Ninja::Update()
 
         if (m_ninjaAttack.IsDashCutActive())
         {
-            // X方向とZ方向の両方に移動する
             m_pos.x +=
                 m_ninjaAttack.GetDashCutDirectionX() * 1.5f;
 
             m_pos.z +=
                 m_ninjaAttack.GetDashCutDirectionZ() * 1.5f;
 
-            // 左右反転
-            if (m_ninjaAttack.GetDashCutDirectionX() < 0.0f)
+            float directionX =
+                m_ninjaAttack.GetDashCutDirectionX();
+
+            if (directionX < 0.0f)
             {
                 m_isReverseX = true;
             }
-            else if (m_ninjaAttack.GetDashCutDirectionX() > 0.0f)
+            else if (directionX > 0.0f)
             {
                 m_isReverseX = false;
             }
 
-            m_prevDash = input.dash;
-
-            m_ninjaAnimation.Update(
-                false,
-                m_isJump,
-                m_jumpSpeed,
-                m_isSlash,
-                m_isGuard,
-                m_isShoot,
-                m_isDash,
-                m_ninjaAttack.IsDashCutActive());
-
-            return;
+            isDashCutMoving = true;
         }
     }
 
-    // ダッシュ処理
-    UpdateDash();
-
-    m_prevDash = input.dash;
-
-    // ダッシュ中のジャンプ入力
-    if (m_isDash &&
-        input.jump &&
-        !m_isJump &&
-        !m_isSlash &&
-        !m_isGuard &&
-        !m_isShoot)
+    if (!isDashCutMoving)
     {
-        m_isJump = true;
-        m_groundY = m_pos.y;
-        m_jumpSpeed = 1.0f;
-        m_canWallKick = false;
-    }
+        // ダッシュ処理
+        UpdateDash();
 
-    // ダッシュ中は通常移動を行わない
-    if (m_isDash)
-    {
-        // ジャンプ処理は継続する
-        if (m_isJump)
+        // ダッシュ中もジャンプを開始できる
+        if (input.jump &&
+            m_isGrounded &&
+            !m_isSlash &&
+            !m_isGuard &&
+            !m_isShoot)
         {
-            m_pos.y += m_jumpSpeed;
-            m_jumpSpeed -= m_gravity;
-
-            if (m_pos.y <= m_groundY)
-            {
-                m_pos.y = m_groundY;
-                m_isJump = false;
-                m_jumpSpeed = 0.0f;
-                m_canWallKick = false;
-            }
-        }
-
-        m_ninjaAnimation.Update(
-            false,
-            m_isJump,
-            m_jumpSpeed,
-            m_isSlash,
-            m_isGuard,
-            m_isShoot,
-            m_isDash,
-            m_ninjaAttack.IsDashCutActive());
-
-        return;
-    }
-
-    // ガード・近接攻撃・手裏剣中はX/Z移動しない
-    if (m_isGuard ||
-        m_isSlash ||
-        m_isShoot)
-    {
-        // ジャンプ処理だけは継続
-        if (m_isJump)
-        {
-            m_pos.y += m_jumpSpeed;
-            m_jumpSpeed -= m_gravity;
-
-            if (m_pos.y <= m_groundY)
-            {
-                m_pos.y = m_groundY;
-                m_isJump = false;
-                m_jumpSpeed = 0.0f;
-                m_canWallKick = false;
-            }
-        }
-
-        m_ninjaAnimation.Update(
-            false,
-            m_isJump,
-            m_jumpSpeed,
-            m_isSlash,
-            m_isGuard,
-            m_isShoot,
-            m_isDash,
-            m_ninjaAttack.IsDashCutActive());
-
-        return;
-    }
-
-    // 壁キック処理
-    if (WallkickUpdate(input))
-    {
-        m_ninjaAnimation.Update
-        (
-        false,
-        m_isJump,
-        m_jumpSpeed,
-        m_isSlash,
-        m_isGuard,
-        m_isShoot,
-        m_isDash,
-        m_ninjaAttack.IsDashCutActive()
-        );
-
-        return;
-    }
-
-    // ジャンプ
-    if (input.jump &&
-        !m_isSlash &&
-        !m_isGuard &&
-        !m_isShoot)
-    {
-        if (!m_isJump)
-        {
-            // 通常ジャンプ
+            m_isGrounded = false;
             m_isJump = true;
-            m_groundY = m_pos.y;
             m_jumpSpeed = 1.0f;
             m_canWallKick = false;
         }
-    }
 
-    // ジャンプ処理
-    if (m_isJump)
-    {
-        m_pos.y += m_jumpSpeed;
-        m_jumpSpeed -= m_gravity;
-
-        if (m_pos.y <= m_groundY)
+        if (!m_isDash &&
+            !m_isGuard &&
+            !m_isSlash &&
+            !m_isShoot)
         {
-            m_pos.y = m_groundY;
-            m_isJump = false;
-            m_jumpSpeed = 0.0f;
-            m_canWallKick = false;
+            // 壁キック
+            bool isWallKickMoving = WallkickUpdate(input);
+
+            if (!isWallKickMoving)
+            {
+                // 左右反転
+                if (input.moveX < 0.0f)
+                {
+                    m_isReverseX = true;
+                }
+                else if (input.moveX > 0.0f)
+                {
+                    m_isReverseX = false;
+                }
+
+                // 通常移動
+                if (input.isMove)
+                {
+                    m_pos.x += input.moveX * m_moveSpeed;
+                    m_pos.z += input.moveZ * m_moveSpeed;
+
+                    isMoving = true;
+                }
+            }
         }
     }
 
-    // 左右反転
-    if (!m_isSlash &&
-        !m_isGuard &&
-        !m_isShoot)
-    {
-        if (input.moveX < 0.0f)
-        {
-            m_isReverseX = true;
-        }
-        else if (input.moveX > 0.0f)
-        {
-            m_isReverseX = false;
-        }
-    }
+    m_prevDash = input.dash;
 
-    // 通常移動
-    if (input.isMove &&
-        !m_isSlash &&
-        !m_isGuard &&
-        !m_isShoot)
-    {
-        m_pos.x += input.moveX * m_moveSpeed;
-        m_pos.z += input.moveZ * m_moveSpeed;
-    }
+    // すべての移動状態で重力を適用
+    UpdateVerticalMovement();
 
     // アニメーション更新
     m_ninjaAnimation.Update(
-        input.isMove,
+        isMoving,
         m_isJump,
         m_jumpSpeed,
         m_isSlash,
@@ -443,6 +330,7 @@ void Ninja::Update()
         m_isDash,
         m_ninjaAttack.IsDashCutActive());
 }
+
 
 void Ninja::RememberMoveDirection(float moveX, float moveZ)
 {
@@ -661,11 +549,12 @@ void Ninja::UpdateDash()
     }
 }
 
+
 bool Ninja::WallkickUpdate(const NinjaInputState& input)
 {
     const float deltaTime = 1.0f / 60.0f;
 
-    // 壁に触れている空中状態でジャンプ入力があれば開始
+    // 壁に接触している空中状態でジャンプ
     if (!m_isWallKicking &&
         m_canWallKick &&
         m_isJump &&
@@ -674,20 +563,18 @@ bool Ninja::WallkickUpdate(const NinjaInputState& input)
         m_isWallKicking = true;
         m_canWallKick = false;
 
-        // 上向きの初速を与える
+        // 上向きの初速
         m_jumpSpeed = 1.5f;
 
-        // 壁から離れる方向の速度を設定
+        // 壁から離れる方向
         m_wallKickVelocityX =
             m_wallKickDirection.x * WALL_KICK_SPEED;
 
         m_wallKickVelocityZ =
             m_wallKickDirection.z * WALL_KICK_SPEED;
 
-        // 一定時間、WASDを無視する
         m_wallKickInputTimer = WALL_KICK_MOVE_TIME;
 
-        // X方向の移動に合わせて向きを変更
         if (m_wallKickVelocityX < 0.0f)
         {
             m_isReverseX = true;
@@ -698,48 +585,29 @@ bool Ninja::WallkickUpdate(const NinjaInputState& input)
         }
     }
 
-    // 壁キック中の移動と重力
-    if (m_isWallKicking)
+    if (!m_isWallKicking)
     {
-        // X/Z方向へキック速度で移動
-        m_pos.x += m_wallKickVelocityX;
-        m_pos.z += m_wallKickVelocityZ;
-
-        // Y方向は初速と重力で計算
-        m_pos.y += m_jumpSpeed;
-        m_jumpSpeed -= m_gravity;
-
-        // WASDを無視する時間を更新
-        m_wallKickInputTimer -= deltaTime;
-
-        if (m_wallKickInputTimer <= 0.0f)
-        {
-            m_wallKickInputTimer = 0.0f;
-            m_isWallKicking = false;
-
-            // 強制的な水平移動を終了
-            m_wallKickVelocityX = 0.0f;
-            m_wallKickVelocityZ = 0.0f;
-        }
-
-        // 地面に着いた場合
-        if (m_pos.y <= m_groundY)
-        {
-            m_pos.y = m_groundY;
-            m_isJump = false;
-            m_jumpSpeed = 0.0f;
-            m_canWallKick = false;
-            m_isWallKicking = false;
-
-            m_wallKickVelocityX = 0.0f;
-            m_wallKickVelocityZ = 0.0f;
-        }
-
-        return true;
+        return false;
     }
 
-    return false;
+    // 壁キック中の水平移動
+    m_pos.x += m_wallKickVelocityX;
+    m_pos.z += m_wallKickVelocityZ;
+
+    m_wallKickInputTimer -= deltaTime;
+
+    if (m_wallKickInputTimer <= 0.0f)
+    {
+        m_wallKickInputTimer = 0.0f;
+        m_isWallKicking = false;
+
+        m_wallKickVelocityX = 0.0f;
+        m_wallKickVelocityZ = 0.0f;
+    }
+
+    return true;
 }
+
 
 void Ninja::SetWallContact(VECTOR direction)
 {
@@ -795,4 +663,55 @@ float Ninja::GetDashCutDirectionX() const
 float Ninja::GetDashCutDirectionZ() const
 {
     return m_ninjaAttack.GetDashCutDirectionZ();
+}
+
+void Ninja::UpdateVerticalMovement()
+{
+    // 地面に接している場合
+    if (m_isGrounded)
+    {
+        m_jumpSpeed = 0.0f;
+        return;
+    }
+
+    // 上下方向の移動
+    m_pos.y += m_jumpSpeed;
+
+    // 重力を適用
+    m_jumpSpeed -= m_gravity;
+
+    // 空中状態
+    m_isJump = true;
+}
+
+void Ninja::ResolveGroundCollision(float groundY)
+{
+    // 上昇中は着地させない
+    if (m_jumpSpeed > 0.0f)
+    {
+        return;
+    }
+
+    // 地面の高さへ補正
+    m_pos.y = groundY;
+
+    // 接地状態に変更
+    m_isGrounded = true;
+    m_isJump = false;
+
+    m_jumpSpeed = 0.0f;
+
+    // 壁キック状態を解除
+    m_canWallKick = false;
+    m_isWallKicking = false;
+
+    m_wallKickVelocityX = 0.0f;
+    m_wallKickVelocityZ = 0.0f;
+    m_wallKickInputTimer = 0.0f;
+}
+
+void Ninja::SetAirborne()
+{
+    m_isGrounded = false;
+    m_isJump = true;
 }

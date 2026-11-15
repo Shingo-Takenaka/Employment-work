@@ -5,25 +5,20 @@
 class Field
 {
 public:
-
     Field();
-
     ~Field();
 
     void Draw();
 
-    VECTOR GetWallPosition() const;
+    int GetModelHandle() const;
 
 private:
+    void Load();
+    void SetupModel();
 
     int m_model;
-    int m_wall;
 
     VECTOR m_fieldPos;
     VECTOR m_fieldRot;
     VECTOR m_fieldScale;
-
-    VECTOR m_wallPos;
-    VECTOR m_wallRot;
-    VECTOR m_wallScale;
 };

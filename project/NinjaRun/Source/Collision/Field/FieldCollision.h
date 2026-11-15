@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "DxLib.h"
@@ -8,22 +9,25 @@ class Field;
 class FieldCollision
 {
 public:
-    // 壁との当たり判定
-    bool CheckWall(const Ninja& ninja, const Field& field);
+    // 地面の高さを取得
+    bool CheckGround(
+        const Ninja& ninja,
+        const Field& field,
+        float& groundY);
 
-    // 壁との衝突処理
-    void ResolveWallCollision(Ninja& ninja,const Field& field,VECTOR oldNinjaPos);
+    // 地面との衝突処理
+    void ResolveGroundCollision(
+        Ninja& ninja,
+        const Field& field,
+        VECTOR oldNinjaPos);
 
-    // 壁の当たり判定をデバッグ表示
+    // デバッグ描画
     void DrawDebug(const Field& field);
 
 private:
-    // 壁の当たり判定サイズ
-    /*static constexpr float WALL_WIDTH = 5.0f;
-    static constexpr float WALL_HEIGHT = 60.0f;
-    static constexpr float WALL_DEPTH = 1.0f;*/
+    // 地面の最大傾斜
+    static constexpr float MIN_GROUND_NORMAL_Y = 0.7f;
 
-    static constexpr float WALL_WIDTH = 0.0f;
-    static constexpr float WALL_HEIGHT = 0.0f;
-    static constexpr float WALL_DEPTH = 0.0f;
+    // 地面への追従を許可する高さ
+    static constexpr float GROUND_STEP_HEIGHT = 2.0f;
 };

@@ -1,53 +1,62 @@
+
 #include "Field.h"
 
 Field::Field()
+    : m_model(-1)
 {
-    // フィールド
-    m_model = MV1LoadModel("Data/Field/test/Map.x");
-    //m_model = MV1LoadModel("Data/Field/test/TestFieldHwite.x");
+    m_fieldPos = VGet(0.0f, 0.0f, 0.0f);
+    m_fieldRot = VGet(0.0f, 0.0f, 0.0f);
+    m_fieldScale = VGet(0.25f, 0.25f, 0.25f);
 
-    // 壁
-    m_wall = MV1LoadModel("Data/Field/test/Wall.x");
-
-    // フィールドの位置・回転・大きさ
-    m_fieldPos = VGet(0, 0, 0);
-    m_fieldRot = VGet(0, 0, 0);
-    m_fieldScale = VGet(0.25, 0.25, 0.25);
-
-    /*m_fieldPos = VGet(0, 0, 0);
-    m_fieldRot = VGet(0, 0, 0);
-    m_fieldScale = VGet(1, 1, 1);*/
-
-    // 壁の位置・回転・大きさ
-    m_wallPos = VGet(-60, 30, 0);
-    m_wallRot = VGet(0, 0, 0);
-    m_wallScale = VGet(1, 1, 1);
+    Load();
 }
 
 Field::~Field()
 {
-    MV1DeleteModel(m_model);
-    MV1DeleteModel(m_wall);
+    if (m_model >= 0)
+    {
+        MV1DeleteModel(m_model);
+    }
+}
+
+void Field::Load()
+{
+    m_model = MV1LoadModel("Data/Field/test/Map.x");
+
+    if (m_model < 0)
+    {
+        return;
+    }
+
+    SetupModel();
+
+    // モデル全体の当たり判定情報を作成
+    MV1SetupCollInfo(m_model, -1);
+}
+
+void Field::SetupModel()
+{
+    if (m_model < 0)
+    {
+        return;
+    }
+
+    MV1SetPosition(m_model, m_fieldPos);
+    MV1SetRotationXYZ(m_model, m_fieldRot);
+    MV1SetScale(m_model, m_fieldScale);
 }
 
 void Field::Draw()
 {
-    // フィールド
-    MV1SetPosition(m_model, m_fieldPos);
-    MV1SetRotationXYZ(m_model, m_fieldRot);
-    MV1SetScale(m_model, m_fieldScale);
+    if (m_model < 0)
+    {
+        return;
+    }
 
     MV1DrawModel(m_model);
-
-    // 壁
-    /*MV1SetPosition(m_wall, m_wallPos);
-    MV1SetRotationXYZ(m_wall, m_wallRot);
-    MV1SetScale(m_wall, m_wallScale);
-
-    MV1DrawModel(m_wall);*/
 }
 
-VECTOR Field::GetWallPosition() const
+int Field::GetModelHandle() const
 {
-    return m_wallPos;
+    return m_model;
 }
