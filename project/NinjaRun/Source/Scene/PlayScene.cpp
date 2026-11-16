@@ -36,8 +36,17 @@ void PlayScene::Update()
 
     float groundY = 0.0f;
 
-    m_fieldCollision.ResolveGroundCollision( m_ninja,m_field, oldNinjaPos);
+    // •Ç‚Æ‚Ì“–‚½‚è”»’è
+    m_fieldCollision.ResolveWallCollision(
+        m_ninja,
+        m_field,
+        oldNinjaPos);
 
+    // °‚Æ‚Ì“–‚½‚è”»’è
+    m_fieldCollision.ResolveGroundCollision(
+        m_ninja,
+        m_field,
+        oldNinjaPos);
 
     // “G‚ğæ“¾
     auto& normalEnemies = m_enemyManager.GetNormalEnemies();

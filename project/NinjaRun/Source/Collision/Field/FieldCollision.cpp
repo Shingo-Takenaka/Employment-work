@@ -3,6 +3,7 @@
 
 #include "../../Ninja/Ninja.h"
 #include "../../Field/Field.h"
+#include <cmath>
 
 bool FieldCollision::CheckGround(
     const Ninja& ninja,
@@ -97,3 +98,172 @@ void FieldCollision::DrawDebug(
 {
     // 現段階ではデバッグ描画なし
 }
+
+
+void FieldCollision::ResolveWallCollision(
+    Ninja& ninja,
+    const Field& field,
+    VECTOR oldNinjaPos)
+{
+    int modelHandle = field.GetModelHandle();
+
+    if (modelHandle < 0)
+    {
+        return;
+    }
+
+    VECTOR ninjaPos = ninja.GetPosition();
+    VECTOR resolvedPos = ninjaPos;
+
+    const float wallCheckHeights[] =
+    {
+        2.0f,
+        5.0f,
+        8.0f
+    };
+
+    // X方向の壁判定
+    float moveX = ninjaPos.x - oldNinjaPos.x;
+
+    if (fabsf(moveX) > 0.0001f)
+    {
+        float directionX = moveX > 0.0f ? 1.0f : -1.0f;
+        float nearestDistance = fabsf(moveX);
+        bool hitWall = false;
+        VECTOR wallNormal = VGet(0.0f, 0.0f, 0.0f);
+
+        for (float height : wallCheckHeights)
+        {
+            VECTOR startPos = VGet(
+                oldNinjaPos.x,
+                oldNinjaPos.y + height,
+                oldNinjaPos.z);
+
+            VECTOR endPos = VGet(
+                ninjaPos.x + directionX * WALL_RADIUS,
+                oldNinjaPos.y + height,
+                oldNinjaPos.z);
+
+            MV1_COLL_RESULT_POLY result =
+                MV1CollCheck_Line(
+                    modelHandle,
+                    -1,
+                    startPos,
+                    endPos);
+
+            if (result.HitFlag == 0)
+            {
+                continue;
+            }
+
+            // 床や坂道を除外
+            if (fabsf(result.Normal.y) > MAX_WALL_NORMAL_Y)
+            {
+                continue;
+            }
+
+            // 進行方向に対して向かい合う壁だけを対象にする
+            if (result.Normal.x * directionX >= -0.01f)
+            {
+                continue;
+            }
+
+            float distance =
+                (result.HitPosition.x - oldNinjaPos.x)
+                * directionX - WALL_RADIUS;
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                hitWall = true;
+                wallNormal = result.Normal;
+            }
+        }
+
+        if (hitWall)
+        {
+            if (nearestDistance < 0.0f)
+            {
+                nearestDistance = 0.0f;
+            }
+
+            resolvedPos.x =
+                oldNinjaPos.x + directionX * nearestDistance;
+
+            ninja.SetWallContact(wallNormal);
+        }
+    }
+
+    // Z方向の壁判定
+    float moveZ = ninjaPos.z - oldNinjaPos.z;
+
+    if (fabsf(moveZ) > 0.0001f)
+    {
+        float directionZ = moveZ > 0.0f ? 1.0f : -1.0f;
+        float nearestDistance = fabsf(moveZ);
+        bool hitWall = false;
+        VECTOR wallNormal = VGet(0.0f, 0.0f, 0.0f);
+
+        for (float height : wallCheckHeights)
+        {
+            VECTOR startPos = VGet(
+                resolvedPos.x,
+                oldNinjaPos.y + height,
+                oldNinjaPos.z);
+
+            VECTOR endPos = VGet(
+                resolvedPos.x,
+                oldNinjaPos.y + height,
+                ninjaPos.z + directionZ * WALL_RADIUS);
+
+            MV1_COLL_RESULT_POLY result =
+                MV1CollCheck_Line(
+                    modelHandle,
+                    -1,
+                    startPos,
+                    endPos);
+
+            if (result.HitFlag == 0)
+            {
+                continue;
+            }
+
+            if (fabsf(result.Normal.y) > MAX_WALL_NORMAL_Y)
+            {
+                continue;
+            }
+
+            if (result.Normal.z * directionZ >= -0.01f)
+            {
+                continue;
+            }
+
+            float distance =
+                (result.HitPosition.z - oldNinjaPos.z)
+                * directionZ - WALL_RADIUS;
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                hitWall = true;
+                wallNormal = result.Normal;
+            }
+        }
+
+        if (hitWall)
+        {
+            if (nearestDistance < 0.0f)
+            {
+                nearestDistance = 0.0f;
+            }
+
+            resolvedPos.z =
+                oldNinjaPos.z + directionZ * nearestDistance;
+
+            ninja.SetWallContact(wallNormal);
+        }
+    }
+
+    ninja.SetPosition(resolvedPos);
+}
+
