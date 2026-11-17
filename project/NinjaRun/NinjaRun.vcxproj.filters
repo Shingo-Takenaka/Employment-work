@@ -138,6 +138,12 @@
     <ClCompile Include="Source\Scene\TitleScene\TitleScene.cpp">
       <Filter>Source\Scene\TitleScene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Field\MoveFloor.cpp">
+      <Filter>Source\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Field\BreakableObject.cpp">
+      <Filter>Source\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h">
@@ -220,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="Source\Scene\TitleScene\TitleScene.h">
       <Filter>Source\Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Field\MoveFloor.h">
+      <Filter>Source\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Field\BreakableObject.h">
+      <Filter>Source\Field</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

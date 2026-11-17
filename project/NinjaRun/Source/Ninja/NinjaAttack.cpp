@@ -1,4 +1,5 @@
 #include "NinjaAttack.h"
+#include "Ninja.h"
 #include "../Collision/CollisionSetting.h"
 #include <math.h>
 
@@ -333,4 +334,24 @@ float NinjaAttack::GetDashCutDirectionX() const
 float NinjaAttack::GetDashCutDirectionZ() const
 {
     return m_dashCutDirectionZ;
+}
+
+int NinjaAttack::GetAttackPower(
+    AttackType attackType,
+    const PlayerData& data) const
+{
+    switch (attackType)
+    {
+    case AttackType::Slash:
+        return data.SlashPower;
+
+    case AttackType::Shuriken:
+        return data.ShurikenPower;
+
+    case AttackType::DashCut:
+        return data.DashCutPower;
+
+    default:
+        return 0;
+    }
 }

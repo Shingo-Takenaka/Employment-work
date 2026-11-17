@@ -12,11 +12,13 @@ PlayScene::~PlayScene()
 void PlayScene::Init()
 {
     m_ninja.Init();
+    m_moveFloor.Init();
 }
 
 void PlayScene::Load()
 {
     m_ninja.Load();
+    m_moveFloor.Load();
 }
 
 void PlayScene::Start()
@@ -26,6 +28,8 @@ void PlayScene::Start()
 
 void PlayScene::Update()
 {
+    m_moveFloor.Update();
+
     // Ninjaの移動前の位置を保存
     VECTOR oldNinjaPos = m_ninja.GetPosition();
 
@@ -46,6 +50,7 @@ void PlayScene::Update()
     m_fieldCollision.ResolveGroundCollision(
         m_ninja,
         m_field,
+        m_moveFloor,
         oldNinjaPos);
 
     // 敵を取得
@@ -210,6 +215,8 @@ void PlayScene::Draw()
 {
     // 地面
     m_field.Draw();
+
+    m_moveFloor.Draw();
 
     // 描画リストを空にする
     m_drawManager.Clear();

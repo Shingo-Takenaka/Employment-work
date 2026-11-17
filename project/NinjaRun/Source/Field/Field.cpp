@@ -22,6 +22,7 @@ Field::~Field()
 void Field::Load()
 {
     m_model = MV1LoadModel("Data/Field/test/Map.x");
+    //m_model = MV1LoadModel("Data/Field/test/TestFieldHwite.x");
 
     if (m_model < 0)
     {

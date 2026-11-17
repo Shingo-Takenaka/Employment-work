@@ -35,7 +35,9 @@
     <ClCompile Include="Source\Enemy\NormalEnemy\NormalEnemyAttack.cpp" />
     <ClCompile Include="Source\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="Source\Enemy\WalkEnemy\WalkEnemyAnimation.cpp" />
+    <ClCompile Include="Source\Field\BreakableObject.cpp" />
     <ClCompile Include="Source\Field\Field.cpp" />
+    <ClCompile Include="Source\Field\MoveFloor.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Ninja\Ninja.cpp" />
@@ -64,7 +66,9 @@
     <ClInclude Include="Source\Enemy\NormalEnemy\NormalEnemyAttack.h" />
     <ClInclude Include="Source\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="Source\Enemy\WalkEnemy\WalkEnemyAnimation.h" />
+    <ClInclude Include="Source\Field\BreakableObject.h" />
     <ClInclude Include="Source\Field\Field.h" />
+    <ClInclude Include="Source\Field\MoveFloor.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Ninja\Ninja.h" />
     <ClInclude Include="Source\Ninja\NinjaAnimation.h" />

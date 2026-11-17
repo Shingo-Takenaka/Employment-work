@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "DxLib.h"
@@ -8,11 +7,16 @@
 
 struct PlayerData
 {
-    // プレイ中に変更されるステータス
+    // HP
     int MaxHP = 10;
     int NowHP = 10;
-    int AttackPower = 1;
+
+    // 攻撃力
+    int SlashPower = 1;
+    int ShurikenPower = 1;
+    int DashCutPower = 1;
 };
+
 
 class Ninja
 {
@@ -41,6 +45,9 @@ public:
     bool CanWallKick() const { return m_canWallKick; }
     bool IsDashCut() const { return m_ninjaAttack.IsDashCutActive(); }
     bool IsMove() const { return m_input.IsMove(); }
+    int GetSlashPower() const { return m_data.SlashPower; }
+    int GetShurikenPower() const { return m_data.ShurikenPower; }
+    int GetDashCutPower() const { return m_data.DashCutPower; }
 
     // 地面との接触
     void ResolveGroundCollision(float groundY);
@@ -65,6 +72,9 @@ public:
     void SetData(const PlayerData& data);
 
 private:
+
+    PlayerData m_data;
+
     // 入力関連
     NinjaInput m_input;
 

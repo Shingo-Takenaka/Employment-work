@@ -1,23 +1,21 @@
-
 #include "FieldCollision.h"
 
 #include "../../Ninja/Ninja.h"
 #include "../../Field/Field.h"
+#include "../../Field/MoveFloor.h"
+
 #include <cmath>
 
-bool FieldCollision::CheckGround(
-    const Ninja& ninja,
-    const Field& field,
-    float& groundY)
-{
-    int modelHandle = field.GetModelHandle();
 
+bool FieldCollision::CheckGroundAt(
+    int modelHandle,
+    VECTOR ninjaPos,
+    float& groundY) const
+{
     if (modelHandle < 0)
     {
         return false;
     }
-
-    VECTOR ninjaPos = ninja.GetPosition();
 
     VECTOR startPos = VGet(
         ninjaPos.x,
@@ -41,7 +39,6 @@ bool FieldCollision::CheckGround(
         return false;
     }
 
-    // 地面として扱える傾斜か確認
     if (result.Normal.y < MIN_GROUND_NORMAL_Y)
     {
         return false;
@@ -52,45 +49,128 @@ bool FieldCollision::CheckGround(
     return true;
 }
 
+bool FieldCollision::CheckGround(
+    const Ninja& ninja,
+    const Field& field,
+    float& groundY)
+{
+    return CheckGroundAt(
+        field.GetModelHandle(),
+        ninja.GetPosition(),
+        groundY);
+}
+
+
 void FieldCollision::ResolveGroundCollision(
     Ninja& ninja,
     const Field& field,
+    const MoveFloor& moveFloor,
     VECTOR oldNinjaPos)
 {
-    float groundY = 0.0f;
-
-    if (!CheckGround(ninja, field, groundY))
-    {
-        ninja.SetAirborne();
-        return;
-    }
-
     VECTOR ninjaPos = ninja.GetPosition();
 
-    // 接地中の坂道追従
-    if (ninja.IsGrounded())
-    {
-        float heightDifference = groundY - ninjaPos.y;
+    const bool wasOnMoveFloor = m_onMoveFloor;
+    const bool isGrounded = ninja.IsGrounded();
 
-        if (heightDifference <= GROUND_STEP_HEIGHT &&
-            heightDifference >= -GROUND_STEP_HEIGHT)
+    VECTOR floorMove = moveFloor.GetMoveAmount();
+
+    // 前フレームで移動床に乗っていて、
+    // ジャンプしていなければ床の移動量を反映
+    if (wasOnMoveFloor && isGrounded)
+    {
+        ninjaPos = VAdd(ninjaPos, floorMove);
+        ninja.SetPosition(ninjaPos);
+    }
+
+    float fieldY = 0.0f;
+    float moveFloorY = 0.0f;
+
+    bool hasField = CheckGroundAt(
+        field.GetModelHandle(),
+        ninjaPos,
+        fieldY);
+
+    bool hasMoveFloor = CheckGroundAt(
+        moveFloor.GetModelHandle(),
+        ninjaPos,
+        moveFloorY);
+
+    bool foundGround = false;
+    bool selectedMoveFloor = false;
+    float selectedGroundY = 0.0f;
+
+    // 接地中は、現在位置から小さな段差の範囲で
+    // 追従できる床を探す
+    if (isGrounded)
+    {
+        if (hasField)
         {
-            ninja.ResolveGroundCollision(groundY);
-            return;
+            float difference = fieldY - ninjaPos.y;
+
+            if (fabsf(difference) <= GROUND_STEP_HEIGHT)
+            {
+                foundGround = true;
+                selectedGroundY = fieldY;
+            }
         }
 
+        if (hasMoveFloor)
+        {
+            float difference = moveFloorY - ninjaPos.y;
+
+            if (fabsf(difference) <= GROUND_STEP_HEIGHT)
+            {
+                if (!foundGround ||
+                    moveFloorY > selectedGroundY)
+                {
+                    foundGround = true;
+                    selectedMoveFloor = true;
+                    selectedGroundY = moveFloorY;
+                }
+            }
+        }
+    }
+    else
+    {
+        // 空中から通常床へ着地
+        if (hasField &&
+            oldNinjaPos.y >= fieldY &&
+            ninjaPos.y <= fieldY)
+        {
+            foundGround = true;
+            selectedGroundY = fieldY;
+        }
+
+        // 空中から移動床へ着地
+        // 床の前フレームの高さも考慮する
+        float previousMoveFloorY =
+            moveFloorY - floorMove.y;
+
+        if (hasMoveFloor &&
+            oldNinjaPos.y >= previousMoveFloorY &&
+            ninjaPos.y <= moveFloorY)
+        {
+            if (!foundGround ||
+                moveFloorY > selectedGroundY)
+            {
+                foundGround = true;
+                selectedMoveFloor = true;
+                selectedGroundY = moveFloorY;
+            }
+        }
+    }
+
+    if (!foundGround)
+    {
+        m_onMoveFloor = false;
         ninja.SetAirborne();
         return;
     }
 
-    // 空中からの着地
-    // 移動前の足元が地面以上で、
-    // 移動後の足元が地面以下の場合
-    if (oldNinjaPos.y >= groundY &&
-        ninjaPos.y <= groundY)
-    {
-        ninja.ResolveGroundCollision(groundY);
-    }
+    ninja.ResolveGroundCollision(selectedGroundY);
+
+    m_onMoveFloor =
+        selectedMoveFloor && ninja.IsGrounded();
 }
 
 void FieldCollision::DrawDebug(

@@ -1,8 +1,16 @@
-
 #pragma once
 
 #include "DxLib.h"
 #include <vector>
+
+struct PlayerData;
+
+enum class AttackType
+{
+    Slash,
+    Shuriken,
+    DashCut
+};
 
 class NinjaAttack
 {
@@ -34,6 +42,10 @@ public:
     int GetDashCutDirection() const;
     float GetDashCutDirectionX() const;
     float GetDashCutDirectionZ() const;
+
+    int GetAttackPower(
+        AttackType attackType,
+        const PlayerData& data) const;
 
 private:
     float m_attackWidth;
