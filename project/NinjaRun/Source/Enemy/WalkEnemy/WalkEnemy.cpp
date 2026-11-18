@@ -84,7 +84,10 @@ void WalkEnemy::Draw()
 }
 
 // Playerの通常攻撃・ダッシュ切り判定
-void WalkEnemy::CheckPlayerAttack(const Ninja& ninja,PlayerAttackCollision& playerAttackCollision,DashAttackCollision& dashAttackCollision)
+void WalkEnemy::CheckPlayerAttack(
+    const Ninja& ninja,
+    PlayerAttackCollision& playerAttackCollision,
+    DashAttackCollision& dashAttackCollision)
 {
     // 死亡していたら判定しない
     if (m_isDead)
@@ -95,13 +98,21 @@ void WalkEnemy::CheckPlayerAttack(const Ninja& ninja,PlayerAttackCollision& play
     // 通常の近接攻撃
     if (playerAttackCollision.Check(ninja, *this))
     {
-        TakeDamage(1);
+        TakeDamage(
+            ninja.GetAttackPower(AttackType::Slash));
+    }
+
+    // 死亡した場合は以降の判定を行わない
+    if (m_isDead)
+    {
+        return;
     }
 
     // ダッシュ切り
     if (dashAttackCollision.Check(ninja, *this))
     {
-        TakeDamage(1);
+        TakeDamage(
+            ninja.GetAttackPower(AttackType::DashCut));
     }
 }
 

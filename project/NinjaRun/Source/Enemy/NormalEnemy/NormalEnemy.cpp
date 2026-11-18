@@ -104,22 +104,26 @@ void NormalEnemy::CheckPlayerAttack(
     PlayerAttackCollision& playerAttackCollision,
     DashAttackCollision& dashAttackCollision)
 {
-    // €–S‚µ‚Ä‚¢‚½‚ç”»’è‚µ‚È‚¢
     if (m_isDead)
     {
         return;
     }
 
-    // ’Êí‚Ì‹ßÚUŒ‚
     if (playerAttackCollision.Check(ninja, *this))
     {
-        TakeDamage(1);
+        TakeDamage(
+            ninja.GetAttackPower(AttackType::Slash));
     }
 
-    // ƒ_ƒbƒVƒ…Ø‚è
+    if (m_isDead)
+    {
+        return;
+    }
+
     if (dashAttackCollision.Check(ninja, *this))
     {
-        TakeDamage(1);
+        TakeDamage(
+            ninja.GetAttackPower(AttackType::DashCut));
     }
 }
 

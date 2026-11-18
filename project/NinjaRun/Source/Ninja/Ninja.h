@@ -71,6 +71,8 @@ public:
     PlayerData GetData() const;
     void SetData(const PlayerData& data);
 
+    int GetAttackPower(AttackType attackType) const;
+
 private:
 
     PlayerData m_data;

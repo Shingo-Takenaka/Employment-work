@@ -16,6 +16,7 @@
 #include "../Collision/NinjaAttack/DashAttackCollision.h"
 #include "../Collision/Field/FieldCollision.h"
 #include "../Field/MoveFloor.h"
+#include "../Field/BreakableObject.h"
 
 class PlayScene : public SceneBase
 {
@@ -39,6 +40,7 @@ private:
     EnemyManager m_enemyManager;
 
     MoveFloor m_moveFloor;
+    BreakableObject m_breakableObject;
 
     DashAttackCollision m_dashAttackCollision;
     FieldCollision m_fieldCollision;

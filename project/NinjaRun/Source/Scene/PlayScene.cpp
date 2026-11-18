@@ -13,12 +13,14 @@ void PlayScene::Init()
 {
     m_ninja.Init();
     m_moveFloor.Init();
+    m_breakableObject.Init();
 }
 
 void PlayScene::Load()
 {
     m_ninja.Load();
     m_moveFloor.Load();
+    m_breakableObject.Load();
 }
 
 void PlayScene::Start()
@@ -34,6 +36,8 @@ void PlayScene::Update()
     VECTOR oldNinjaPos = m_ninja.GetPosition();
 
     m_ninja.Update();
+
+    m_playerAttackCollision.Update(m_ninja);
 
     // ダッシュ切りの当たり判定を更新
     m_dashAttackCollision.Update(m_ninja);
@@ -157,8 +161,9 @@ void PlayScene::Update()
     {
         m_playerAttack.CreateShoot(
             m_ninja.GetPosition(),
-            m_ninja.IsReverseX());
+            m_ninja.GetShootDirection());
     }
+
 
     // 手裏剣更新
     m_playerAttack.UpdateShoot();
@@ -178,7 +183,8 @@ void PlayScene::Update()
 
             if (ShootCollision::Check(m_playerAttack, i, enemy))
             {
-                enemy.TakeDamage(1);
+                enemy.TakeDamage(
+                    m_ninja.GetAttackPower(AttackType::Shuriken));
                 isHit = true;
                 break;
             }
@@ -196,7 +202,8 @@ void PlayScene::Update()
 
                 if (ShootCollision::Check(m_playerAttack, i, enemy))
                 {
-                    enemy.TakeDamage(1);
+                    enemy.TakeDamage(
+                        m_ninja.GetAttackPower(AttackType::Shuriken));
                     isHit = true;
                     break;
                 }

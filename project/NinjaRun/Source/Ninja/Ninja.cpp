@@ -715,3 +715,12 @@ void Ninja::SetAirborne()
     m_isGrounded = false;
     m_isJump = true;
 }
+
+int Ninja::GetAttackPower(AttackType attackType) const
+{
+    return m_ninjaAttack.GetAttackPower(
+        attackType,
+        m_data);
+}
+
+

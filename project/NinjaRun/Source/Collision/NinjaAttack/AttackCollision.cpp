@@ -6,45 +6,69 @@
 #include <math.h>
 
 PlayerAttackCollision::PlayerAttackCollision()
+    : m_wasSlashing(false)
 {
 }
 
-// Player‚ÌUŒ‚‚ÆEnemy‚ª“–‚½‚Á‚Ä‚¢‚é‚©
-bool PlayerAttackCollision::Check(const Ninja& ninja,const EnemyBase& enemy)
+void PlayerAttackCollision::Update(const Ninja& ninja)
 {
-    // UŒ‚’†‚Å‚È‚¯‚ê‚Î“–‚½‚è”»’è‚È‚µ
-    if (!ninja.IsSlash())
+    bool isSlashing = ninja.IsSlash();
+
+    // UŒ‚I—¹‚É–½’†—š—ğ‚ğƒŠƒZƒbƒg
+    if (!isSlashing && m_wasSlashing)
+    {
+        m_hitEnemies.clear();
+    }
+
+    m_wasSlashing = isSlashing;
+}
+
+bool PlayerAttackCollision::Check(
+    const Ninja& ninja,
+    const EnemyBase& enemy)
+{
+    // UŒ‚’†‚Å‚È‚¯‚ê‚Î”»’è‚µ‚È‚¢
+    if (!ninja.IsSlash() || enemy.IsDead())
     {
         return false;
     }
 
-    VECTOR ninjaPos = ninja.GetPosition();
+    // ‚·‚Å‚É–½’†‚µ‚½Enemy‚É‚ÍÄ“x“–‚Ä‚È‚¢
+    for (const EnemyBase* hitEnemy : m_hitEnemies)
+    {
+        if (hitEnemy == &enemy)
+        {
+            return false;
+        }
+    }
 
+    VECTOR ninjaPos = ninja.GetPosition();
     VECTOR enemyPos = enemy.GetPosition();
 
-    // PlayerAttack‚©‚çUŒ‚”ÍˆÍ‚ğæ“¾
-    float attackWidth = CollisionSettings::PLAYER_ATTACK_WIDTH;
-    float attackDepth = CollisionSettings::PLAYER_ATTACK_DEPTH;
-    float attackHeight = CollisionSettings::PLAYER_ATTACK_HEIGHT;
+    float attackWidth =
+        CollisionSettings::PLAYER_ATTACK_WIDTH;
 
-    // X•ûŒü
+    float attackDepth =
+        CollisionSettings::PLAYER_ATTACK_DEPTH;
+
+    float attackHeight =
+        CollisionSettings::PLAYER_ATTACK_HEIGHT;
+
     float minX;
     float maxX;
 
     if (!ninja.IsReverseX())
     {
-        // ‰EŒü‚«
         minX = ninjaPos.x;
         maxX = ninjaPos.x + attackWidth;
     }
     else
     {
-        // ¶Œü‚«
         minX = ninjaPos.x - attackWidth;
         maxX = ninjaPos.x;
     }
 
-    // X•ûŒü‚Ì”»’è
+    // X•ûŒü
     if (enemyPos.x < minX || enemyPos.x > maxX)
     {
         return false;
@@ -59,7 +83,9 @@ bool PlayerAttackCollision::Check(const Ninja& ninja,const EnemyBase& enemy)
     }
 
     // Y•ûŒü
-    float attackCenterY = ninjaPos.y + CollisionSettings::PLAYER_ATTACK_CENTER_Y_OFFSET;
+    float attackCenterY =
+        ninjaPos.y +
+        CollisionSettings::PLAYER_ATTACK_CENTER_Y_OFFSET;
 
     float dy = fabsf(enemyPos.y - attackCenterY);
 
@@ -67,6 +93,9 @@ bool PlayerAttackCollision::Check(const Ninja& ninja,const EnemyBase& enemy)
     {
         return false;
     }
+
+    // –½’†‚µ‚½Enemy‚ğ‹L˜^
+    m_hitEnemies.push_back(&enemy);
 
     return true;
 }

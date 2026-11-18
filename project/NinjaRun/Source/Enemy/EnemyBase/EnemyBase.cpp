@@ -35,7 +35,7 @@ void EnemyBase::SetPosition(VECTOR pos)
 // ƒ_ƒ[ƒW‚ğó‚¯‚é
 void EnemyBase::TakeDamage(int damage)
 {
-    if (m_isDead)
+    if (m_isDead || damage <= 0)
     {
         return;
     }
